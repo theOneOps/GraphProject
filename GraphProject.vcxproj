@@ -140,11 +140,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CArc\Arc.cpp" />
+    <ClCompile Include="CException\CException.cpp" />
+    <ClCompile Include="CGraph\CGraphNOriented.cpp" />
+    <ClCompile Include="CGraph\CGraphOriented.cpp" />
     <ClCompile Include="CVertex\CVertex.cpp" />
     <ClCompile Include="GraphProject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CArc\Arc.h" />
+    <ClInclude Include="CException\CException.h" />
+    <ClInclude Include="CGraph\CGraphNOriented.h" />
+    <ClInclude Include="CGraph\CGraphOriented.h" />
     <ClInclude Include="CVertex\CVertex.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
