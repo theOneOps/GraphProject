@@ -13,23 +13,68 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\Arc">
+      <UniqueIdentifier>{4a0e338d-3469-47b9-ad80-e4a2de73e905}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\CException">
+      <UniqueIdentifier>{371a76a2-3342-446b-ae03-3293c98e50d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\CVertex">
+      <UniqueIdentifier>{248a0484-43e5-4d5a-b600-977b32742bff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Arc">
+      <UniqueIdentifier>{ac4bb25a-129c-44d4-9087-cae364a36ba6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\CException">
+      <UniqueIdentifier>{ce2ed855-111e-44b2-93c9-1d12da8c503e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\CVertex">
+      <UniqueIdentifier>{01dfae8b-3381-4480-9152-7c41f3fc1829}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\CGraph">
+      <UniqueIdentifier>{ae959637-7bbc-4d12-aab7-afc8e63ed50e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\CGraph">
+      <UniqueIdentifier>{a5df0931-d4ee-4baa-b1ee-8cb6064d20aa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GraphProject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CArc\Arc.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Arc</Filter>
+    </ClCompile>
+    <ClCompile Include="CException\CException.cpp">
+      <Filter>Source Files\CException</Filter>
     </ClCompile>
     <ClCompile Include="CVertex\CVertex.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\CVertex</Filter>
+    </ClCompile>
+    <ClCompile Include="CGraph\CGraphOriented.cpp">
+      <Filter>Source Files\CGraph</Filter>
+    </ClCompile>
+    <ClCompile Include="CGraph\CGraphNOriented.cpp">
+      <Filter>Source Files\CGraph</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CArc\Arc.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Arc</Filter>
+    </ClInclude>
+    <ClInclude Include="CException\CException.h">
+      <Filter>Header Files\CException</Filter>
     </ClInclude>
     <ClInclude Include="CVertex\CVertex.h">
+      <Filter>Header Files\CVertex</Filter>
+    </ClInclude>
+    <ClInclude Include="CGraph\CGraphOriented.h">
+      <Filter>Header Files\CGraph</Filter>
+    </ClInclude>
+    <ClInclude Include="CGraph\CGraphNOriented.h">
+      <Filter>Header Files\CGraph</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

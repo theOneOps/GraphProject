@@ -6,27 +6,27 @@ CArc::CArc()
 
 }
 
-CArc::CArc(string sDep, string sArr)
+CArc::CArc(string sDep, string sArr):sARCArr(sArr), sARCDep(sDep)
 {
 
 }
 
 string CArc::ARCGetVertexArr() const
 {
-
+	return sARCArr;
 }
 
 string CArc::ARCGetVertexDep() const 
 {
-
+	return sARCDep;
 }
 
-void CArc::ModifyVertexDep(string sNewValue)
+void CArc::ModifyVertexDep(const string& sNewValue)
 {
-
+	sARCDep = sNewValue;
 }
 
-void CArc::ModifyVertexArr(string sNewValue)
+void CArc::ModifyVertexArr(const string& sNewValue)
 {
-
+	sARCArr = sNewValue;
 }

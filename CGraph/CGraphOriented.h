@@ -1,128 +1,120 @@
-#ifndef CVERTEX_H
-#define CVERTEX_H
-#include<string>
+#ifndef _CGRAPH_ORIENTE_H
+#define _CGRAPH_ORIENTE_H
+#include <string>
 #include <map>
+#include "../CArc/Arc.h"
+#include "../CVertex/CVertex.h"
+
 using namespace std;
 
+#define vertex_already_existed 11
+
 /**********************************************************
-*  Class : CVertex
+*  Class : CGrapheOriente
 * *********************************************************
-* ROLE : management of Vertex
+* ROLE : management of the oriented graph
 * *********************************************************
 * VERSION: 1.0
 * AUTHOR: Selly Bill-Gate MEDEWOU
-*				  Jeremie YANG
+*                 Jeremie YANG
 * DATE: 19/03/2024
 * *********************************************************
 */
-class CVertex
+class CGraphOriented
 {
 private:
-	//ATRIBUTS
-
-	string sVERName;
-	map<string, bool> sVERArcIn;
-	map<string, bool> sVERArcOut;
+	//Attributs
+	map<string, CVertex*> mGROVertex;
+	map<string, CArc*> mGROArcs;
 public:
 
-	//METHODS
-	/**
-	*******************************************************************************
-	* VERModify
-	* *****************************************************************************
-	* Entries : string svalue
-	* Needs : None
-	* Returns : void
-	* Leads : modify sVERName by svalue
-	********************************************************************************
-	*/
-	void VERModifyName(const string& svalue);
+	//Constructors
 
 	/**
 	*******************************************************************************
-	* VERGetName
+	* CGraphOriented
 	* *****************************************************************************
 	* Entries : None
-	* Needs : None
-	* Returns : string
-	* Leads : get the value of the vertex
-	*******************************************************************************
-	*/
-	string VERGetName() const;
-
-	/**
-	*******************************************************************************
-	* VERGetArcIn
-	* *****************************************************************************
-	* Entries : None
-	* Needs : None
-	* Returns : map<string, bool>
-	* Leads :  get the sVERArcIn's map of the vertex
-	*******************************************************************************
-	*/
-	map<string, bool> VERGetArcIn() const;
-
-	/**
-	*******************************************************************************
-	* VERGetArcOut
-	* *****************************************************************************
-	* Entries : None
-	* Needs : None
-	* Returns : map<string, bool>
-	* Leads :  get the sVERArcOut's map of the vertex
-	*******************************************************************************
-	*/
-	map<string, bool> VERGetArcOut() const;
-
-
-	/**
-	*******************************************************************************
-	* VERModifyArcIn
-	* *****************************************************************************
-	* Entries : the string key to change, and the string new value to put at the key's "value"
-	* Needs : None
-	* Returns : void
-	* Leads : change the value of the map sVERArcIn at the key to the new Value given into the parameter
-	*******************************************************************************
-	*/
-	void VERModifyArcIn(const string& key, bool value);
-
-
-	/**
-	*******************************************************************************
-	* VERModifyArcOut
-	* *****************************************************************************
-	* Entries : the string key to change, and the string new value to put at the key's "value"
-	* Needs : None
-	* Returns : void
-	* Leads : change the value of the map sVERArcOut at the key to the new Value given into the parameter
-	*******************************************************************************
-	*/
-	void VERModifyArcOut(const string& key, bool value);
-
-	/**
-	*******************************************************************************
-	* VERAddInTheMapIn
-	* *****************************************************************************
-	* Entries : the value of the key to add in the sVERArcIn
 	* Needs : None
 	* Returns : None
-	* Leads : a new value with another key equals to s will be added to the map sVERArcIn
+	* Leads : destroy the Vertex value of all the key of each map (mGROVertex, mGROArcs)
 	*******************************************************************************
 	*/
-	void VERAddInTheMapIn(const string& s);
+	~CGraphOriented();
+
+
+	//methods
 
 	/**
 	*******************************************************************************
-	* VERAddInTheMapOut
+	* GROModifyVertex
 	* *****************************************************************************
-	* Entries : the value of the key to add in the sVERArcOut
+	* Entries : svertexname a string ; savalue a string
 	* Needs : None
-	* Returns : None
-	* Leads : a new value with another key equals to s will be added to the map sVERArcOut
+	* Returns : void
+	* Leads : modify a svertexname by svalue
 	*******************************************************************************
 	*/
-	void VERAddInTheMapOut(const string& s);
+	void GROModifyVertex(string& sVertexName, string& sValue);
 
+	/**
+	*******************************************************************************
+	* GROAddVertex
+	* *****************************************************************************
+	* Entries : Ververtex a vertex
+	* Needs : None
+	* Returns : void
+	* Leads : add a vertex
+	*******************************************************************************
+	*/
+	void GROAddVertex(CVertex& VerVertex);
+
+	/**
+	*******************************************************************************
+	* GROAddArc
+	* *****************************************************************************
+	* Entries : Ververtex a vertex
+	* Needs : None
+	* Returns : void
+	* Leads : add a Arc
+	*******************************************************************************
+	*/
+	virtual void GROAddArc(CVertex& sVertexDep, CVertex& sVertexArr);
+
+	/**
+	*******************************************************************************
+	* GRORemoveVertex
+	* *****************************************************************************
+	* Entries : snum a name of the vertex
+	* Needs : None
+	* Returns : void
+	* Leads : remove the vertex which name is the value of snum
+	*******************************************************************************
+	*/
+	void GRORemoveVertex(string& sNum);
+
+	/**
+	*******************************************************************************
+	* GRORemoveVertex
+	* *****************************************************************************
+	* Entries : snumdep string  string snumarr
+	* Needs : None
+	* Returns : void
+	* Leads : remove the arc whith the VertexDep value equals to the snumDep,the VertexArr value equals to the snumarr 
+	*******************************************************************************
+	*/
+	virtual void GRORemoveArc(string& sNumdep, string& sNumArr);
+
+	/**
+	*******************************************************************************
+	* GROCheckExistenceOfArc
+	* *****************************************************************************
+	* Entries : the vertexDep that will check the existence of the second vertex value
+	* Needs : those vertex should be create before calling the function
+	* Returns : bool
+	* Leads : None
+	*******************************************************************************
+	*/
+	bool GROCheckExistenceOfArc(CVertex& vertexDep, CVertex& vertexArr);
 };
-#endif
+#endif 
