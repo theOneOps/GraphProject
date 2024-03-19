@@ -139,7 +139,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CArc\Arc.cpp" />
+    <ClCompile Include="CVertex\CVertex.cpp" />
     <ClCompile Include="GraphProject.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CArc\Arc.h" />
+    <ClInclude Include="CVertex\CVertex.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
