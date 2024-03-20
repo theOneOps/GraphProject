@@ -31,6 +31,7 @@ void CVertex::VERModifyArcOut(const string& key, bool value)
 {
 	sVERArcOut[key] = value;
 }
+<<<<<<< HEAD
 
 void CVertex::VERAddInTheMapIn(const string& s)
 {
@@ -41,3 +42,5 @@ void CVertex::VERAddInTheMapOut(const string& s)
 {
 	sVERArcOut[s] = true;
 }
+=======
+>>>>>>> 87a65594fccc6cfc4813e980539e19a2e155f283

@@ -7,8 +7,11 @@
 
 using namespace std;
 
+<<<<<<< HEAD
 #define vertex_already_existed 11
 
+=======
+>>>>>>> 87a65594fccc6cfc4813e980539e19a2e155f283
 /**********************************************************
 *  Class : CGrapheOriente
 * *********************************************************
@@ -79,7 +82,11 @@ public:
 	* Leads : add a Arc
 	*******************************************************************************
 	*/
+<<<<<<< HEAD
 	virtual void GROAddArc(CVertex& sVertexDep, CVertex& sVertexArr);
+=======
+	virtual void GROAddArc(string& sVertexDep, string& sVertexArr);
+>>>>>>> 87a65594fccc6cfc4813e980539e19a2e155f283
 
 	/**
 	*******************************************************************************
@@ -104,6 +111,7 @@ public:
 	*******************************************************************************
 	*/
 	virtual void GRORemoveArc(string& sNumdep, string& sNumArr);
+<<<<<<< HEAD
 
 	/**
 	*******************************************************************************
@@ -116,5 +124,7 @@ public:
 	*******************************************************************************
 	*/
 	bool GROCheckExistenceOfArc(CVertex& vertexDep, CVertex& vertexArr);
+=======
+>>>>>>> 87a65594fccc6cfc4813e980539e19a2e155f283
 };
 #endif 

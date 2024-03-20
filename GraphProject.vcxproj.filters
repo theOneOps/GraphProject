@@ -73,9 +73,12 @@
     </ClInclude>
     <ClInclude Include="CGraph\CGraphNOriented.h">
       <Filter>Header Files\CGraph</Filter>
+<<<<<<< HEAD
     </ClInclude>
     <ClInclude Include="Utils.h">
       <Filter>Header Files</Filter>
+=======
+>>>>>>> 87a65594fccc6cfc4813e980539e19a2e155f283
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -36,7 +36,10 @@ public:
 	*******************************************************************************
 	*/
 	virtual void GRORemoveArc(string& sNumdep, string& sNumArr);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 87a65594fccc6cfc4813e980539e19a2e155f283
 };
 
 #endif

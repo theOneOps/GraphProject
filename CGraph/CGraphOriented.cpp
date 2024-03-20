@@ -1,4 +1,5 @@
 #include "CGraphOriented.h"
+
 #include "../CException/CException.h"
 
 
@@ -22,6 +23,7 @@ void CGraphOriented::GROModifyVertex(string& sVertexName, string& sValue)
 
 void CGraphOriented::GROAddVertex(CVertex& VerVertex)
 {
+
 	if (mGROVertex.find(VerVertex.VERGetName()) != mGROVertex.end())
 	{
 		mGROVertex[VerVertex.VERGetName()] = &VerVertex;
@@ -42,6 +44,13 @@ void CGraphOriented::GROAddArc(CVertex& sVertexDep, CVertex& sVertexArr)
 		CArc* arc = new CArc(sVertexDep.VERGetName(), sVertexArr.VERGetName());
 		mGROArcs[sVertexDep.VERGetName()] = arc;
 	}
+
+
+}
+
+void CGraphOriented::GROAddArc(string& sVertexDep, string& sVertexArr)
+{
+
 }
 
 void CGraphOriented::GRORemoveVertex(string& sNum)
@@ -51,6 +60,7 @@ void CGraphOriented::GRORemoveVertex(string& sNum)
 
 void CGraphOriented::GRORemoveArc(string& sNumdep, string& sNumArr)
 {
+
 
 }
 
@@ -62,4 +72,6 @@ bool CGraphOriented::GROCheckExistenceOfArc(CVertex& vertexDep, CVertex& vertexA
 		bRes = true;
 
 	return bRes;
+}
+
 }
