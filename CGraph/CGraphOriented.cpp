@@ -2,8 +2,6 @@
 #include "../CException/CException.h"
 
 
-
-
 CGraphOriented::~CGraphOriented()
 {
 	for (auto& pair : mGROArcs)
