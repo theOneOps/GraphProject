@@ -25,6 +25,12 @@ private:
 	map<string, bool> sVERArcOut;
 public:
 
+	//Constructors 
+
+
+
+	CVertex(string value);
+
 	//METHODS
 	/**
 	*******************************************************************************
@@ -100,7 +106,6 @@ public:
 	*/
 	void VERModifyArcOut(const string& key, bool value);
 
-<<<<<<< HEAD
 	/**
 	*******************************************************************************
 	* VERAddInTheMapIn
@@ -125,7 +130,18 @@ public:
 	*/
 	void VERAddInTheMapOut(const string& s);
 
-=======
->>>>>>> 87a65594fccc6cfc4813e980539e19a2e155f283
+
+	/**
+	*******************************************************************************
+	* printAdjacentNeightboors
+	* *****************************************************************************
+	* Entries : tree : BSTree* = the tree we want to compare with
+	* Needs : None
+	* Returns : void
+	* Leads : 
+	*******************************************************************************
+	*/
+	string printAdjacentNeightboors();
+
 };
 #endif

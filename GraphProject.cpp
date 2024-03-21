@@ -3,18 +3,44 @@
 
 #include <iostream>
 
+#include "CArc/Arc.h"
+#include "CGraph/CGraphOriented.h"
+#include "CPrintGraph.h"
+#include "CVertex/CVertex.h"
+#include "CException/CException.h"
+
+using namespace std;
+
 int main()
 {
-    std::cout << "Hello World!\n";
+    try
+    {
+        CVertex* CVersommet1 = new CVertex("1");
+        CVertex* CVersommet2 = new CVertex("2");
+        CVertex* CVersommet3 = new CVertex("3");
+        CVertex* CVersommet4 = new CVertex("4");
+
+        CGraphOriented* CGRAgraph1 = new CGraphOriented();
+
+        CGRAgraph1->GROAddVertex(CVersommet1);
+        CGRAgraph1->GROAddVertex(CVersommet2);
+        CGRAgraph1->GROAddVertex(CVersommet3);
+        CGRAgraph1->GROAddVertex(CVersommet4);
+        CGRAgraph1->GROAddArc(CVersommet1, CVersommet2);
+        CGRAgraph1->GROAddArc(CVersommet2, CVersommet3);
+        CGRAgraph1->GROAddArc(CVersommet3, CVersommet1);
+        CGRAgraph1->GROAddArc(CVersommet1, CVersommet1);
+        CGRAgraph1->GROAddArc(CVersommet1, CVersommet1);
+        CPrintGraph::GROPrintGraph(CGRAgraph1);
+
+        delete CGRAgraph1;
+    }
+    catch (CException e)
+    {
+        e.CEXReadMessage();
+    }
+    
+
+
+    return 0;
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file

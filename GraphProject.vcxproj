@@ -151,6 +151,7 @@
     <ClInclude Include="CException\CException.h" />
     <ClInclude Include="CGraph\CGraphNOriented.h" />
     <ClInclude Include="CGraph\CGraphOriented.h" />
+    <ClInclude Include="CPrintGraph.h" />
     <ClInclude Include="CVertex\CVertex.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>

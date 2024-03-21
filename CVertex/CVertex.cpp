@@ -2,6 +2,10 @@
 #include <iostream>
 
 
+CVertex::CVertex(string value):sVERName(value)
+{
+}
+
 void CVertex::VERModifyName(const string& svalue)
 {
 	sVERName = svalue;
@@ -31,7 +35,6 @@ void CVertex::VERModifyArcOut(const string& key, bool value)
 {
 	sVERArcOut[key] = value;
 }
-<<<<<<< HEAD
 
 void CVertex::VERAddInTheMapIn(const string& s)
 {
@@ -42,5 +45,27 @@ void CVertex::VERAddInTheMapOut(const string& s)
 {
 	sVERArcOut[s] = true;
 }
-=======
->>>>>>> 87a65594fccc6cfc4813e980539e19a2e155f283
+
+string CVertex::printAdjacentNeightboors()
+{
+	string res = "";
+
+	for (auto it = sVERArcIn.begin(); it != sVERArcIn.end(); it++)
+	{
+		if (it->second)
+			res += it->first + " ";
+	}
+
+	for (auto it = sVERArcOut.begin(); it != sVERArcOut.end(); it++)
+	{
+		if (it->second)
+			res += it->first + " ";
+	}
+
+	if (res.empty())
+		res = "None";
+
+	return res;
+}
+
+

@@ -21,12 +21,12 @@ void CGraphOriented::GROModifyVertex(string& sVertexName, string& sValue)
 
 }
 
-void CGraphOriented::GROAddVertex(CVertex& VerVertex)
-{
 
-	if (mGROVertex.find(VerVertex.VERGetName()) != mGROVertex.end())
+void CGraphOriented::GROAddVertex(CVertex* VerVertex)
+{
+	if (mGROVertex.count(VerVertex->VERGetName()) == 0)
 	{
-		mGROVertex[VerVertex.VERGetName()] = &VerVertex;
+		mGROVertex[VerVertex->VERGetName()] = VerVertex;
 	}
 	else
 	{
@@ -34,24 +34,29 @@ void CGraphOriented::GROAddVertex(CVertex& VerVertex)
 	}
 }
 
-void CGraphOriented::GROAddArc(CVertex& sVertexDep, CVertex& sVertexArr)
+void CGraphOriented::GROAddArc(CVertex* sVertexDep, CVertex* sVertexArr)
 {
-	if (GROCheckExistenceOfArc(sVertexDep, sVertexArr) == false)
+	if (GROCheckExistenceOfArc(*sVertexDep, *sVertexArr) == false)
 	{
-		sVertexArr.VERAddInTheMapIn(sVertexDep.VERGetName());
-		sVertexDep.VERAddInTheMapOut(sVertexArr.VERGetName());
+		sVertexArr->VERAddInTheMapIn(sVertexDep->VERGetName());
+		sVertexDep->VERAddInTheMapOut(sVertexArr->VERGetName());
 
-		CArc* arc = new CArc(sVertexDep.VERGetName(), sVertexArr.VERGetName());
-		mGROArcs[sVertexDep.VERGetName()] = arc;
+		CArc* arc = new CArc(sVertexDep->VERGetName(), sVertexArr->VERGetName());
+
+		GROAddArcInTheMap(sVertexDep->VERGetName(), arc);
+
+		cout << "arc added successfully ! " << endl;
 	}
-
-
+	else
+	{
+		cout << "didn't work for " << sVertexDep->VERGetName() << " and " << sVertexArr->VERGetName() << endl;
+	}
 }
-
-void CGraphOriented::GROAddArc(string& sVertexDep, string& sVertexArr)
+void CGraphOriented::GROAddArcInTheMap(const string& key, CArc* arc)
 {
-
+	mGROArcs[key] = arc;
 }
+
 
 void CGraphOriented::GRORemoveVertex(string& sNum)
 {
@@ -64,6 +69,12 @@ void CGraphOriented::GRORemoveArc(string& sNumdep, string& sNumArr)
 
 }
 
+map<string, CVertex*> CGraphOriented::getGROVertex() const
+{
+	return mGROVertex;
+}
+
+
 bool CGraphOriented::GROCheckExistenceOfArc(CVertex& vertexDep, CVertex& vertexArr)
 {
 	bool bRes = false;
@@ -72,6 +83,4 @@ bool CGraphOriented::GROCheckExistenceOfArc(CVertex& vertexDep, CVertex& vertexA
 		bRes = true;
 
 	return bRes;
-}
-
 }

@@ -23,7 +23,7 @@ public:
 	* Leads : add a Arc
 	*******************************************************************************
 	*/
-	virtual void GROAddArc(string& sVertexDep, string& sVertexArr);
+	virtual void GROAddArc(CVertex& sVertexDep, CVertex& sVertexArr);
 
 	/**
 	*******************************************************************************
@@ -36,10 +36,9 @@ public:
 	*******************************************************************************
 	*/
 	virtual void GRORemoveArc(string& sNumdep, string& sNumArr);
-<<<<<<< HEAD
 
-=======
->>>>>>> 87a65594fccc6cfc4813e980539e19a2e155f283
+	virtual bool GROCheckExistenceOfArc(CVertex& vertexDep, CVertex& vertexArr);
+
 };
 
 #endif
