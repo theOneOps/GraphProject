@@ -4,10 +4,12 @@
 #include <map>
 #include "../CArc/Arc.h"
 #include "../CVertex/CVertex.h"
+#include <set>
 
 using namespace std;
 
 #define vertex_already_existed 11
+#define arc_already_existed 10
 
 
 /**********************************************************
@@ -27,6 +29,7 @@ private:
 	//Attributs
 	map<string, CVertex*> mGROVertex;
 	map<string, CArc*> mGROArcs;
+
 public:
 
 	//Constructors
@@ -107,7 +110,7 @@ public:
 	* Leads : remove the vertex which name is the value of snum
 	*******************************************************************************
 	*/
-	void GRORemoveVertex(string& sNum);
+	void GRORemoveVertex(const string& sNum);
 
 	/**
 	*******************************************************************************
@@ -119,7 +122,7 @@ public:
 	* Leads : remove the arc whith the VertexDep value equals to the snumDep,the VertexArr value equals to the snumarr 
 	*******************************************************************************
 	*/
-	virtual void GRORemoveArc(string& sNumdep, string& sNumArr);
+	virtual void GRORemoveArc(const string& sNumdep, const string& sNumArr);
 
 	/**
 	*******************************************************************************
@@ -145,5 +148,7 @@ public:
 	*******************************************************************************
 	*/
 	map<string, CVertex*> getGROVertex() const;
+
+
 };
 #endif 

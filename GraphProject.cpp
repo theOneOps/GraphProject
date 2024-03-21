@@ -30,7 +30,20 @@ int main()
         CGRAgraph1->GROAddArc(CVersommet2, CVersommet3);
         CGRAgraph1->GROAddArc(CVersommet3, CVersommet1);
         CGRAgraph1->GROAddArc(CVersommet1, CVersommet1);
-        CGRAgraph1->GROAddArc(CVersommet1, CVersommet1);
+
+        CPrintGraph::GROPrintGraph(CGRAgraph1);
+
+        cout << "affichage du graphe apres suppression de l'arc 1 vers 3" << endl;
+
+        CGRAgraph1->GRORemoveArc("1", "3");
+
+        CPrintGraph::GROPrintGraph(CGRAgraph1);
+
+        cout << "affichage du graphe apres suppression du vertex 2" << endl;
+
+        CGRAgraph1->GRORemoveVertex("2");
+        CGRAgraph1->GRORemoveVertex("1");
+
         CPrintGraph::GROPrintGraph(CGRAgraph1);
 
         delete CGRAgraph1;
@@ -39,8 +52,5 @@ int main()
     {
         e.CEXReadMessage();
     }
-    
-
-
     return 0;
 }

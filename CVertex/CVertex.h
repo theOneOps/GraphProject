@@ -2,6 +2,8 @@
 #define CVERTEX_H
 #include<string>
 #include <map>
+#include <set>
+
 using namespace std;
 
 /**********************************************************
@@ -26,7 +28,6 @@ private:
 public:
 
 	//Constructors 
-
 
 
 	CVertex(string value);
@@ -142,6 +143,43 @@ public:
 	*******************************************************************************
 	*/
 	string printAdjacentNeightboors();
+
+	/**
+	*******************************************************************************
+	* removeArcFromArcIn
+	* *****************************************************************************
+	* Entries : tree : BSTree* = the tree we want to compare with
+	* Needs : None
+	* Returns : void
+	* Leads : Return description
+	*******************************************************************************
+	*/
+	void removeArcFromArcIn(const string& s);
+
+
+	/**
+	*******************************************************************************
+	* removeArcFromArcOut
+	* *****************************************************************************
+	* Entries : tree : BSTree* = the tree we want to compare with
+	* Needs : None
+	* Returns : void
+	* Leads : Return description
+	*******************************************************************************
+	*/
+	void removeArcFromArcOut(const string& s);
+
+	/**
+	*******************************************************************************
+	* getAllAdjacenceVertexToAVertex
+	* *****************************************************************************
+	* Entries : tree : BSTree* = the tree we want to compare with
+	* Needs : None
+	* Returns : void
+	* Leads : Return description
+	*******************************************************************************
+	*/
+	set<string> getAllAdjacenceVertexToAVertex();
 
 };
 #endif

@@ -1,5 +1,7 @@
 #include "CVertex.h"
 #include <iostream>
+#include <algorithm>
+#include <set>
 
 
 CVertex::CVertex(string value):sVERName(value)
@@ -49,17 +51,24 @@ void CVertex::VERAddInTheMapOut(const string& s)
 string CVertex::printAdjacentNeightboors()
 {
 	string res = "";
+	set<string> see;
 
 	for (auto it = sVERArcIn.begin(); it != sVERArcIn.end(); it++)
 	{
 		if (it->second)
-			res += it->first + " ";
+		{
+			if (see.insert(it->first).second)
+				res += it->first + " ";
+		}
 	}
 
 	for (auto it = sVERArcOut.begin(); it != sVERArcOut.end(); it++)
 	{
 		if (it->second)
-			res += it->first + " ";
+		{
+			if (see.insert(it->first).second)
+				res += it->first + " ";
+		}
 	}
 
 	if (res.empty())
@@ -68,4 +77,39 @@ string CVertex::printAdjacentNeightboors()
 	return res;
 }
 
+void CVertex::removeArcFromArcIn(const string& s)
+{
+	if (sVERArcIn.find(s) != sVERArcIn.end())
+		sVERArcIn[s] = false;
+}
 
+void CVertex::removeArcFromArcOut(const string& s)
+{
+	if (sVERArcOut.find(s) != sVERArcOut.end())
+		sVERArcOut[s] = false;
+}
+
+
+
+set<string> CVertex::getAllAdjacenceVertexToAVertex()
+{
+	set<string> see;
+
+	for (auto it = sVERArcIn.begin(); it != sVERArcIn.end(); it++)
+	{
+		if (it->second)
+		{
+			see.insert(it->first);
+		}
+	}
+
+	for (auto it = sVERArcOut.begin(); it != sVERArcOut.end(); it++)
+	{
+		if (it->second)
+		{
+			see.insert(it->first);
+		}
+	}
+
+	return see;
+}

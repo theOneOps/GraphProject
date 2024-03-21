@@ -1,5 +1,4 @@
 #include "CGraphOriented.h"
-
 #include "../CException/CException.h"
 
 
@@ -30,7 +29,7 @@ void CGraphOriented::GROAddVertex(CVertex* VerVertex)
 	}
 	else
 	{
-		throw CException(vertex_already_existed,"a vertex with that value already existed",  "CGraphOriented.cpp", 29);
+		throw CException(vertex_already_existed,"a vertex with that value already existed",  "CGraphOriented.cpp", 27);
 	}
 }
 
@@ -49,7 +48,8 @@ void CGraphOriented::GROAddArc(CVertex* sVertexDep, CVertex* sVertexArr)
 	}
 	else
 	{
-		cout << "didn't work for " << sVertexDep->VERGetName() << " and " << sVertexArr->VERGetName() << endl;
+		string res = "an arc with that vertexDep " + sVertexDep->VERGetName() +" and vertexArr " + sVertexArr->VERGetName() +" already existed in the graph";
+		throw CException(arc_already_existed, res, "CGraphOriented.cpp", 39);
 	}
 }
 void CGraphOriented::GROAddArcInTheMap(const string& key, CArc* arc)
@@ -58,15 +58,58 @@ void CGraphOriented::GROAddArcInTheMap(const string& key, CArc* arc)
 }
 
 
-void CGraphOriented::GRORemoveVertex(string& sNum)
+void CGraphOriented::GRORemoveVertex(const string& sNum)
 {
+	
+	if (mGROVertex.find(sNum) != mGROVertex.end())
+	{
+		set<string> allAdjacentsVertex = mGROVertex[sNum]->getAllAdjacenceVertexToAVertex();
+		if (!allAdjacentsVertex.empty())
+		{
+			for (string num : allAdjacentsVertex)
+			{
+				GRORemoveArc(sNum, num);
+			}
+		}
 
+		delete mGROVertex[sNum];
+		mGROVertex.erase(sNum);
+	}
 }
 
-void CGraphOriented::GRORemoveArc(string& sNumdep, string& sNumArr)
+void CGraphOriented::GRORemoveArc(const string& sNumDep, const string& sNumArr)
 {
+	if (mGROVertex[sNumDep] && mGROVertex[sNumArr])
+	{
+		CVertex* vDep = mGROVertex[sNumDep];
+		CVertex* vArr = mGROVertex[sNumArr];
 
+		if (GROCheckExistenceOfArc(*vDep, *vArr))
+		{
+			vDep->removeArcFromArcIn(vArr->VERGetName());
+			vDep->removeArcFromArcOut(vArr->VERGetName());
 
+			vArr->removeArcFromArcIn(vDep->VERGetName());
+			vArr->removeArcFromArcOut(vDep->VERGetName());
+
+			if (mGROArcs[sNumDep])
+			{
+				if (mGROArcs[sNumDep]->ARCGetVertexArr() == sNumArr)
+				{
+					delete mGROArcs[sNumDep];
+					mGROArcs.erase(sNumDep);
+				}
+			}
+			else
+			{
+				if (mGROArcs[sNumArr]->ARCGetVertexArr() == sNumDep)
+				{
+					delete mGROArcs[sNumArr];
+					mGROArcs.erase(sNumArr);
+				}
+			}
+		}
+	}
 }
 
 map<string, CVertex*> CGraphOriented::getGROVertex() const
