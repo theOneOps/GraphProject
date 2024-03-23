@@ -4,9 +4,7 @@
 #include <set>
 
 
-CVertex::CVertex(string value):sVERName(value)
-{
-}
+CVertex::CVertex(string value):sVERName(value){}
 
 void CVertex::VERModifyName(const string& svalue)
 {
@@ -90,7 +88,6 @@ void CVertex::removeArcFromArcOut(const string& s)
 }
 
 
-
 set<string> CVertex::getAllAdjacenceVertexToAVertex()
 {
 	set<string> see;
@@ -112,4 +109,24 @@ set<string> CVertex::getAllAdjacenceVertexToAVertex()
 	}
 
 	return see;
+}
+
+
+void CVertex::changeKeysVerArcIn(const string& oldVal, const string& newVal)
+{
+	bool bOldValue = sVERArcIn[oldVal];
+
+	sVERArcIn.erase(oldVal);
+
+	VERModifyArcIn(newVal, bOldValue);
+}
+
+
+void CVertex::changeKeysVerArcOut(const string& oldVal, const string& newVal)
+{
+	bool bOldValue = sVERArcOut[oldVal];
+
+	sVERArcOut.erase(oldVal);
+
+	VERModifyArcOut(newVal, bOldValue);
 }

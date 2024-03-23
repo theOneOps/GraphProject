@@ -10,6 +10,7 @@ using namespace std;
 
 #define vertex_already_existed 11
 #define arc_already_existed 10
+#define vertex_not_existed 9
 
 
 /**********************************************************
@@ -59,7 +60,7 @@ public:
 	* Leads : modify a svertexname by svalue
 	*******************************************************************************
 	*/
-	void GROModifyVertex(string& sVertexName, string& sValue);
+	void GROModifyVertex(const string& sVertexName, const string& sValue);
 
 
 	/**
@@ -149,6 +150,30 @@ public:
 	*/
 	map<string, CVertex*> getGROVertex() const;
 
+
+	/**
+	*******************************************************************************
+	* GROinverseArc
+	* *****************************************************************************
+	* Entries : tree : BSTree* = the tree we want to compare with
+	* Needs : None
+	* Returns : void
+	* Leads : Return description
+	*******************************************************************************
+	*/
+	void GROInverseArc(const string& valueDep, const string& valueArr);
+
+	/**
+	*******************************************************************************
+	* GROInverseAllArcs
+	* *****************************************************************************
+	* Entries : tree : BSTree* = the tree we want to compare with
+	* Needs : None
+	* Returns : void
+	* Leads : Return description
+	*******************************************************************************
+	*/
+	void GROInverseAllArcs();
 
 };
 #endif 

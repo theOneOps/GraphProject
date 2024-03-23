@@ -181,5 +181,30 @@ public:
 	*/
 	set<string> getAllAdjacenceVertexToAVertex();
 
+	/**
+	*******************************************************************************
+	* changeKeysVerArcIn
+	* *****************************************************************************
+	* Entries : tree : BSTree* = the tree we want to compare with
+	* Needs : None
+	* Returns : void
+	* Leads : Return description
+	*******************************************************************************
+	*/
+	void changeKeysVerArcIn(const string& oldVal, const string& newVal);
+
+	/**
+	*******************************************************************************
+	* changeKeysVerArcOut
+	* *****************************************************************************
+	* Entries : tree : BSTree* = the tree we want to compare with
+	* Needs : None
+	* Returns : void
+	* Leads : Return description
+	*******************************************************************************
+	*/
+	void changeKeysVerArcOut(const string& oldVal, const string& newVal);
+
+
 };
 #endif

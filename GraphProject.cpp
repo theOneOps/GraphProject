@@ -39,9 +39,14 @@ int main()
 
         CPrintGraph::GROPrintGraph(CGRAgraph1);
 
-        cout << "affichage du graphe apres suppression du vertex 2" << endl;
+        cout << "afficahge du graphe apres modification du vertex 3 par 5" << endl;
 
-        CGRAgraph1->GRORemoveVertex("2");
+        CGRAgraph1->GROModifyVertex("3", "5");
+
+        CPrintGraph::GROPrintGraph(CGRAgraph1);
+
+        cout << "afficahge du graphe apres suppression de l'arc 2 5" << endl;
+
         CGRAgraph1->GRORemoveVertex("1");
 
         CPrintGraph::GROPrintGraph(CGRAgraph1);
