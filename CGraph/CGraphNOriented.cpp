@@ -27,3 +27,5 @@ bool CGraphNOriented::GROCheckExistenceOfArc(CVertex& vertexDep, CVertex& vertex
 
 	return bRes;
 }
+
+//void CGraphNOriented::GROModifyVertex(const string& sVertexName, const string& sValue){}

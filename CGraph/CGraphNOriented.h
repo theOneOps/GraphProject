@@ -38,7 +38,8 @@ public:
 	virtual void GRORemoveArc(string& sNumdep, string& sNumArr);
 
 	virtual bool GROCheckExistenceOfArc(CVertex& vertexDep, CVertex& vertexArr);
-
+	
+	//virtual void GROModifyVertex(const string& sVertexName, const string& sValue);
 };
 
 #endif

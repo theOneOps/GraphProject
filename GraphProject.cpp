@@ -4,7 +4,6 @@
 #include <iostream>
 
 #include "CArc/Arc.h"
-#include "CGraph/CGraphOriented.h"
 #include "CPrintGraph.h"
 #include "CVertex/CVertex.h"
 #include "CException/CException.h"
@@ -30,28 +29,46 @@ int main()
         CGRAgraph1->GROAddArc(CVersommet2, CVersommet3);
         CGRAgraph1->GROAddArc(CVersommet3, CVersommet1);
         CGRAgraph1->GROAddArc(CVersommet1, CVersommet1);
+        CGRAgraph1->GROAddArc(CVersommet1, CVersommet4);
 
         CPrintGraph::GROPrintGraph(CGRAgraph1);
 
-        cout << "affichage du graphe apres suppression de l'arc 1 vers 3" << endl;
+         
+        CGRAgraph1->GRORemoveVertex("2");
 
+        cout << "affichage du remove vertex 2" << endl;
+
+        CGRAgraph1->GROAddArc(CVersommet4, CVersommet4);
+        CGRAgraph1->GROAddArc(CVersommet3, CVersommet4);
+
+        cout << "ajout des arcs (4 4) et (3 4)" << endl;
+
+        CPrintGraph::GROPrintGraph(CGRAgraph1);
+
+        cout << "Inversion d'arcs" << endl;
+
+        CGRAgraph1->GROInverseAllArcs();
+
+        CGRAgraph1->GRORemoveArc("4", "3");
+        CGRAgraph1->GRORemoveArc("4", "4");
         CGRAgraph1->GRORemoveArc("1", "3");
 
         CPrintGraph::GROPrintGraph(CGRAgraph1);
 
-        cout << "afficahge du graphe apres modification du vertex 3 par 5" << endl;
+        CGRAgraph1->GROModifyVertex("4", "5");
 
-        CGRAgraph1->GROModifyVertex("3", "5");
+        cout << "modification de la valeur du vertex 4 par 5" << endl;
 
         CPrintGraph::GROPrintGraph(CGRAgraph1);
 
-        cout << "afficahge du graphe apres suppression de l'arc 2 5" << endl;
+        CGRAgraph1->GROAddArc(CVersommet3, CVersommet4);
 
-        CGRAgraph1->GRORemoveVertex("1");
+        CGRAgraph1->GRORemoveVertex("5");
 
         CPrintGraph::GROPrintGraph(CGRAgraph1);
 
         delete CGRAgraph1;
+        
     }
     catch (CException e)
     {

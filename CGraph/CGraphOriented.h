@@ -2,6 +2,7 @@
 #define _CGRAPH_ORIENTE_H
 #include <string>
 #include <map>
+#include <vector>
 #include "../CArc/Arc.h"
 #include "../CVertex/CVertex.h"
 #include <set>
@@ -11,6 +12,7 @@ using namespace std;
 #define vertex_already_existed 11
 #define arc_already_existed 10
 #define vertex_not_existed 9
+#define arc_not_existed 8
 
 
 /**********************************************************
@@ -27,9 +29,11 @@ using namespace std;
 class CGraphOriented
 {
 private:
+
 	//Attributs
+
 	map<string, CVertex*> mGROVertex;
-	map<string, CArc*> mGROArcs;
+	map<string, vector<CArc*>> mGROArcs;
 
 public:
 
@@ -42,13 +46,13 @@ public:
 	* Entries : None
 	* Needs : None
 	* Returns : None
-	* Leads : destroy the Vertex value of all the key of each map (mGROVertex, mGROArcs)
+	* Leads : destroy the Vertex value of all the key for each map (mGROVertex, mGROArcs)
 	*******************************************************************************
 	*/
 	~CGraphOriented();
 
 
-	//methods
+	//Methods
 
 	/**
 	*******************************************************************************
@@ -60,21 +64,7 @@ public:
 	* Leads : modify a svertexname by svalue
 	*******************************************************************************
 	*/
-	void GROModifyVertex(const string& sVertexName, const string& sValue);
-
-
-	/**
-	*******************************************************************************
-	* GROAddArcInTheMap
-	* *****************************************************************************
-	* Entries : tree : BSTree* = the tree we want to compare with
-	* Needs : None
-	* Returns : void
-	* Leads : Return description
-	*******************************************************************************
-	*/
-	void GROAddArcInTheMap(const string& key, CArc* arc);
-
+	virtual void GROModifyVertex(const string& sVertexName, const string& sValue);
 
 	/**
 	*******************************************************************************
@@ -98,7 +88,6 @@ public:
 	* Leads : add a Arc
 	*******************************************************************************
 	*/
-
 	virtual void GROAddArc(CVertex* sVertexDep, CVertex* sVertexArr);
 
 	/**
@@ -135,20 +124,7 @@ public:
 	* Leads : None
 	*******************************************************************************
 	*/
-	bool GROCheckExistenceOfArc(CVertex& vertexDep, CVertex& vertexArr);
-
-
-	/**
-	*******************************************************************************
-	* getGROVertex
-	* *****************************************************************************
-	* Entries : tree : BSTree* = the tree we want to compare with
-	* Needs : None
-	* Returns : void
-	* Leads : Return description
-	*******************************************************************************
-	*/
-	map<string, CVertex*> getGROVertex() const;
+	virtual bool GROCheckExistenceOfArc(CVertex& vertexDep, CVertex& vertexArr);
 
 
 	/**
@@ -175,5 +151,29 @@ public:
 	*/
 	void GROInverseAllArcs();
 
+	/**
+	*******************************************************************************
+	* getGROVertex
+	* *****************************************************************************
+	* Entries : tree : BSTree* = the tree we want to compare with
+	* Needs : None
+	* Returns : void
+	* Leads : Return description
+	*******************************************************************************
+	*/
+	map<string, CVertex*> getGROVertex() const;
+	
+protected:
+	/**
+	*******************************************************************************
+	* GROAddArcInTheMap
+	* *****************************************************************************
+	* Entries : tree : BSTree* = the tree we want to compare with
+	* Needs : None
+	* Returns : void
+	* Leads : Return description
+	*******************************************************************************
+	*/
+	void GROAddArcInTheMap(const string& key, CArc* arc);
 };
 #endif 
