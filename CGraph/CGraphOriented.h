@@ -2,10 +2,10 @@
 #define _CGRAPH_ORIENTE_H
 #include <string>
 #include <map>
+#include <set>
 #include <vector>
 #include "../CArc/Arc.h"
 #include "../CVertex/CVertex.h"
-#include <set>
 
 using namespace std;
 
@@ -82,7 +82,8 @@ public:
 	*******************************************************************************
 	* GROAddArc
 	* *****************************************************************************
-	* Entries : Ververtex a vertex
+	* Entries : sVertexDep : CVertex* which represents the beginning of the arc
+	*		and sVertexArr : CVertex* which represents the end of the arc
 	* Needs : None
 	* Returns : void
 	* Leads : add a Arc
@@ -94,7 +95,7 @@ public:
 	*******************************************************************************
 	* GRORemoveVertex
 	* *****************************************************************************
-	* Entries : snum a name of the vertex
+	* Entries : sNum : string is the name of the vertex
 	* Needs : None
 	* Returns : void
 	* Leads : remove the vertex which name is the value of snum
@@ -104,15 +105,84 @@ public:
 
 	/**
 	*******************************************************************************
-	* GRORemoveVertex
+	* GRORemoveArc
 	* *****************************************************************************
-	* Entries : snumdep string  string snumarr
+	* Entries : sNumdep : string which represents the name of the arc's beginning
+	*		and sNumArr : string which represents the name of the arc's end
 	* Needs : None
 	* Returns : void
-	* Leads : remove the arc whith the VertexDep value equals to the snumDep,the VertexArr value equals to the snumarr 
+	* Leads : remove the arc which the sNumdep value equals to the snumDep,
+				the VertexArr value equals to the sNumArr 
 	*******************************************************************************
 	*/
 	virtual void GRORemoveArc(const string& sNumdep, const string& sNumArr);
+
+	/**
+	*******************************************************************************
+	* GROinverseArc
+	* *****************************************************************************
+	* Entries : sNumdep : string which represents the name of the arc's beginning
+	*		and sNumArr : string which represents the name of the arc's end
+	* Needs : None
+	* Returns : void
+	* Leads : the arc will be inverse, basically the beginning of the vertex become 
+		the end of the arc and vice versa
+	*******************************************************************************
+	*/
+	void GROInverseArc(const string& valueDep, const string& valueArr);
+
+	/**
+	*******************************************************************************
+	* GROInverseAllArcs
+	* *****************************************************************************
+	* Entries : None
+	* Needs : None
+	* Returns : void
+	* Leads : all the arcs of the graph will be inverse
+	*******************************************************************************
+	*/
+	void GROInverseAllArcs();
+
+	/**
+	*******************************************************************************
+	* getGROVertex
+	* *****************************************************************************
+	* Entries : None
+	* Needs : None
+	* Returns : const map<string, CVertex*>
+	* Leads : Return the map that contains all the vertex of the graph
+	*******************************************************************************
+	*/
+	map<string, CVertex*> getGROVertex() const;
+
+	/**
+	*******************************************************************************
+	* getGROArcs
+	* *****************************************************************************
+	* Entries : None
+	* Needs : None
+	* Returns : const map<string, vector<CArc*>>
+	* Leads : Return the map that contains all the vertex of the graph
+	*******************************************************************************
+	*/
+	map<string, vector<CArc*>> getGROArcs() const;
+
+	void printArc();
+	
+protected:
+
+	/**
+	*******************************************************************************
+	* GROAddArcInTheMap
+	* *****************************************************************************
+	* Entries : the key: const string& which represents the key which
+				the arc:(CArc*) will be insert into
+	* Needs : None
+	* Returns : void
+	* Leads : the arc will be insert into the map mGROVertex with at the key's value
+	*******************************************************************************
+	*/
+	void GROAddArcInTheMap(const string& key, CArc* arc);
 
 	/**
 	*******************************************************************************
@@ -126,54 +196,8 @@ public:
 	*/
 	virtual bool GROCheckExistenceOfArc(CVertex& vertexDep, CVertex& vertexArr);
 
+	vector<CArc*>& getGROArcsAtIndex(string value);
 
-	/**
-	*******************************************************************************
-	* GROinverseArc
-	* *****************************************************************************
-	* Entries : tree : BSTree* = the tree we want to compare with
-	* Needs : None
-	* Returns : void
-	* Leads : Return description
-	*******************************************************************************
-	*/
-	void GROInverseArc(const string& valueDep, const string& valueArr);
 
-	/**
-	*******************************************************************************
-	* GROInverseAllArcs
-	* *****************************************************************************
-	* Entries : tree : BSTree* = the tree we want to compare with
-	* Needs : None
-	* Returns : void
-	* Leads : Return description
-	*******************************************************************************
-	*/
-	void GROInverseAllArcs();
-
-	/**
-	*******************************************************************************
-	* getGROVertex
-	* *****************************************************************************
-	* Entries : tree : BSTree* = the tree we want to compare with
-	* Needs : None
-	* Returns : void
-	* Leads : Return description
-	*******************************************************************************
-	*/
-	map<string, CVertex*> getGROVertex() const;
-	
-protected:
-	/**
-	*******************************************************************************
-	* GROAddArcInTheMap
-	* *****************************************************************************
-	* Entries : tree : BSTree* = the tree we want to compare with
-	* Needs : None
-	* Returns : void
-	* Leads : Return description
-	*******************************************************************************
-	*/
-	void GROAddArcInTheMap(const string& key, CArc* arc);
 };
 #endif 

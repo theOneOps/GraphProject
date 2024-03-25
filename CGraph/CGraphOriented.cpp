@@ -115,15 +115,15 @@ void CGraphOriented::GROAddArc(CVertex* sVertexDep, CVertex* sVertexArr)
 
 		else
 		{
-			string sErrorMessage = "an arc with a vertexDep " + sVertexArr->VERGetName() + " and vertexArr " + sVertexDep->VERGetName() + " already existed in the graph";
-			throw CException(arc_already_existed, sErrorMessage, "CGraphOriented.cpp", 79);
+			string sErrorMessage = "an arc with a vertexDep " + sVertexDep->VERGetName() + " and vertexArr " + sVertexArr->VERGetName() + " already existed in the graph";
+			throw CException(arc_already_existed, sErrorMessage, "CGraphOriented.cpp", 104);
 		}
 		
 	}
 	else
 	{
 		string sErrorMessage = "an arc with that vertexDep " + sVertexDep->VERGetName() +" and vertexArr " + sVertexArr->VERGetName() +" already existed in the graph";
-		throw CException(arc_already_existed, sErrorMessage, "CGraphOriented.cpp", 79);
+		throw CException(arc_already_existed, sErrorMessage, "CGraphOriented.cpp", 102);
 	}
 }
 
@@ -188,19 +188,10 @@ void CGraphOriented::GRORemoveArc(const string& sNumDep, const string& sNumArr)
 
 			if (it != allArcs.end())
 			{
+				CArc* local = *it;
 				allArcs.erase(it);
+				delete local;
 			}
-
-			/*
-			* else
-			{
-				if (mGROArcs[sNumArr]->ARCGetVertexArr() == sNumDep)
-				{
-					delete mGROArcs[sNumArr];
-					mGROArcs.erase(sNumArr);
-				}
-			}
-			*/
 		}
 		else
 		{
@@ -213,6 +204,7 @@ void CGraphOriented::GRORemoveArc(const string& sNumDep, const string& sNumArr)
 		string sErrorMessage = "one of those vertex " + sNumDep + " and " + sNumArr + " doesn't exist";
 		throw CException(vertex_not_existed, sErrorMessage, "CGraphOriented.cpp", 146);
 	}
+
 }
 
 void CGraphOriented::GROInverseArc(const string& valueDep, const string& valueArr)
@@ -257,16 +249,6 @@ void CGraphOriented::GROInverseArc(const string& valueDep, const string& valueAr
 				else
 					it++;
 			}
-
-			/*
-			* CArc* ARClocalArc = mGROArcs[valueDep];
-
-			ARClocalArc->ModifyVertexArr(valueDep);
-			ARClocalArc->ModifyVertexDep(valueArr);
-
-			mGROArcs.erase(valueDep);
-			mGROArcs[valueArr] = ARClocalArc;
-			*/
 		}
 		else
 		{
@@ -307,4 +289,27 @@ bool CGraphOriented::GROCheckExistenceOfArc(CVertex& vertexDep, CVertex& vertexA
 map<string, CVertex*> CGraphOriented::getGROVertex() const
 {
 	return mGROVertex;
+}
+
+map<string, vector<CArc*>> CGraphOriented::getGROArcs() const
+{
+	return mGROArcs;
+}
+
+vector<CArc*>& CGraphOriented::getGROArcsAtIndex(string value)
+{
+	return mGROArcs[value];
+}
+
+void CGraphOriented::printArc()
+{
+	for (auto it = mGROArcs.begin(); it != mGROArcs.end(); it++)
+	{
+		string s = "";
+		for (CArc*& arc : it->second)
+		{
+			s += "(" + arc->ARCGetVertexDep() + arc->ARCGetVertexArr() + ")";
+		}
+		cout << it->first << ": " << s << endl;
+	}
 }
