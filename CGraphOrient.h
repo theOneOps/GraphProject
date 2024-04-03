@@ -16,12 +16,32 @@ using namespace std;
 #define vertex_not_existed 9
 #define arc_not_existed 8
 
+
+/**********************************************************
+*  Class : CGrapheOrient
+* *********************************************************
+* ROLE : management of the Oriented graph
+* *********************************************************
+* VERSION: 1.0
+* AUTHOR: Selly Bill-Gate MEDEWOU
+*                 Jeremie YANG
+* DATE: 19/03/2024
+* *********************************************************
+* 
+* Variables
+* 
+* vertex_already_existed 11
+* arc_already_existed 10
+* vertex_not_existed 9
+* arc_not_existed 8
+* 
+*/
 template<typename SommetType, typename ArcType>
 class CGraphOrient
 {
 private:
-    static_assert(is_base_of<CVertex, SommetType>::value, "SommetType needs to be a CVeertex class or a derivate of CVertex's class");
-    static_assert(is_base_of<CArc, ArcType>::value, "ArcType needs to be a Carc class or a derivate of CArc's class");
+    static_assert(is_base_of<CVertex, SommetType>::value, "SommetType needs to be a CVertex class or a derivate of CVertex's class");
+    static_assert(is_base_of<CArc, ArcType>::value, "ArcType needs to be a CArc class or a derivate of CArc's class");
 
     //Attributs
 
@@ -41,7 +61,18 @@ public:
 
     //Constructors
 
-    //CGraphOrient();
+    CGraphOrient() = default;
+
+    /**
+    *******************************************************************************
+    *  ~CGraphOrient()
+    * *****************************************************************************
+    * Entries : None
+    * Needs : None
+    * Returns : void
+    * Leads : Destroy the graph by desallocating the memory for all the vertecies and all the arcs between those vertecies
+    *******************************************************************************
+    */
     ~CGraphOrient()
     {
         for (pair<string, SommetType*> pair : mGROVertex)
@@ -58,10 +89,11 @@ public:
     *******************************************************************************
     * GROAddVertex
     * *****************************************************************************
-    * Entries : tree : BSTree* = the tree we want to compare with
+    * Entries : string key: value of the vertex to create
     * Needs : None
     * Returns : void
-    * Leads : Return description
+    * Leads : Add a vertex into the Graph if the vertex isn't in
+        the graph before unless throw an exception
     *******************************************************************************
     */
     void GROAddVertex(const string& key)
@@ -82,10 +114,12 @@ public:
     *******************************************************************************
     * GRORemoveVertex
     * *****************************************************************************
-    * Entries : tree : BSTree* = the tree we want to compare with
+    * Entries : string key: value of the vertex to remove from the graph
     * Needs : None
     * Returns : void
-    * Leads : Return description
+    * Leads : Remove a vertex into the Graph if the vertex is in
+        the graph, but first, it removes all arcs that are related to the vertex,
+        before unless throw an exception
     *******************************************************************************
     */
     virtual void GRORemoveVertex(const string& key)
@@ -123,10 +157,15 @@ public:
     *******************************************************************************
     * GROAddArc
     * *****************************************************************************
-    * Entries : tree : BSTree* = the tree we want to compare with
+    * Entries : sVertexDep: string represented the start value of the arc,
+    * sVertexArr: string represented the end value of the arc
     * Needs : None
     * Returns : void
-    * Leads : Return description
+    * Leads : throw an exception if :
+    * if one of the vertex is not in the graph, it throw an exception
+    * if there is already an arc between those vertecies
+    *
+    * Unless it add a arc between those vertecies
     *******************************************************************************
     */
     virtual void GROAddArc(const string& sVertexDep, const string& sVertexArr)
@@ -181,10 +220,15 @@ public:
     *******************************************************************************
     * GRORemoveArc
     * *****************************************************************************
-    * Entries : tree : BSTree* = the tree we want to compare with
+    * Entries :  sVertexDep: string represented the start value of the arc,
+    * sVertexArr: string represented the end value of the arc
     * Needs : None
     * Returns : void
-    * Leads : Return description
+    * Leads : throw an exception if :
+    * if one of the vertex is not in the graph, it throw an exception
+    * if there is no arc between those vertecies
+    *
+    * Unless it removes the arc between those vertecies
     *******************************************************************************
     */
     virtual void GRORemoveArc(const string& sVertexDep, const string& sVertexArr)
@@ -239,10 +283,15 @@ public:
     *******************************************************************************
     * GROModifyVertex
     * *****************************************************************************
-    * Entries : tree : BSTree* = the tree we want to compare with
+    * Entries : sVertexOldValue : string  represented the old value of the vertex,
+    *           sVertexNewValue : string represented the new value to replace that old Value of the vertex
     * Needs : None
     * Returns : void
-    * Leads : Return description
+    * Leads : throw an exception:
+    * if a vertex of value equals to oldValue doesn't exsit in the graph
+    * if the new value to put in replace on the oldValue already exist
+    *
+    * Unless change the vertex by assigining newValue to his old value, and apply the change to the entire graph
     *******************************************************************************
     */
     virtual void GROModifyVertex(const string& sVertexOldValue, const string& sVertexNewValue)
@@ -307,10 +356,16 @@ public:
     *******************************************************************************
     * GROInverserArc
     * *****************************************************************************
-    * Entries : tree : BSTree* = the tree we want to compare with
+    * Entries : sVertexOldValue : string  represented the old value of the vertex,
+    *           sVertexNewValue : string represented the new value to replace that old Value of the vertex
+    *
     * Needs : None
     * Returns : void
-    * Leads : Return description
+    * Leads : throw an exception if :
+    * the vertecies of the arc don't exist in the graph
+    *
+    * Unless we reverse the arc by changing the link between
+    *    the vertecies of the arcs and by reversing the arc as well
     *******************************************************************************
     */
     virtual void GROInverserArc(const string& sVertexDep, const string& sVertexArr)
@@ -374,10 +429,11 @@ public:
     *******************************************************************************
     * GROInverserAllArcs
     * *****************************************************************************
-    * Entries : tree : BSTree* = the tree we want to compare with
-    * Needs : None
+    * Entries : None
+    * Needs : the arcs to invert should exist as well as the vertecies that link the arc
     * Returns : void
-    * Leads : Return description
+    * Leads : This function uses the GROInverseArc to invert an arc between
+    * two vertecies and it does that with all the arcs of the graph
     *******************************************************************************
     */
     virtual void GROInverserAllArcs()
@@ -410,10 +466,11 @@ public:
     *******************************************************************************
     * GROGetVertexMap
     * *****************************************************************************
-    * Entries : tree : BSTree* = the tree we want to compare with
+    * Entries : None
     * Needs : None
-    * Returns : void
-    * Leads : Return description
+    * Returns : const unordered_map<string, CVertex*>&
+    * Leads : Return the map that contains all the vertecies of the graph in readonly mode
+    * hence the const at the end of the function
     *******************************************************************************
     */
     const unordered_map<string, SommetType*>& GROGetVertexMap() const
@@ -422,15 +479,14 @@ public:
     }
 
 
-
     /**
     *******************************************************************************
     * GROPrintAllVertecies
     * *****************************************************************************
-    * Entries : tree : BSTree* = the tree we want to compare with
+    * Entries : None
     * Needs : None
     * Returns : void
-    * Leads : Return description
+    * Leads : Print all the vertecies of the graph into the console
     *******************************************************************************
     */
     void GROPrintAllVertecies()
@@ -447,10 +503,12 @@ public:
     *******************************************************************************
     * PrintAllArcs
     * *****************************************************************************
-    * Entries : tree : BSTree* = the tree we want to compare with
+    * Entries : None
     * Needs : None
     * Returns : void
-    * Leads : Return description
+    * Leads : Print all the arcs of the graph into the console
+    * in fact, it print the related vertecies between
+    * an arc and the direction in between them
     *******************************************************************************
     */
     void PrintAllArcs()
@@ -465,10 +523,10 @@ public:
     *******************************************************************************
     * GROPrintGraph
     * *****************************************************************************
-    * Entries : tree : BSTree* = the tree we want to compare with
+    * Entries : None
     * Needs : None
     * Returns : void
-    * Leads : Return description
+    * Leads : Print the graph into the console
     *******************************************************************************
     */
     virtual void GROPrintGraph()
@@ -489,10 +547,10 @@ protected:
     *******************************************************************************
     * ExistenceOfVertex
     * *****************************************************************************
-    * Entries : tree : BSTree* = the tree we want to compare with
+    * Entries : key : string
     * Needs : None
-    * Returns : void
-    * Leads : Return description
+    * Returns : bool
+    * Leads : Check if the vertex with the value key exist in the graph
     *******************************************************************************
     */
     bool ExistenceOfVertex(const string& key)
@@ -509,10 +567,12 @@ protected:
     *******************************************************************************
     * ExistenceOfArcNOriented
     * *****************************************************************************
-    * Entries : tree : BSTree* = the tree we want to compare with
+    * Entries :  sVertexDep: string represented the start value of the arc,
+    * sVertexArr: string represented the end value of the arc
     * Needs : None
     * Returns : void
-    * Leads : Return description
+    * Leads : Verify if there is an arc with a start equals to  sVertexDep and
+    * the end value equals to sVertexArr
     *******************************************************************************
     */
     bool ExistenceOfArcNOriented(const string& sVertexDep, const string& sVertexArr)
@@ -528,10 +588,11 @@ protected:
     *******************************************************************************
     * addKeyVertexInMap
     * *****************************************************************************
-    * Entries : tree : BSTree* = the tree we want to compare with
+    * Entries : key: string represented the value of the vertex to create and to add to the graph
     * Needs : None
     * Returns : void
-    * Leads : Return description
+    * Leads : add a vertex with value equals to key by at the same time, creating the due vertex
+    * This function is used in the GROAddVertex of course...
     *******************************************************************************
     */
     void addKeyVertexInMap(const string& key)
@@ -544,10 +605,10 @@ protected:
     *******************************************************************************
     * GROGetMVertex
     * *****************************************************************************
-    * Entries : tree : BSTree* = the tree we want to compare with
+    * Entries : None
     * Needs : None
-    * Returns : void
-    * Leads : Return description
+    * Returns : unordered_map<string, CVertex*>&
+    * Leads : Return the map that contains all the veertecies of the graph
     *******************************************************************************
     */
     unordered_map<string, SommetType*>& GROGetMVertex()
@@ -557,13 +618,13 @@ protected:
 
 
     /**
-   *******************************************************************************
-   * GROGetMArcs
-   * *****************************************************************************
-   * Entries : tree : BSTree* = the tree we want to compare with
-   * Needs : None
-   * Returns : void
-   * Leads : Return description
+    *******************************************************************************
+    * GROGetMArcs
+    * *****************************************************************************
+    * Entries : None
+    * Needs : None
+    * Returns : unordered_map<pair<string, string>, CArc*, hash_pair>&
+    * Leads : Return the map that contains all the arcs of the graph
    *******************************************************************************
    */
     unordered_map<pair<string, string>, ArcType*, hash_pair>& GROGetMArcs()
@@ -575,10 +636,13 @@ protected:
     *******************************************************************************
     * addPairKeysMArcs
     * *****************************************************************************
-    * Entries : tree : BSTree* = the tree we want to compare with
+    * Entries : sVertexDep: string represented the start value of the arc,
+    * sVertexArr: string represented the end value of the arc
     * Needs : None
     * Returns : void
-    * Leads : Return description
+    * Leads : add an arc with the start value equals to sVertexDep, the end value equals to sVertexArr,
+    * by at the same time, creating the due vertex
+    * This function is used to add a new arc in the GROAddArc's function
     *******************************************************************************
     */
     void addPairKeysMArcs(const string& sVertexDep, const string& sVertexArr)
@@ -594,10 +658,10 @@ protected:
     *******************************************************************************
     * getVertexFromKey
     * *****************************************************************************
-    * Entries : tree : BSTree* = the tree we want to compare with
+    * Entries : key : string represented
     * Needs : None
-    * Returns : void
-    * Leads : Return description
+    * Returns :  CVertex*
+    * Leads : return the vertex with the value equals to key
     *******************************************************************************
     */
     SommetType* GROGetVertexFromKey(const string& key)
@@ -609,10 +673,11 @@ protected:
     *******************************************************************************
     * GROGetArcFromKeys
     * *****************************************************************************
-    * Entries : tree : BSTree* = the tree we want to compare with
+    * Entries : sVertexDep: string represented the start value of the arc,
+    * sVertexArr: string represented the end value of the arc
     * Needs : None
-    * Returns : void
-    * Leads : Return description
+    * Returns : CArc*
+    * Leads :  Return the arc with start value is sVertexDep and end value is sVertexArr
     *******************************************************************************
     */
     ArcType* GROGetArcFromKeys(const string& sVertexDep, const string& sVertexArr)
@@ -625,10 +690,12 @@ protected:
     *******************************************************************************
     * GRORemoveArcFromMap
     * *****************************************************************************
-    * Entries : tree : BSTree* = the tree we want to compare with
+    * Entries :sVertexDep: string represented the start value of the arc,
+    * sVertexArr: string represented the end value of the arc
     * Needs : None
     * Returns : void
-    * Leads : Return description
+    * Leads : remove the arc from the arcs' map and from the graph
+    * It is used in the GRORemoveArc's function
     *******************************************************************************
     */
     void GRORemoveArcFromMap(const string& sVertexDep, const string& sVertexArr)
@@ -642,10 +709,13 @@ protected:
     *******************************************************************************
     * ModifyArc
     * *****************************************************************************
-    * Entries : tree : BSTree* = the tree we want to compare with
+    * Entries : sVertexDep: string represented the start value of the arc,
+    * sVertexArr: string represented the end value of the arc
+    *  arc: CArc*& represented the arc to store
     * Needs : None
     * Returns : void
-    * Leads : Return description
+    * Leads : store the arc with
+    * It's used in the GROInverseArc's function to change the key to store the previous arc we have invert
     *******************************************************************************
     */
     void ModifyArc(const string& sVertexDep, const string& sVertexArr, CArc*& arc)
@@ -659,10 +729,12 @@ protected:
     *******************************************************************************
     * ModifyVertex
     * *****************************************************************************
-    * Entries : tree : BSTree* = the tree we want to compare with
+    * Entries : sVertexDep: string represented the start value of the arc,
+    * sVertexArr: string represented the end value of the arc
     * Needs : None
     * Returns : void
-    * Leads : Return description
+    * Leads :
+    * this function is used in the GROModifyVertex's function
     *******************************************************************************
     */
     void ModifyVertex(const string& sVertexOldValue, const string& sVertexNewValue, SommetType*& vertex)
@@ -675,10 +747,12 @@ protected:
     *******************************************************************************
     * EraseVertexKey
     * *****************************************************************************
-    * Entries : tree : BSTree* = the tree we want to compare with
+    * Entries : key : string represented the value of the vertex to erase from the graph
     * Needs : None
     * Returns : void
-    * Leads : Return description
+    * Leads : erase the vertex with the value from the map that contains all the vertecies of the graph
+    *
+    * this function is used in the ModifyVertex's function
     *******************************************************************************
     */
     void EraseVertexKey(const string& key)

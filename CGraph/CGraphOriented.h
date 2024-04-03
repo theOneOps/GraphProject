@@ -5,6 +5,7 @@
 #include "../CVertex/CVertex.h"
 #include "../CException/CException.h"
 
+
 using namespace std;
 
 #define vertex_already_existed 11

@@ -2,14 +2,14 @@
 #include <iostream>
 #include "CArc/Arc.h"
 #include "CVertex/CVertex.h"
-#include "CGraph/CGraphOriented.h"
-#include "CGraph/CGraphNOriented.h"
 #include "CPrintGraph.h"
 #include "Parser.h"
+#include "CGraphOrient.h"
+#include "CGraphNOrient.h"
 
 using namespace std;
 
-
+/*
 void testGraphNOriented()
 {
 	cout << "test graph Non Oriented" << endl;
@@ -107,6 +107,7 @@ void testGraphOriented()
 	}
 }
 
+
 void testGraphOrient()
 {
 	cout << "test graph Oriented" << endl;
@@ -152,20 +153,63 @@ void testGraphOrient()
 	}
 }
 
+*/
+
 int main()
 {
 	// testGraphNOriented();
 	// testGraphOriented();
 	// testGraphOrient();
+
+	/*
 	try
 	{
-		Parser::mainFunc("graph.txt");
+		CGraphNOrient<CVertex, CArc> graphC;
+
+		graphC.GROAddVertex("1");
+		graphC.GROAddVertex("2");
+		graphC.GROAddVertex("3");
+
+		graphC.GROAddArc("1", "2");
+		graphC.GROAddArc("2", "3");
+		graphC.GROAddArc("3", "1");
+
+		CPrintGraph::PrintGraph(graphC);
+
+		cout << "remove of the arc (1, 2)" << endl;
+
+		graphC.GRORemoveArc("1", "2");
+
+		CPrintGraph::PrintGraph(graphC);
+
+		cout << "inversion of the arc (2, 3)" << endl;
+
+		graphC.GROInverserArc("2", "3");
+
+		CPrintGraph::PrintGraph(graphC);
+
+		cout << "inversion of all arcs" << endl;
+
+		graphC.GROInverserAllArcs();
+
+		CPrintGraph::PrintGraph(graphC);
 
 	}
 	catch (CException e)
 	{
 		e.CEXReadMessage();
 	}
+	*/
+
+	try
+	{
+		Parser::PARMainFunc("graph.txt");
+	}
+	catch (CException e)
+	{
+		e.CEXReadMessage();
+	}
+	
 
 }
 

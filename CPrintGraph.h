@@ -2,10 +2,8 @@
 #define _CPRINT_GRAPH_
 
 
-#include "CGraph/CGraphOriented.h"
-#include "CGraph/CGraphNOriented.h"
-#include "CVertex/CVertex.h"
-#include "CArc/Arc.h"
+#include "CGraphOrient.h"
+#include "CGraphNOrient.h"
 
 using namespace std;
 
@@ -13,11 +11,17 @@ class CPrintGraph
 {
 public:
 
-	static void GROPrintGraph(CGraphOriented& graphA)
+	template<typename SommetType, typename ArcType>
+	static void PrintGraph(CGraphOrient<SommetType, ArcType>& graphA)
 	{
 		graphA.GROPrintGraph();
 	}
 	
+	template<typename SommetType, typename ArcType>
+	static void PrintGraph(CGraphNOrient<SommetType, ArcType>& graphA)
+	{
+		graphA.GROPrintGraph();
+	}
 };
 
 #endif

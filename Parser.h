@@ -6,8 +6,8 @@
 #include <fstream>
 #include "CArc/Arc.h"
 #include "CVertex/CVertex.h"
-#include "CGraph/CGraphOriented.h"
-#include "CGraph/CGraphNOriented.h"
+#include "CGraphOrient.h"
+#include "CGraphNOrient.h"
 #include "CPrintGraph.h"
 
 
@@ -33,8 +33,8 @@ using namespace std;
 class Parser
 {
 public:
-
-	static void PARReadTxt(const string& txt, CGraphOriented** graph)
+	
+	static void PARReadTxt(const string& txt, CGraphOrient<CVertex, CArc>** graph)
 	{
 		ifstream file(txt);
 
@@ -49,9 +49,9 @@ public:
 			if (line.find("Oriented=") != string::npos)
 			{
 				if (line.substr(line.find("=") + 1) == "yes")
-					(*graph) = new CGraphOriented();
+					(*graph) = new CGraphOrient<CVertex, CArc>();
 				else
-					(*graph) = new CGraphNOriented();
+					(*graph) = new CGraphNOrient<CVertex, CArc>();
 			}
 		}
 
@@ -94,22 +94,24 @@ public:
 		file.close();
 	}
 
-	static void mainFunc(const string& txt)
+
+	static void PARMainFunc(const string& txt)
 	{
-		CGraphOriented* graph;
+		CGraphOrient<CVertex, CArc>* graph;
 
 		Parser::PARReadTxt("graph.txt", &graph);
 
-		CPrintGraph::GROPrintGraph(*graph);
+		CPrintGraph::PrintGraph(*graph);
 
 		cout << "arcs Inverted " << endl;
 
 		graph->GROInverserAllArcs();
 
-		CPrintGraph::GROPrintGraph(*graph);
+		CPrintGraph::PrintGraph(*graph);
 
 		delete graph;
 	}
+	
 };
 
 #endif

@@ -1,5 +1,4 @@
 #include "CGraphOriented.h"
-#include "../CPrintGraph.h"
 #include <set>
 
 
@@ -374,7 +373,6 @@ void CGraphOriented::GROInverserArc(const string& sVertexDep, const string& sVer
 
 	}
 }
-
 
 void CGraphOriented::GROInverserAllArcs()
 {

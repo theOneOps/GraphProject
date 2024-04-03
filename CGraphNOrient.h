@@ -3,13 +3,48 @@
 
 #include "CGraphOrient.h"
 
-
+/**********************************************************
+*  Class : CGrapheNOrient
+* *********************************************************
+* ROLE : management of the Non Oriented graph
+* *********************************************************
+* VERSION: 1.0
+* AUTHOR: Selly Bill-Gate MEDEWOU
+*                 Jeremie YANG
+* DATE: 19/03/2024
+* *********************************************************
+*
+* Variables
+*
+* vertex_already_existed 11
+* arc_already_existed 10
+* vertex_not_existed 9
+* arc_not_existed 8
+*
+*/
 template< typename SommetType,  typename ArcType>
 class CGraphNOrient: public CGraphOrient< SommetType,  ArcType>
 {
 public :
+
 	CGraphNOrient() = default;
 
+
+	/**
+	*******************************************************************************
+	* GROAddArc
+	* *****************************************************************************
+	* Entries : sVertexDep: string represented the start value of the arc,
+	* sVertexArr: string represented the end value of the arc
+	* Needs : None
+	* Returns : void
+	* Leads : throw an exception if :
+	* if one of the vertex is not in the graph, it throw an exception
+	* if there is already an arc between those vertecies
+	*
+	* Unless it add a arc between those vertecies
+	*******************************************************************************
+	*/
 	virtual void GROAddArc(const string& sVertexDep, const string& sVertexArr)
 	{
 		if (CGraphOrient< SommetType,  ArcType>::ExistenceOfVertex(sVertexDep))
@@ -61,6 +96,21 @@ public :
 		}
 	}
 
+	/**
+	*******************************************************************************
+	* GRORemoveArc
+	* *****************************************************************************
+	* Entries :  sVertexDep: string represented the start value of the arc,
+	* sVertexArr: string represented the end value of the arc
+	* Needs : None
+	* Returns : void
+	* Leads : throw an exception if :
+	* if one of the vertex is not in the graph, it throw an exception
+	* if there is no arc between those vertecies
+	*
+	* Unless it removes the arc between those vertecies
+	*******************************************************************************
+	*/
 	virtual void GRORemoveArc(const string& sVertexDep, const string& sVertexArr)
 	{
 		if (sVertexArr == sVertexDep)
@@ -119,6 +169,21 @@ public :
 		}
 	}
 
+	/**
+	*******************************************************************************
+	* GROModifyVertex
+	* *****************************************************************************
+	* Entries : sVertexOldValue : string  represented the old value of the vertex,
+	*           sVertexNewValue : string represented the new value to replace that old Value of the vertex
+	* Needs : None
+	* Returns : void
+	* Leads : throw an exception:
+	* if a vertex of value equals to oldValue doesn't exsit in the graph
+	* if the new value to put in replace on the oldValue already exist
+	*
+	* Unless change the vertex by assigining newValue to his old value, and apply the change to the entire graph
+	*******************************************************************************
+	*/
 	virtual void GROModifyVertex(const string& sVertexOldValue, const string& sVertexNewValue)
 	{
 		if (CGraphOrient< SommetType,  ArcType>::ExistenceOfVertex(sVertexOldValue))
@@ -169,10 +234,46 @@ public :
 		}
 	}
 
+	/**
+	*******************************************************************************
+	* GROInverserArc
+	* *****************************************************************************
+	* Entries : sVertexOldValue : string  represented the old value of the vertex,
+	*           sVertexNewValue : string represented the new value to replace that old Value of the vertex
+	*
+	* Needs : None
+	* Returns : void
+	* Leads : This function does anything, because inversing an arc of a non oriented 
+	* graph changes anything for the graph
+	*******************************************************************************
+	*/
 	virtual void GROInverserArc(const string& sVertexDep, const string& sVertexArr) {};
 
+	/**
+   *******************************************************************************
+   * GROInverserAllArcs
+   * *****************************************************************************
+   * Entries : None
+   * Needs : the arcs to invert should exist as well as the vertecies that link the arc
+   * Returns : void
+   * Leads :  This function does anything, because inversing an arc of a non oriented 
+	* graph changes anything for the graph
+   *******************************************************************************
+   */
 	virtual void GROInverserAllArcs() {};
 
+	/**
+	*******************************************************************************
+	* GRORemoveVertex
+	* *****************************************************************************
+	* Entries : string key: value of the vertex to remove from the graph
+	* Needs : None
+	* Returns : void
+	* Leads : Remove a vertex into the Graph if the vertex is in
+		the graph, but first, it removes all arcs that are related to the vertex,
+		before unless throw an exception
+	*******************************************************************************
+	*/
 	virtual void GRORemoveVertex(const string& key)
 	{
 		if (CGraphOrient< SommetType,  ArcType>::ExistenceOfVertex(key))
@@ -196,6 +297,16 @@ public :
 		}
 	}
 
+	/**
+	*******************************************************************************
+	* GROPrintGraph
+	* *****************************************************************************
+	* Entries : None
+	* Needs : None
+	* Returns : void
+	* Leads : Print the graph into the console
+	*******************************************************************************
+	*/
 	virtual void GROPrintGraph()
 	{
 		unordered_map<string, SommetType*> VerteciesMap = CGraphOrient< SommetType,  ArcType>::GROGetVertexMap();

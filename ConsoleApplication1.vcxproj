@@ -149,11 +149,16 @@
   <ItemGroup>
     <ClInclude Include="CArc\Arc.h" />
     <ClInclude Include="CException\CException.h" />
+    <ClInclude Include="CGraphNOrient.h" />
+    <ClInclude Include="CGraphOrient.h" />
     <ClInclude Include="CGraph\CGraphNOriented.h" />
     <ClInclude Include="CGraph\CGraphOriented.h" />
     <ClInclude Include="CPrintGraph.h" />
     <ClInclude Include="CVertex\CVertex.h" />
     <ClInclude Include="Parser.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".gitignore" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
