@@ -3,7 +3,7 @@
 
 #include "CGraphOrient.h"
 
-// In the GROAddArc's method...
+// In the GROAddArc's method..
 // In the GRORemoveArc's method...
 // Remarque : check if he vertex have equals values, we really delete 
 // the arc IN and Out because in the GROAddArc, we create Two arcs, so 
