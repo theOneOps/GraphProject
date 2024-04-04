@@ -217,14 +217,15 @@ public:
                 SommetType* VertexArr = GROGetVertexFromKey(sVertexArr);
 
                 // then we check if there is already an arc between those vertecies or not 
-                // the existence of an arc in 
+                // the existence of an arc IN 
                 if (!ExistenceOfArcNOriented(sVertexDep, sVertexArr))
                 {
 
-                    // the existence of an arc out 
+                    // the existence of an arc OUT
                     if (!ExistenceOfArcNOriented(sVertexArr, sVertexDep))
                     {
-                        // if not, we 
+                        // if there is not arc, then we get accessed to to the involved vertecies 
+                        // (the one for sVertexArr, and the one for sVertexDep)
 
                         VertexArr->VERAddInTheMapIn(sVertexDep);
                         VertexDep->VERAddInTheMapOut(sVertexArr);
@@ -251,15 +252,14 @@ public:
                 }
             }
             else
-            {   // if the end vertex that doesn't exist, we throw an exception
-                
+            {   // if the end vertex doesn't exist, we throw an exception
                 string sErrorMessage = "a vertex with the value " + sVertexArr + " doesn't exist";
                 throw CException(vertex_not_existed, sErrorMessage, "CGraphOriented.cpp", 70);
 
             }
         }
         else
-        {   // if the start vertex that doesn't exist, we throw an exception
+        {   // if the start vertex doesn't exist, we throw an exception
 
             string sErrorMessage = "a vertex with the value " + sVertexDep + " doesn't exist";
             throw CException(vertex_not_existed, sErrorMessage, "CGraphOriented.cpp", 68);
@@ -293,7 +293,7 @@ public:
             {
                 SommetType* VArr = GROGetVertexFromKey(sVertexArr);
 
-                // then we check there is really an arc between those vertex
+                // then we check there is really an arc between those vertecies
                 if (ExistenceOfArcNOriented(sVertexDep, sVertexArr))
                 {
                     
@@ -386,7 +386,7 @@ public:
 
                         ArcType* arc = GROGetArcFromKeys(sVertexOldValue, sAdjVertex);
 
-                        // we change the value at start of the arc ith the new value of the arc
+                        // we change the value at start of the arc ith the new value of the vertex
                         arc->ModifyVertexDep(sVertexNewValue);
 
                        
@@ -407,7 +407,7 @@ public:
                         // we modify the map that represents the OUT value of this adjacent current vertex 
                         // by putting the correct value of the vertex "sVertexNewValue"
                         VAdjVertex->changeKeysVerArcOut(sVertexOldValue, sVertexNewValue);
-                        ArcType* arc = GROGetArcFromKeys(sAdjVertex, sVertexOldValue)
+                        ArcType* arc = GROGetArcFromKeys(sAdjVertex, sVertexOldValue);
 
                         // we change the value at start of the arc ith the new value of the arc
                         arc->ModifyVertexArr(sVertexNewValue);
