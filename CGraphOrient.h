@@ -152,7 +152,7 @@ public:
             SommetType* Vertex = GROGetVertexFromKey(key);
 
             // then we get all, the value of the veeertecies adjacents to the vertex we want to remove
-            set<string> adjacentVertecies = Vertex->getAllAdjacenceVertexToAVertex();
+            set<string> adjacentVertecies = Vertex->getAllAdjacencesVerteciesValues();
 
             // then, by a loop we remove all the arcs that linked our vertex with its adjacents vertecies
             for (string v : adjacentVertecies)
@@ -369,29 +369,84 @@ public:
                 SommetType* VertexOldValue = GROGetVertexFromKey(sVertexOldValue);
 
                 // then we get the adjacents vertecies that are linked to our vertex
-                set<string> adjacentVertecies = VertexOldValue->getAllAdjacenceVertexToAVertex();
+                set<string> adjacentVertecies = VertexOldValue->getAllAdjacencesVerteciesValues();
 
                 // next with a for loop, we go through all arcs that linked our vertex to each of its adjacents vertex 
                 for (string sAdjVertex : adjacentVertecies)
                 {
+
+                    cout << "vertex -> " + sAdjVertex << endl;
                     // if the current arc is in IN direction 
                     // we just change the value at start of the arc ith the new value of the arc
                     SommetType* VAdjVertex = GROGetVertexFromKey(sAdjVertex);
+
                     if (ExistenceOfArcNOriented(sVertexOldValue, sAdjVertex))
                     {
-                        
-                        // we modify the map that represents the IN value of this adjacent current vertex 
-                        // by putting the correct value of the vertex "sVertexNewValue"
-                        VAdjVertex->changeKeysVerArcIn(sVertexOldValue, sVertexNewValue);
-
                         ArcType* arc = GROGetArcFromKeys(sVertexOldValue, sAdjVertex);
 
-                        // we change the value at start of the arc ith the new value of the vertex
-                        arc->ModifyVertexDep(sVertexNewValue);
+                        if (sAdjVertex == sVertexOldValue)
+                        {
+                            VAdjVertex->changeKeysVerArcIn(sVertexOldValue, sVertexNewValue);
+                            VAdjVertex->changeKeysVerArcOut(sVertexOldValue, sVertexNewValue);
 
-                       
-                        pair<string, string> oldKey{ sVertexOldValue, sAdjVertex };
-                        pair<string, string> newKey{ sVertexNewValue, sAdjVertex };
+                            GRORemoveArcFromMap(sVertexOldValue, sVertexOldValue);
+
+                            arc->ModifyVertexDep(sVertexNewValue);
+
+                            arc->ModifyVertexArr(sVertexNewValue);
+
+                            // valeur d'avant de l'enregistrment de l'arc dans le mGROArcs, il faut l'enlever et y mettre le nouveau key pair
+
+                            pair<string, string> oldKey{ sVertexOldValue, sAdjVertex };
+                            pair<string, string> newKey{ sVertexNewValue, sVertexNewValue };
+
+                            // then we put the arc into the correct key contituted of the right start value 
+                            // "sVertexNewValue" and the right end value "sAdjVertex" (value of the current adjacent vertex)
+                            mGROArcs[newKey] = arc;
+
+                            // finally we erase the old record of the arc from the unordored_map, mGROArcs
+                            mGROArcs.erase(oldKey);
+                        }
+                        else
+                        {
+                            arc->ModifyVertexDep(sVertexNewValue);
+
+                            //arc->ModifyVertexArr(sAdjVertex);
+
+                            VAdjVertex->removeArcFromArcIn(sVertexOldValue);
+
+                            VAdjVertex->VERAddInTheMapIn(sVertexNewValue);
+
+                            // valeur d'avant de l'enregistrment de l'arc dans le mGROArcs, il faut l'enlever et y mettre le nouveau key pair
+
+                            pair<string, string> oldKey{ sVertexOldValue, sAdjVertex };
+                            pair<string, string> newKey{ sVertexNewValue, sAdjVertex };
+
+                            // then we put the arc into the correct key contituted of the right start value 
+                            // "sVertexNewValue" and the right end value "sAdjVertex" (value of the current adjacent vertex)
+                            mGROArcs[newKey] = arc;
+
+                            // finally we erase the old record of the arc from the unordored_map, mGROArcs
+                            mGROArcs.erase(oldKey);
+
+                        }
+                    }
+                    else
+                    {
+                        ArcType* arc = GROGetArcFromKeys(sAdjVertex, sVertexOldValue);
+
+                        arc->ModifyVertexArr(sVertexNewValue);
+
+                        //arc->ModifyVertexArr(sAdjVertex);
+
+                        VAdjVertex->removeArcFromArcOut(sVertexOldValue);
+
+                        VAdjVertex->VERAddInTheMapOut(sVertexNewValue);
+
+                        // valeur d'avant de l'enregistrment de l'arc dans le mGROArcs, il faut l'enlever et y mettre le nouveau key pair
+
+                        pair<string, string> oldKey{sAdjVertex, sVertexOldValue };
+                        pair<string, string> newKey{ sAdjVertex, sVertexNewValue };
 
                         // then we put the arc into the correct key contituted of the right start value 
                         // "sVertexNewValue" and the right end value "sAdjVertex" (value of the current adjacent vertex)
@@ -399,30 +454,7 @@ public:
 
                         // finally we erase the old record of the arc from the unordored_map, mGROArcs
                         mGROArcs.erase(oldKey);
-                    }
-                    else
-                    {
-                        // if the current arc is in OUT direction 
 
-                        // we modify the map that represents the OUT value of this adjacent current vertex 
-                        // by putting the correct value of the vertex "sVertexNewValue"
-                        VAdjVertex->changeKeysVerArcOut(sVertexOldValue, sVertexNewValue);
-                        ArcType* arc = GROGetArcFromKeys(sAdjVertex, sVertexOldValue);
-
-                        // we change the value at start of the arc ith the new value of the arc
-                        arc->ModifyVertexArr(sVertexNewValue);
-
-                        pair<string, string> oldKey{ sAdjVertex, sVertexOldValue };
-
-                        pair<string, string> newKey{ sAdjVertex, sVertexNewValue };
-
-
-                        // then we put the arc into the correct key contituted of the right start value 
-                       //  "sAdjVertex" (value of the current adjacent vertex) and the right end value "sVertexNewValue"
-                        mGROArcs[newKey] = arc;
-
-                        // finally we erase the old record of the arc from the unordored_map, mGROArcs
-                        mGROArcs.erase(oldKey);
                     }
                 }
 
@@ -669,10 +701,10 @@ public:
 
         for (; it != VerteciesMap.end(); it++)
         {
-            // we print the value of the current vertex and then call the getAllListInVertecies's method of 
+            // we print the value of the current vertex and then call the getAllListOutVertecies's method of 
             // the current vertex which prints a string that contains all the vertecies's
             // values that have connections with our current vertex
-            cout << it->first << " : " << it->second->getAllListInVertecies() << endl;
+            cout << it->first << " : " << it->second->getAllListOutVertecies() << endl;
         }
     }
 
@@ -837,7 +869,7 @@ protected:
     * Leads :  Return the arc with start value is sVertexDep and end value is sVertexArr
     *******************************************************************************
     */
-    ArcType* GROGetArcFromKeys(const string& sVertexDep, const string& sVertexArr)
+    ArcType*& GROGetArcFromKeys(const string& sVertexDep, const string& sVertexArr)
     {
         // this method just returns the arc which start value is sVertexDep 
         // and end valus is sVertexArr
@@ -863,6 +895,7 @@ protected:
         // and end value is sVertexArr from the mGROArcs unordered_map
         pair<string, string> pairKey{ sVertexDep, sVertexArr };
 
+
         mGROArcs.erase(pairKey);
     }
 
@@ -884,6 +917,9 @@ protected:
         // we modify the record of the arc which start value is sVertexDep 
         // and end value is sVertexArr from the mGROArcs unordered_map by putting the new "arc" 
         pair<string, string> pairKey{ sVertexDep, sVertexArr };
+
+        if (sVertexDep == sVertexArr)
+            cout << "passage reussi " << endl;
 
         mGROArcs[pairKey] = arc;
     }

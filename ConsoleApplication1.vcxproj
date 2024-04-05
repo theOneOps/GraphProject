@@ -155,7 +155,7 @@
     <ClInclude Include="CGraph\CGraphOriented.h" />
     <ClInclude Include="CPrintGraph.h" />
     <ClInclude Include="CVertex\CVertex.h" />
-    <ClInclude Include="Parser.h" />
+    <ClInclude Include="Parser\Parser.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />

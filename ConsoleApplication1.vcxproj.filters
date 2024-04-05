@@ -53,7 +53,7 @@
     <ClInclude Include="CGraph\CGraphNOriented.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Parser.h">
+    <ClInclude Include="Parser\Parser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CGraphOrient.h">

@@ -1,5 +1,5 @@
 //
-// Created by Billy on 06/03/2024.
+// Created by Billy on 19/03/2024.
 //
 
 
@@ -7,29 +7,30 @@
 #define _EXCEPTION_H
 #include <string>
 
-#define denominator_equals_zero 0
-
 using namespace std;
-
 
 /**********************************************************
 *  Class : CExeption
 * *********************************************************
-* ROLE : management any exception errors of the program
+* ROLE : management of any exception errors of the program
 * *********************************************************
 * VERSION: 1.0
 * AUTHORS: Selly Bill-Gate MEDEWOU
           Jeremie YANG
-* DATE: DD/MM/YYYY
+* DATE: 19/03/2024
 * *********************************************************
 * EXTERNES InCLUSIONS
 */
 class CException
 {
 private:
+    // the value (id) of the exception
     int uiExval;
+    //the message value of the exception
     string Exmessage;
+    // the file's where the message's coming from
     string filename;
+    // the line where the exception's coming from
     int line;
 public:
     /**
@@ -55,7 +56,7 @@ public:
     * Leads :  Create an Exception which attributs equels to the parameters's values
      *******************************************************************************
     */
-    CException(int id, string message, string file, int line);
+    CException(int id, string message, string file, const int line);
 
     /**
     *******************************************************************************
@@ -106,4 +107,4 @@ public:
 };
 
 
-#endif //TP2_EXCEPTION_HPP
+#endif //EXCEPTION_HPP

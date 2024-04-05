@@ -1,5 +1,5 @@
 //
-// Created by Billy on 06/03/2024.
+// Created by Billy on 19/03/2024.
 //
 
 
@@ -9,9 +9,11 @@
 
 CException::CException() :uiExval{ 1 }, filename{}, line{}, Exmessage{} {}
 
-CException::CException(int id, string message, string file, const int line) : uiExval(id), Exmessage(std::move(message)), filename(std::move(file)), line(line) {}
+CException::CException(int id, string message, string file, const int line): uiExval(id), Exmessage(move(message)), filename(move(file)), line(line) {}
 
-void CException::CEXModifyMessage(const string& msg) {
+void CException::CEXModifyMessage(const string& msg) 
+{
+    // we change the error's message of the exception
     Exmessage = msg;
 }
 

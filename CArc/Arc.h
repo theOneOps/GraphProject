@@ -16,14 +16,16 @@ using namespace std;
 		  Jeremie YANG
 * DATE: 19/03/2024
 * *********************************************************
-* EXTERNES InCLUSIONS
+* EXTERNES INCLUSIONS
 *
 */
 class CArc
 {
 private:
 	//ATTRIBUTS
+	// the dep value of the arc
 	string sARCDep;
+	// the arr value of the arc
 	string sARCArr;
 public:
 	// CONSTRUCTORS
@@ -63,7 +65,7 @@ public:
 	* Leads : Get the departure's value of the vertex
 	 *******************************************************************************
 	*/
-	string ARCGetVertexDep() const;
+	const string ARCGetVertexDep() const;
 
 	/**
 	*******************************************************************************
@@ -75,7 +77,7 @@ public:
 	* Leads :  Get the arrival's value of the vertex
 	 *******************************************************************************
 	*/
-	string ARCGetVertexArr() const;
+	const string ARCGetVertexArr() const;
 
 	/**
 	*******************************************************************************

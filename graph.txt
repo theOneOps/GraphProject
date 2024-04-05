@@ -1,4 +1,4 @@
-Oriented=no
+Oriented=yes
 NBSommets=3
 NBArcs=3
 Sommets=[

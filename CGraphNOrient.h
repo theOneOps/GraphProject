@@ -3,12 +3,6 @@
 
 #include "CGraphOrient.h"
 
-// In the GROAddArc's method..
-// In the GRORemoveArc's method...
-// Remarque : check if he vertex have equals values, we really delete 
-// the arc IN and Out because in the GROAddArc, we create Two arcs, so 
-// we should delete those two arcs when deleting the arcs between two vertecies
-
 /**********************************************************
 *  Class : CGrapheNOrient
 * *********************************************************
@@ -254,7 +248,7 @@ public :
 				// if not then we first get the vertex we want to modify the value of
 				SommetType* VertexOldValue = CGraphOrient< SommetType,  ArcType>::GROGetVertexFromKey(sVertexOldValue);
 				// then we get the adjacents vertecies that are linked to our vertex
-				set<string> adjacentVertecies = VertexOldValue->getAllAdjacenceVertexToAVertex();
+				set<string> adjacentVertecies = VertexOldValue->getAllAdjacencesVerteciesValues();
 
 				// next with a for loop, we go through all arcs that linked our vertex to each of its adjacents vertex 
 				for (string sAdjVertex : adjacentVertecies)
@@ -280,17 +274,30 @@ public :
 
 					arcTwo->ModifyVertexArr(sVertexNewValue);
 
-					// then we put the arc into the correct key contituted of the right start value 
+					// then we put the arc into the correct key constituted of the right start value 
 					// "sVertexNewValue" and the right end value "sAdjVertex" (value of the current adjacent vertex)
 					// finally we erase the old record of the arc from the unordored_map, mGROArcs
 
-					CGraphOrient< SommetType,  ArcType>::GRORemoveArcFromMap(sVertexOldValue, sAdjVertex);
+					if (sAdjVertex ==  sVertexOldValue)
+					{
 
-					CGraphOrient< SommetType,  ArcType>::GRORemoveArcFromMap(sAdjVertex, sVertexOldValue);
+						CGraphOrient< SommetType, ArcType>::GRORemoveArcFromMap(sAdjVertex, sVertexOldValue);
 
-					CGraphOrient< SommetType,  ArcType>::ModifyArc(sVertexNewValue, sAdjVertex, arcOne);
+						cout << arcOne->ARCGetVertexDep() << " | " << arcOne->ARCGetVertexArr() << endl;
 
-					CGraphOrient< SommetType,  ArcType>::ModifyArc(sAdjVertex, sVertexNewValue, arcTwo);
+						CGraphOrient<SommetType, ArcType>::ModifyArc(sVertexNewValue, sVertexNewValue, arcTwo);
+					}
+					else
+					{
+						CGraphOrient< SommetType, ArcType>::GRORemoveArcFromMap(sVertexOldValue, sAdjVertex);
+
+						CGraphOrient< SommetType, ArcType>::GRORemoveArcFromMap(sAdjVertex, sVertexOldValue);
+
+						CGraphOrient< SommetType, ArcType>::ModifyArc(sVertexNewValue, sAdjVertex, arcOne);
+
+						CGraphOrient< SommetType, ArcType>::ModifyArc(sAdjVertex, sVertexNewValue, arcTwo);
+					}
+
 				}
 
 				VertexOldValue->VERModifyName(sVertexNewValue);
@@ -362,7 +369,7 @@ public :
 			SommetType* Vertex = CGraphOrient< SommetType,  ArcType>::GROGetVertexFromKey(key);
 
 			// then we get all, the value of the veeertecies adjacents to the vertex we want to remove
-			set<string> adjacentVertecies = Vertex->getAllAdjacenceVertexToAVertex();
+			set<string> adjacentVertecies = Vertex->getAllAdjacencesVerteciesValues();
 
 			// then, by a loop we remove all the arcs that linked our vertex with its adjacents vertecies
 			for (string v : adjacentVertecies)

@@ -139,10 +139,11 @@ public:
 	*******************************************************************************
 	* printAdjacentNeightboors
 	* *****************************************************************************
-	* Entries : tree : BSTree* = the tree we want to compare with
+	* Entries : None
 	* Needs : None
-	* Returns : void
-	* Leads :
+	* Returns : const string 
+	* Leads :   print None if the vertex got no ajdacents neighboors, unless it returns a string
+		that will contain all the adjacents vertecies's values of the vertex
 	*******************************************************************************
 	*/
 	const string printAdjacentNeightboors();
@@ -151,10 +152,12 @@ public:
 	*******************************************************************************
 	* removeArcFromArcIn
 	* *****************************************************************************
-	* Entries : tree : BSTree* = the tree we want to compare with
+	* Entries : s : string represents the value of the arc in IN direction we want to remove
+		from the vertex sVERArcIn's unordered_map
 	* Needs : None
 	* Returns : void
-	* Leads : Return description
+	* Leads : the IN arc of the vertex which vertex arr's value is s will 
+		be remove from the sVERArcIn's unordered_map
 	*******************************************************************************
 	*/
 	void removeArcFromArcIn(const string& s);
@@ -164,34 +167,39 @@ public:
 	*******************************************************************************
 	* removeArcFromArcOut
 	* *****************************************************************************
-	* Entries : tree : BSTree* = the tree we want to compare with
+	* Entries : s :  string represents the value of the arc in OUT direction we want to remove
+		from the vertex sVERArcOut's unordered_map
 	* Needs : None
 	* Returns : void
-	* Leads : Return description
+	* Leads : the OUT arc of the vertex which vertex arr's value is s will 
+		be remove from the sVERArcOut's unordered_map
 	*******************************************************************************
 	*/
 	void removeArcFromArcOut(const string& s);
 
 	/**
 	*******************************************************************************
-	* getAllAdjacenceVertexToAVertex
+	* getAllAdjacencesVerteciesValues
 	* *****************************************************************************
-	* Entries : tree : BSTree* = the tree we want to compare with
+	* Entries : None
 	* Needs : None
-	* Returns : void
-	* Leads : Return description
+	* Returns : const set<string>
+	* Leads : the set returned will be empty if the vertex has no adjacents vertecies unless it returns
+		a set that contains all the values of those adjacents vertecies
 	*******************************************************************************
 	*/
-	const set<string> getAllAdjacenceVertexToAVertex();
+	const set<string> getAllAdjacencesVerteciesValues();
 
 	/**
 	*******************************************************************************
 	* changeKeysVerArcIn
 	* *****************************************************************************
-	* Entries : tree : BSTree* = the tree we want to compare with
+	* Entries : oldVal : string represents the old value on the arr value of the arc in 
+		the IN direction that we need to change
+	*	newVal : string represents the new value to set on the arr value of the arc's IN 
 	* Needs : None
 	* Returns : void
-	* Leads : Return description
+	* Leads : the arr value of the arc which was oldVal will be change to newVal
 	*******************************************************************************
 	*/
 	void changeKeysVerArcIn(const string& oldVal, const string& newVal);
@@ -200,25 +208,27 @@ public:
 	*******************************************************************************
 	* changeKeysVerArcOut
 	* *****************************************************************************
-	* Entries : tree : BSTree* = the tree we want to compare with
+	* Entries : oldVal : string represents the old value on the dep value of the arc in 
+		the OUT direction that we need to change
+	*	newVal : string represents the new value to set on the dep value of the arc's OUT 
 	* Needs : None
 	* Returns : void
-	* Leads : Return description
+	* Leads : the dep value of the arc which was oldVal will be change to newVal
 	*******************************************************************************
 	*/
 	void changeKeysVerArcOut(const string& oldVal, const string& newVal);
 
 	/**
 	*******************************************************************************
-	* getAllListInVertecies
+	* getAllListOutVertecies
 	* *****************************************************************************
-	* Entries : tree : BSTree* = the tree we want to compare with
+	* Entries : None
 	* Needs : None
-	* Returns : void
-	* Leads : Return description
+	* Returns : const string
+	* Leads :returns a string thatcontains all vertecies which we can reach from the vertex in the OUT direction
 	*******************************************************************************
 	*/
-	const string getAllListInVertecies();
+	const string getAllListOutVertecies();
 
 };
 #endif

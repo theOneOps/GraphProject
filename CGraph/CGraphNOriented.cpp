@@ -122,7 +122,7 @@ void CGraphNOriented::GROModifyVertex(const string& sVertexOldValue, const strin
 		if (!ExistenceOfVertex(sVertexNewValue))
 		{
 			CVertex* VertexOldValue = GROGetVertexFromKey(sVertexOldValue);
-			set<string> adjacentVertecies = VertexOldValue->getAllAdjacenceVertexToAVertex();
+			set<string> adjacentVertecies = VertexOldValue->getAllAdjacencesVerteciesValues();
 
 			for (string sAdjVertex : adjacentVertecies)
 			{
@@ -171,7 +171,7 @@ void CGraphNOriented::GRORemoveVertex(const string& key)
 	{
 		CVertex* Vertex = GROGetVertexFromKey(key);
 
-		set<string> adjacentVertecies = Vertex->getAllAdjacenceVertexToAVertex();
+		set<string> adjacentVertecies = Vertex->getAllAdjacencesVerteciesValues();
 
 		for (string v : adjacentVertecies)
 		{

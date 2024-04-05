@@ -67,7 +67,7 @@ void CGraphOriented::GRORemoveVertex(const string& key)
 	{
 		CVertex* Vertex = GROGetVertexFromKey(key);
 
-		set<string> adjacentVertecies = Vertex->getAllAdjacenceVertexToAVertex();
+		set<string> adjacentVertecies = Vertex->getAllAdjacencesVerteciesValues();
 
 		for (string v : adjacentVertecies)
 		{
@@ -117,7 +117,7 @@ void CGraphOriented::GROPrintGraph()
 
 	for (; it != VerteciesMap.end(); it++)
 	{
-		cout << it->first << " : " << it->second->getAllListInVertecies() << endl;
+		cout << it->first << " : " << it->second->getAllListOutVertecies() << endl;
 	}
 }
 
@@ -243,7 +243,7 @@ void CGraphOriented::GROModifyVertex(const string& sVertexOldValue, const string
 		if (!ExistenceOfVertex(sVertexNewValue))
 		{
 			CVertex* VertexOldValue = GROGetVertexFromKey(sVertexOldValue);
-			set<string> adjacentVertecies = VertexOldValue->getAllAdjacenceVertexToAVertex();
+			set<string> adjacentVertecies = VertexOldValue->getAllAdjacencesVerteciesValues();
 
 			for (string sAdjVertex : adjacentVertecies)
 			{
