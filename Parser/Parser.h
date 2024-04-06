@@ -10,8 +10,11 @@
 #include "../CGraphNOrient.h"
 #include "../CPrintGraph.h"
 
+#include <vector>
+#include <string>
 
 #define file_not_open 20
+#define section_name_not_found 21
 
 using namespace std;
 
@@ -19,7 +22,7 @@ using namespace std;
 *  Class : Parser management
 * *********************************************************
 * 
-* ROLE : based on a txt file, create an oriented or non oriented graph
+* ROLE : parse a file, given into parameter
 * 
 * *********************************************************
 * VERSION: 1.0
@@ -29,88 +32,96 @@ using namespace std;
 * *********************************************************
 * EXTERNES InCLUSIONS
 */
+
+
 class Parser
 {
+private:
+	vector<string> PARAllLines;
 public:
-	
-	static void PARReadTxt(const string& txt, CGraphOrient<CVertex, CArc>** graph)
+
+	void PARReadFile(const string& filename)
 	{
-		ifstream file(txt);
+		ifstream flux(filename);
 
-		if (!file.is_open()) {
-			cerr << "Erreur lors de l'ouverture du fichier" << endl;
-			throw CException(file_not_open, "Error on opening the file to read", "Parser.h", 26);
-		}
-
-		string line;
-		if (getline(file, line))
+		if (flux)
 		{
-			if (line.find("Oriented=") != string::npos)
+			string line;
+			while (getline(flux, line))
 			{
-				if (line.substr(line.find("=") + 1) == "yes")
-					(*graph) = new CGraphOrient<CVertex, CArc>();
-				else
-					(*graph) = new CGraphNOrient<CVertex, CArc>();
+				PARAllLines.push_back(line);
 			}
 		}
+		else
+			throw CException(file_not_open, "Error on opening the file to read", "Parser.h", 44);
+	}
 
-		while (getline(file, line))
+	vector<string> PARAnalyzeSection(const string& sSectionName,  const string& sDelimiterEnd)
+	{
+		vector<string> elements;
+		size_t pos = string::npos;
+		int idx = 0;
+		for (vector<string>::iterator it = PARAllLines.begin(); it != PARAllLines.end(); it++)
 		{
-			if (line.find("Numero") != string::npos)
+			pos = it->find(sSectionName);
+			if (pos != string::npos)
 			{
-				std::string prefix = "Numero=";
-				size_t startPos = line.find(prefix) + prefix.length();
-				std::string vertexNumber = line.substr(startPos);
-				std::cout << "vertex " << vertexNumber << std::endl;
-
-				cout << "vertex " + vertexNumber<< endl;
-				(*graph)->GROAddVertex(vertexNumber);
+				cout << "pos different de zero " << "pos trouve en position " << idx << " " << *it << endl;
+				break;
 			}
-			else if (line.find("Debut=") != string::npos)
+			idx++;
+		}
+		if (idx != PARAllLines.size())
+		{
+			vector<string>::iterator itSectionName = PARAllLines.begin() + idx + 1;
+
+			// we have finally get all the lines of the section
+			for (; *itSectionName != sDelimiterEnd; itSectionName++)
 			{
-				string deb = "Debut=";
-				string fin = "Fin=";
-				string vertexDep;
-				string vertexArr;
-				size_t startPos = line.find(deb) + deb.length();
-				size_t endPos = line.find(",");
-				if (endPos != string::npos)
-				{
-					vertexDep = line.substr(startPos, endPos - startPos);
-					startPos = line.find(fin, endPos) + fin.length();
-					endPos = line.length();
-
-					vertexArr = line.substr(startPos, endPos - startPos);
-
-					cout << "vertex Dep " + vertexDep << " vertex Arr " + vertexArr << endl;
-				}
-
-				(*graph)->GROAddArc(vertexDep, vertexArr);
+				elements.push_back(*itSectionName);
 			}
-			else
+
+			for (string line : elements)
+			{
 				cout << line << endl;
+			}
 		}
-		file.close();
-	}
-
-
-	static void PARMainFunc(const string& txt)
-	{
-		CGraphOrient<CVertex, CArc>* graph;
-
-		Parser::PARReadTxt("graph.txt", &graph);
-
-		CPrintGraph::PrintGraph(*graph);
-
-		cout << "arcs Inverted " << endl;
-
-		graph->GROInverserAllArcs();
-
-		CPrintGraph::PrintGraph(*graph);
-
-		delete graph;
-	}
+		else
+		{
+			string errorMessage = "Error on finding the sectionName '" + sSectionName + "'";
+			throw CException(section_name_not_found, errorMessage, "Parser.h", 75);
+		}
+		
+		return elements;
+}
 	
+	string AnalyzeSectionElement(const string& line, const string& element, const string& sDelimiter="=")
+	{
+		return line.substr(line.find(sDelimiter)+1, line.size());
+	}
+
+	string getLineContains(const string& name)
+	{
+		size_t pos;
+		for (vector<string>::iterator it = PARAllLines.begin(); it != PARAllLines.end(); it++)
+		{
+			pos = it->find(name);
+			if (pos != string::npos)
+			{
+				return *it;
+				break;
+			}
+		}
+		return "";
+	}
+
+	void PARPrintAllLines()
+	{
+		for (string line : PARAllLines)
+		{
+			cout << line << endl;
+		}
+	}
 };
 
-#endif
+#endif // PARSER_H
