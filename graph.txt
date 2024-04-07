@@ -1,6 +1,6 @@
 Oriented=yes
 NBSommets=3
-NBArcs=3
+NBArcs=2
 Sommets=[
 Numero=ab
 Numero=bc

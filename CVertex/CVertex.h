@@ -22,9 +22,11 @@ class CVertex
 {
 private:
 	//ATRIBUTS
-
+	// value of the vertex
 	string sVERName;
+	// map containing all vertex values ending to the vertex
 	unordered_map<string, bool> sVERArcIn;
+	// map containing all vertex values starting from the vertex
 	unordered_map<string, bool> sVERArcOut;
 public:
 
@@ -32,7 +34,7 @@ public:
 
 	CVertex();
 
-
+	// constructor taking the value of the vertex
 	CVertex(string value);
 
 	//METHODS
