@@ -93,7 +93,7 @@ public :
 							CGraphOrient< SommetType, ArcType>::addPairKeysMArcs(sVertexArr, sVertexDep);
 
 							string res = "arc (" + sVertexDep + " " + sVertexArr + ") created successfully";
-							cout << res << endl;
+							//cout << res << endl;
 						}
 					}
 					else
@@ -283,7 +283,7 @@ public :
 
 						CGraphOrient< SommetType, ArcType>::GRORemoveArcFromMap(sAdjVertex, sVertexOldValue);
 
-						cout << arcOne->ARCGetVertexDep() << " | " << arcOne->ARCGetVertexArr() << endl;
+						//cout << arcOne->ARCGetVertexDep() << " | " << arcOne->ARCGetVertexArr() << endl;
 
 						CGraphOrient<SommetType, ArcType>::ModifyArc(sVertexNewValue, sVertexNewValue, arcTwo);
 					}

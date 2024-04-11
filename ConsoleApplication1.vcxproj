@@ -141,19 +141,15 @@
   <ItemGroup>
     <ClCompile Include="CArc\Arc.cpp" />
     <ClCompile Include="CException\CException.cpp" />
-    <ClCompile Include="CGraph\CGraphNOriented.cpp" />
-    <ClCompile Include="CGraph\CGraphOriented.cpp" />
     <ClCompile Include="ConsoleApplication1.cpp" />
     <ClCompile Include="CVertex\CVertex.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CArc\Arc.h" />
     <ClInclude Include="CException\CException.h" />
-    <ClInclude Include="CGraphNOrient.h" />
-    <ClInclude Include="CGraphOrient.h" />
-    <ClInclude Include="CGraph\CGraphNOriented.h" />
-    <ClInclude Include="CGraph\CGraphOriented.h" />
-    <ClInclude Include="CPrintGraph.h" />
+    <ClInclude Include="CGraph\CGraphNOrient.h" />
+    <ClInclude Include="CGraph\CGraphOrient.h" />
+    <ClInclude Include="PrintGraph\CPrintGraph.h" />
     <ClInclude Include="CVertex\CVertex.h" />
     <ClInclude Include="Parser\CGraphParser.h" />
     <ClInclude Include="Parser\Parser.h" />

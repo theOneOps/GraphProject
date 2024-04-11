@@ -2,10 +2,10 @@
 #include <iostream>
 #include "CArc/Arc.h"
 #include "CVertex/CVertex.h"
-#include "CPrintGraph.h"
+#include "PrintGraph/CPrintGraph.h"
 #include "Parser/Parser.h"
-#include "CGraphOrient.h"
-#include "CGraphNOrient.h"
+#include "CGraph/CGraphNOrient.h"
+#include "CGraph/CGraphOrient.h"
 #include "Parser/CGraphParser.h"
 
 using namespace std;

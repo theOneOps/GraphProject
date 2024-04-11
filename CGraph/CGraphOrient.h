@@ -1,13 +1,13 @@
 #ifndef CGRAPH_ORIENT_H
 #define CGRAPH_ORIENT_H
 
-#include "CArc/Arc.h"
-#include "CVertex/CVertex.h"
+#include "../CArc/Arc.h"
+#include "../CVertex/CVertex.h"
 #include <unordered_map>
 #include <string>
 #include <utility>
 #include <set>
-#include "CException/CException.h"
+#include "../CException/CException.h"
 
 using namespace std;
 

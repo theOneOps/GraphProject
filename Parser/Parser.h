@@ -4,12 +4,6 @@
 
 #include <iostream>
 #include <fstream>
-#include "../CArc/Arc.h"
-#include "../CVertex/CVertex.h"
-#include "../CGraphOrient.h"
-#include "../CGraphNOrient.h"
-#include "../CPrintGraph.h"
-
 #include <vector>
 #include <string>
 

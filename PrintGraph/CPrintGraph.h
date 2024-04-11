@@ -2,8 +2,8 @@
 #define _CPRINT_GRAPH_
 
 
-#include "CGraphOrient.h"
-#include "CGraphNOrient.h"
+#include "../CGraph/CGraphOrient.h"
+#include "../CGraph/CGraphNOrient.h"
 
 using namespace std;
 

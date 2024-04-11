@@ -2,7 +2,11 @@
 #define CGRAPH_PARSER_H
 
 #include "Parser.h"
-
+#include "../CArc/Arc.h"
+#include "../CVertex/CVertex.h"
+#include "../CGraph/CGraphNOrient.h"
+#include "../CGraph/CGraphOrient.h"
+#include "../PrintGraph/CPrintGraph.h"
 
 /**********************************************************
 *  Class : CGraphParser management

@@ -27,12 +27,6 @@
     <ClCompile Include="CVertex\CVertex.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CGraph\CGraphOriented.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CGraph\CGraphNOriented.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CException\CException.h">
@@ -44,22 +38,16 @@
     <ClInclude Include="CVertex\CVertex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CGraph\CGraphOriented.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CPrintGraph.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CGraph\CGraphNOriented.h">
+    <ClInclude Include="PrintGraph\CPrintGraph.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Parser\Parser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CGraphOrient.h">
+    <ClInclude Include="CGraph\CGraphOrient.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CGraphNOrient.h">
+    <ClInclude Include="CGraph\CGraphNOrient.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Parser\CGraphParser.h">
