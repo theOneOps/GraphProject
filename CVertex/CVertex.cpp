@@ -29,13 +29,13 @@ const unordered_map<string, bool>& CVertex::VERGetArcOut() const
 	return sVERArcOut;
 }
 
-void CVertex::VERModifyArcIn(const string& key, bool value)
+void CVertex::VERGROModifyArcIn(const string& key, bool value)
 {
 	// this changes the value at the 'key' value of the sVERArcIn to the bool 'value' of the methods'parameters
 	sVERArcIn[key] = value;
 }
 
-void CVertex::VERModifyArcOut(const string& key, bool value)
+void CVertex::VERGROModifyArcOut(const string& key, bool value)
 {
 	// this changes the value at the 'key' value of the sVERArcOut to the bool 'value' of the methods'parameters
 	sVERArcOut[key] = value;
@@ -55,7 +55,7 @@ void CVertex::VERAddInTheMapOut(const string& s)
 	sVERArcOut[s] = true;
 }
 
-const string CVertex::printAdjacentNeightboors()
+const string CVertex::VERPrintAdjacentNeightboors()
 {
 	string res = "";
 	set<string> see;
@@ -84,7 +84,7 @@ const string CVertex::printAdjacentNeightboors()
 	return res;
 }
 
-const string CVertex::getAllListOutVertecies()
+const string CVertex::VERGetAllListOutVertecies()
 {
 	string res = "";
 	set<string> see;
@@ -111,7 +111,7 @@ const string CVertex::getAllListOutVertecies()
 
 }
 
-void CVertex::removeArcFromArcIn(const string& s)
+void CVertex::VERRemoveArcFromArcIn(const string& s)
 {
 	// by assigining false to the sVERArcIn at the key's value
 	// means we are removing an arc in the IN direction from the vertex at value = "key" to this (CVertex)
@@ -119,7 +119,7 @@ void CVertex::removeArcFromArcIn(const string& s)
 		sVERArcIn[s] = false;
 }
 
-void CVertex::removeArcFromArcOut(const string& s)
+void CVertex::VERRemoveArcFromArcOut(const string& s)
 {
 	// by assigining false to the sVERArcOut at the key's value
 	// means we are removing an arc in the OUT direction from the vertex at value = "key" to this (CVertex)
@@ -127,7 +127,7 @@ void CVertex::removeArcFromArcOut(const string& s)
 		sVERArcOut[s] = false;
 }
 
-const set<string> CVertex::getAllAdjacencesVerteciesValues()
+const set<string> CVertex::VERGetAllAdjacencesVerteciesValues()
 {
 	// to get all adjacents vertecies of a vertex, we need to collect all 
 	// values of the vertecies connected to the vertex in the IN and the OUT direction
@@ -156,7 +156,7 @@ const set<string> CVertex::getAllAdjacencesVerteciesValues()
 	return see;
 }
 
-void CVertex::changeKeysVerArcIn(const string& oldVal, const string& newVal)
+void CVertex::VERChangeKeysVerArcIn(const string& oldVal, const string& newVal)
 {
 	// to change the value of the key that contains the involved arc (here in the IN direction of the vertex)
 	//
@@ -168,10 +168,10 @@ void CVertex::changeKeysVerArcIn(const string& oldVal, const string& newVal)
 	sVERArcIn.erase(oldVal);
 
 	// then we store that stored value into the "newVal" of the key that contains the involved arc
-	VERModifyArcIn(newVal, bOldValue);
+	VERGROModifyArcIn(newVal, bOldValue);
 }
 
-void CVertex::changeKeysVerArcOut(const string& oldVal, const string& newVal)
+void CVertex::VERChangeKeysVerArcOut(const string& oldVal, const string& newVal)
 {
 	// to change the value of the key that contains the involved arc (here in the OUT direction of the vertex)
 	//
@@ -183,5 +183,5 @@ void CVertex::changeKeysVerArcOut(const string& oldVal, const string& newVal)
 	sVERArcOut.erase(oldVal);
 
 	// then we store that stored value into the "newVal" of the key that contains the involved arc
-	VERModifyArcOut(newVal, bOldValue);
+	VERGROModifyArcOut(newVal, bOldValue);
 }

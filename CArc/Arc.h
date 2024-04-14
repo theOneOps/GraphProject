@@ -81,7 +81,7 @@ public:
 
 	/**
 	*******************************************************************************
-	* ModifyVertexDep
+	* ARCGROModifyVertexDep
 	* *****************************************************************************
 	* Entries : string snewValue
 	* Needs : None
@@ -89,11 +89,11 @@ public:
 	* Leads : change the Dep value of the vertex
 	 *******************************************************************************
 	*/
-	void ModifyVertexDep(const string& sNewValue);
+	void ARCGROModifyVertexDep(const string& sNewValue);
 
 	/**
 	*******************************************************************************
-	* ModifyVertexArr
+	* ARCGROModifyVertexArr
 	* *****************************************************************************
 	* Entries : string sNewValue
 	* Needs : None
@@ -101,7 +101,7 @@ public:
 	* Leads : change the Arr value of the vertex
 	 *******************************************************************************
 	*/
-	void ModifyVertexArr(const string& sNewValue);
+	void ARCGROModifyVertexArr(const string& sNewValue);
 };
 
 #endif;

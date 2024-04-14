@@ -60,7 +60,7 @@ public:
 
     /**
     *******************************************************************************
-    * CEXModifyValue
+    * EXCModifyValue
     * *****************************************************************************
     * Entries : the entry value of the Exception
     * Needs : None
@@ -68,11 +68,11 @@ public:
     * Leads : modify the current value of the exception by the parameter's value
     *******************************************************************************
     */
-    void CEXModifyValue(int uiP);
+    void EXCModifyValue(int uiP);
 
     /**
     *******************************************************************************
-    * CEXReadValue
+    * EXCReadValue
     * *****************************************************************************
     * Entries : None
     * Needs : None
@@ -80,30 +80,30 @@ public:
     * Leads : Return the uiExval's value of the exception
     *******************************************************************************
     */
-    [[nodiscard]] int CEXReadValue()const;
+    int EXCReadValue()const;
 
 
     /*
     * ********************************************
-    * CEXModifyMessage
+    * EXCModifyMessage
     * ********************************************
     * Entries : string : the newValue of message's attribute
     * Needs : None
     * Returns : None
     * Leads : changes the value of the message's attribute
     */
-    void CEXModifyMessage(const string& message);
+    void EXCModifyMessage(const string& message);
 
     /*
     * *****************************************************************************
-    * CEXReadMessage
+    * EXCReadMessage
     * *****************************************************************************
     * Entries : None
     * Needs : None
     * Returns : void
     * Leads : print the message's attribute content
     */
-    void CEXReadMessage() const;
+    void EXCReadMessage() const;
 };
 
 

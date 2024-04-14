@@ -87,7 +87,6 @@ public:
         /*
         * To delete a graph, we need to delete : 
         */
-        
         // all the vertecies of the graph
         for (pair<string, SommetType*> pair : mGROVertex)
         {
@@ -115,11 +114,11 @@ public:
     {
         // to add a vertex, we need to check first, if the value of the vertex we want to add, is available
         //(not use by other vertex before)
-        if (!ExistenceOfVertex(key))
+        if (!GROExistenceOfVertex(key))
         {
-            // so if it's available, we call addKeyVertexInMap's method to create the vertex with the "key" value and 
+            // so if it's available, we call GROAddKeyVertexInMap's method to create the vertex with the "key" value and 
             // added it to the unordered_map that contains all the vertecies of the graph
-            addKeyVertexInMap(key);
+            GROAddKeyVertexInMap(key);
             cout << "vertex added successfully" << endl;
         }
         else
@@ -145,14 +144,14 @@ public:
     virtual void GRORemoveVertex(const string& key)
     {
         // to remove a vertex, we need to check if the vertex to remove ireally existed in the graph
-        if (ExistenceOfVertex(key))
+        if (GROExistenceOfVertex(key))
         {
             // if that's so, we get the vertex by accessing it by its value from the unordered_map
             // mGROArcs( that contains all the vertecies of the graph )
             SommetType* Vertex = GROGetVertexFromKey(key);
 
             // then we get all, the value of the veeertecies adjacents to the vertex we want to remove
-            set<string> adjacentVertecies = Vertex->getAllAdjacencesVerteciesValues();
+            set<string> adjacentVertecies = Vertex->VERGetAllAdjacencesVerteciesValues();
 
             // then, by a loop we remove all the arcs that linked our vertex with its adjacents vertecies
             for (string v : adjacentVertecies)
@@ -208,21 +207,21 @@ public:
         // we should first check if the involved vertecies of values 
         // "sVertexDep and sVertexArr" really existed
 
-        if (ExistenceOfVertex(sVertexDep))
+        if (GROExistenceOfVertex(sVertexDep))
         {
 
             SommetType* VertexDep = GROGetVertexFromKey(sVertexDep);
-            if (ExistenceOfVertex(sVertexArr))
+            if (GROExistenceOfVertex(sVertexArr))
             {
                 SommetType* VertexArr = GROGetVertexFromKey(sVertexArr);
 
                 // then we check if there is already an arc between those vertecies or not 
                 // the existence of an arc IN 
-                if (!ExistenceOfArcNOriented(sVertexDep, sVertexArr))
+                if (!GROExistenceOfArcNOriented(sVertexDep, sVertexArr))
                 {
 
                     // the existence of an arc OUT
-                    if (!ExistenceOfArcNOriented(sVertexArr, sVertexDep))
+                    if (!GROExistenceOfArcNOriented(sVertexArr, sVertexDep))
                     {
                         // if there is not arc, then we get accessed to to the involved vertecies 
                         // (the one for sVertexArr, and the one for sVertexDep)
@@ -232,7 +231,7 @@ public:
 
                         // we create an arc with the correponding start value and end value of the arc
                         // and then we add the arc created to the unorderd_map mGROArcs
-                        addPairKeysMArcs(sVertexDep, sVertexArr);
+                        GROAddPairKeysMArcs(sVertexDep, sVertexArr);
 
                         string res = "arc (" + sVertexDep + " " + sVertexArr + ") created successfully";
                         cout << res << endl;
@@ -286,17 +285,16 @@ public:
         // to remove an arc between from a start value  "sVertexDep" to and end value "sVertexDArr",
         // we should first check if the involved vertecies of values 
         // "sVertexDep and sVertexArr" really existed
-        if (ExistenceOfVertex(sVertexDep))
+        if (GROExistenceOfVertex(sVertexDep))
         {
             SommetType* VDep = GROGetVertexFromKey(sVertexDep);
-            if (ExistenceOfVertex(sVertexArr))
+            if (GROExistenceOfVertex(sVertexArr))
             {
                 SommetType* VArr = GROGetVertexFromKey(sVertexArr);
 
                 // then we check there is really an arc between those vertecies
-                if (ExistenceOfArcNOriented(sVertexDep, sVertexArr))
+                if (GROExistenceOfArcNOriented(sVertexDep, sVertexArr))
                 {
-                    
                     pair<string, string> key{ sVertexDep, sVertexArr };
 
                     // if yes, we get the access the arc we want to remove
@@ -310,10 +308,10 @@ public:
 
                     // finally, we remove the arc from the start vertex and the end vertex involved in the arc's creation
 
-                    VDep->removeArcFromArcIn(sVertexArr);
-                    VDep->removeArcFromArcOut(sVertexArr);
-                    VArr->removeArcFromArcIn(sVertexDep);
-                    VArr->removeArcFromArcOut(sVertexDep);
+                    VDep->VERRemoveArcFromArcIn(sVertexArr);
+                    VDep->VERRemoveArcFromArcOut(sVertexArr);
+                    VArr->VERRemoveArcFromArcIn(sVertexDep);
+                    VArr->VERRemoveArcFromArcOut(sVertexDep);
 
                     string res = "arc (" + sVertexDep + " " + sVertexArr + ") removed successfully";
 
@@ -360,16 +358,16 @@ public:
     virtual void GROModifyVertex(const string& sVertexOldValue, const string& sVertexNewValue)
     {
         // to modify the involved vertex, we shoould first test if it exists
-        if (ExistenceOfVertex(sVertexOldValue))
+        if (GROExistenceOfVertex(sVertexOldValue))
         {
             // then we should check if a vertex with a new value, is in the graph or not
-            if (!ExistenceOfVertex(sVertexNewValue))
+            if (!GROExistenceOfVertex(sVertexNewValue))
             {
                 // if not then we first get the vertex we want to modify the value of
                 SommetType* VertexOldValue = GROGetVertexFromKey(sVertexOldValue);
 
                 // then we get the adjacents vertecies that are linked to our vertex
-                set<string> adjacentVertecies = VertexOldValue->getAllAdjacencesVerteciesValues();
+                set<string> adjacentVertecies = VertexOldValue->VERGetAllAdjacencesVerteciesValues();
 
                 // next with a for loop, we go through all arcs that linked our vertex to each of its adjacents vertex 
                 for (string sAdjVertex : adjacentVertecies)
@@ -380,20 +378,20 @@ public:
                     // we just change the value at start of the arc ith the new value of the arc
                     SommetType* VAdjVertex = GROGetVertexFromKey(sAdjVertex);
 
-                    if (ExistenceOfArcNOriented(sVertexOldValue, sAdjVertex))
+                    if (GROExistenceOfArcNOriented(sVertexOldValue, sAdjVertex))
                     {
                         ArcType* arc = GROGetArcFromKeys(sVertexOldValue, sAdjVertex);
 
                         if (sAdjVertex == sVertexOldValue)
                         {
-                            VAdjVertex->changeKeysVerArcIn(sVertexOldValue, sVertexNewValue);
-                            VAdjVertex->changeKeysVerArcOut(sVertexOldValue, sVertexNewValue);
+                            VAdjVertex->VERChangeKeysVerArcIn(sVertexOldValue, sVertexNewValue);
+                            VAdjVertex->VERChangeKeysVerArcOut(sVertexOldValue, sVertexNewValue);
 
                             GRORemoveArcFromMap(sVertexOldValue, sVertexOldValue);
 
-                            arc->ModifyVertexDep(sVertexNewValue);
+                            arc->ARCGROModifyVertexDep(sVertexNewValue);
 
-                            arc->ModifyVertexArr(sVertexNewValue);
+                            arc->ARCGROModifyVertexArr(sVertexNewValue);
 
                             // valeur d'avant de l'enregistrment de l'arc dans le mGROArcs, il faut l'enlever et y mettre le nouveau key pair
 
@@ -409,11 +407,11 @@ public:
                         }
                         else
                         {
-                            arc->ModifyVertexDep(sVertexNewValue);
+                            arc->ARCGROModifyVertexDep(sVertexNewValue);
 
-                            //arc->ModifyVertexArr(sAdjVertex);
+                            //arc->ARCGROModifyVertexArr(sAdjVertex);
 
-                            VAdjVertex->removeArcFromArcIn(sVertexOldValue);
+                            VAdjVertex->VERRemoveArcFromArcIn(sVertexOldValue);
 
                             VAdjVertex->VERAddInTheMapIn(sVertexNewValue);
 
@@ -435,15 +433,15 @@ public:
                     {
                         ArcType* arc = GROGetArcFromKeys(sAdjVertex, sVertexOldValue);
 
-                        arc->ModifyVertexArr(sVertexNewValue);
+                        arc->ARCGROModifyVertexArr(sVertexNewValue);
 
-                        //arc->ModifyVertexArr(sAdjVertex);
+                        //arc->ARCGROModifyVertexArr(sAdjVertex);
 
-                        VAdjVertex->removeArcFromArcOut(sVertexOldValue);
+                        VAdjVertex->VERRemoveArcFromArcOut(sVertexOldValue);
 
                         VAdjVertex->VERAddInTheMapOut(sVertexNewValue);
 
-                        // valeur d'avant de l'enregistrment de l'arc dans le mGROArcs, il faut l'enlever et y mettre le nouveau key pair
+                        // valeur d'avant de l'enregistrement de l'arc dans le mGROArcs, il faut l'enlever et y mettre le nouveau key pair
 
                         pair<string, string> oldKey{sAdjVertex, sVertexOldValue };
                         pair<string, string> newKey{ sAdjVertex, sVertexNewValue };
@@ -501,12 +499,12 @@ public:
     virtual void GROInverserArc(const string& sVertexDep, const string& sVertexArr)
     {
         // To invert an arc, we need to first check if the involved vertecies in the creation of the arc really exist
-        if (ExistenceOfVertex(sVertexDep))
+        if (GROExistenceOfVertex(sVertexDep))
         {
-            if (ExistenceOfVertex(sVertexArr))
+            if (GROExistenceOfVertex(sVertexArr))
             {
                 // if that's so, check if there is an arc between them to invert
-                if (ExistenceOfArcNOriented(sVertexDep, sVertexArr))
+                if (GROExistenceOfArcNOriented(sVertexDep, sVertexArr))
                 {
                     // it yes, then we check if our vertecies are equal or not, if they are equal then inverting the arc won't change anything
                     if (sVertexDep != sVertexArr)
@@ -516,17 +514,17 @@ public:
                         SommetType* vertexArr = GROGetVertexFromKey(sVertexArr);
 
                         // we change the In and Out of the vertecies
-                        vertexDep->VERModifyArcOut(sVertexArr, false);
+                        vertexDep->VERGROModifyArcOut(sVertexArr, false);
                         vertexDep->VERAddInTheMapIn(sVertexArr);
 
-                        vertexArr->VERModifyArcIn(sVertexDep, false);
+                        vertexArr->VERGROModifyArcIn(sVertexDep, false);
                         vertexArr->VERAddInTheMapOut(sVertexDep);
 
                         // then we get accessed to the arc, and we invert its start value and end value
                         ArcType* arc = GROGetArcFromKeys(sVertexDep, sVertexArr);
 
-                        arc->ModifyVertexDep(sVertexArr);
-                        arc->ModifyVertexArr(sVertexDep);
+                        arc->ARCGROModifyVertexDep(sVertexArr);
+                        arc->ARCGROModifyVertexArr(sVertexDep);
 
                         pair<string, string> pairOldKey{ sVertexDep, sVertexArr };
 
@@ -661,7 +659,7 @@ public:
 
     /**
     *******************************************************************************
-    * PrintAllArcs
+    * GROPrintAllArcs
     * *****************************************************************************
     * Entries : None
     * Needs : None
@@ -671,7 +669,7 @@ public:
     * an arc and the direction in between them
     *******************************************************************************
     */
-    void PrintAllArcs()
+    void GROPrintAllArcs()
     {
         // to print all the arcs of the graph, we just need to go trough all arcs of the graph
         // and since the key of each record of an arc, is pair value of the start value and end value of the arc :
@@ -701,10 +699,10 @@ public:
 
         for (; it != VerteciesMap.end(); it++)
         {
-            // we print the value of the current vertex and then call the getAllListOutVertecies's method of 
+            // we print the value of the current vertex and then call the VERGetAllListOutVertecies's method of 
             // the current vertex which prints a string that contains all the vertecies's
             // values that have connections with our current vertex
-            cout << it->first << " : " << it->second->getAllListOutVertecies() << endl;
+            cout << it->first << " : " << it->second->VERGetAllListOutVertecies() << endl;
         }
     }
 
@@ -713,7 +711,7 @@ protected:
 
     /**
     *******************************************************************************
-    * ExistenceOfVertex
+    * GROExistenceOfVertex
     * *****************************************************************************
     * Entries : key : string
     * Needs : None
@@ -721,7 +719,7 @@ protected:
     * Leads : Check if the vertex with the value key exist in the graph
     *******************************************************************************
     */
-    bool ExistenceOfVertex(const string& key)
+    bool GROExistenceOfVertex(const string& key)
     {
         bool res = false;
 
@@ -737,7 +735,7 @@ protected:
 
     /**
     *******************************************************************************
-    * ExistenceOfArcNOriented
+    * GROExistenceOfArcNOriented
     * *****************************************************************************
     * Entries :  sVertexDep: string represented the start value of the arc,
     * sVertexArr: string represented the end value of the arc
@@ -747,7 +745,7 @@ protected:
     * the end value equals to sVertexArr
     *******************************************************************************
     */
-    bool ExistenceOfArcNOriented(const string& sVertexDep, const string& sVertexArr)
+    bool GROExistenceOfArcNOriented(const string& sVertexDep, const string& sVertexArr)
     {
         bool res = false;
 
@@ -761,7 +759,7 @@ protected:
 
     /**
     *******************************************************************************
-    * addKeyVertexInMap
+    * GROAddKeyVertexInMap
     * *****************************************************************************
     * Entries : key: string represented the value of the vertex to create and to add to the graph
     * Needs : None
@@ -770,7 +768,7 @@ protected:
     * This function is used in the GROAddVertex of course...
     *******************************************************************************
     */
-    void addKeyVertexInMap(const string& key)
+    void GROAddKeyVertexInMap(const string& key)
     {
         // to add a vertex of value key to the mGROVertex unordered_map,
         // we first allocate memory for that vertex with the value key
@@ -817,7 +815,7 @@ protected:
 
     /**
     *******************************************************************************
-    * addPairKeysMArcs
+    * GROAddPairKeysMArcs
     * *****************************************************************************
     * Entries : sVertexDep: string represented the start value of the arc,
     * sVertexArr: string represented the end value of the arc
@@ -828,7 +826,7 @@ protected:
     * This function is used to add a new arc in the GROAddArc's function
     *******************************************************************************
     */
-    void addPairKeysMArcs(const string& sVertexDep, const string& sVertexArr)
+    void GROAddPairKeysMArcs(const string& sVertexDep, const string& sVertexArr)
     {
         // to add an arc of start value equals to sVertexDep, and end value equals to sVertexArr,
        // we first get the key
@@ -901,7 +899,7 @@ protected:
 
     /**
     *******************************************************************************
-    * ModifyArc
+    * GROModifyArc
     * *****************************************************************************
     * Entries : sVertexDep: string represented the start value of the arc,
     * sVertexArr: string represented the end value of the arc
@@ -912,7 +910,7 @@ protected:
     * It's used in the GROInverseArc's function to change the key in which we have stored the previous arc we have just inverted
     *******************************************************************************
     */
-    void ModifyArc(const string& sVertexDep, const string& sVertexArr, CArc*& arc)
+    void GROModifyArc(const string& sVertexDep, const string& sVertexArr, CArc*& arc)
     {
         // we modify the record of the arc which start value is sVertexDep 
         // and end value is sVertexArr from the mGROArcs unordered_map by putting the new "arc" 
@@ -927,7 +925,7 @@ protected:
 
     /**
     *******************************************************************************
-    * ModifyVertex
+    * GROModifyVertex
     * *****************************************************************************
     * Entries : sVertexDep: string represented the start value of the arc,
     * sVertexArr: string represented the end value of the arc
@@ -937,10 +935,10 @@ protected:
     * this function is used in the GROModifyVertex's function
     *******************************************************************************
     */
-    void ModifyVertex(const string& sVertexOldValue, const string& sVertexNewValue, SommetType*& vertex)
+    void GROModifyVertex(const string& sVertexOldValue, const string& sVertexNewValue, SommetType*& vertex)
     {
         // to modify a vertex, we need to remove the old record with the old value "sVertexOldValue" of the vertex
-        EraseVertexKey(sVertexOldValue);
+        GROEraseVertexKey(sVertexOldValue);
 
         // and then we insert our new vertex to the new key "sVertexNewValue"
         mGROVertex[sVertexNewValue] = vertex;
@@ -948,17 +946,17 @@ protected:
 
     /**
     *******************************************************************************
-    * EraseVertexKey
+    * GROEraseVertexKey
     * *****************************************************************************
     * Entries : key : string represented the value of the vertex to erase from the graph
     * Needs : None
     * Returns : void
     * Leads : erase the vertex with the value from the map that contains all the vertecies of the graph
     *
-    * this function is used in the ModifyVertex's function
+    * this function is used in the GROModifyVertex's function
     *******************************************************************************
     */
-    void EraseVertexKey(const string& key)
+    void GROEraseVertexKey(const string& key)
     {
         // we remove the record of the vertex at the value "key" from the mGROVertex unordered_map
         mGROVertex.erase(key);

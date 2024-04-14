@@ -11,6 +11,9 @@
 #define section_name_not_found 21
 #define delimiter_not_found 22
 #define the_number_of_vertex_not_found 23
+#define no_value_to_read 24
+
+#include "../CException/CException.h"
 
 using namespace std;
 
@@ -25,6 +28,11 @@ using namespace std;
 * DATE: 28/03/2024
 * *********************************************************
 *
+* VARIABLES
+* file_not_open 20
+  section_name_not_found 21
+  delimiter_not_found 22
+  the_number_of_vertex_not_found 23
 */
 class Parser
 {
@@ -117,7 +125,7 @@ public:
 	
 	/**
 	*******************************************************************************
-	* AnalyzeSectionElement
+	* PARAnalyzeSectionElement
 	* *****************************************************************************
 	* Entries : sLine : string representing the line we want to analyze
 				sElement  : string representing the name of the element we want to analyze (eg: here it's "numero" for "numero=2")
@@ -127,14 +135,26 @@ public:
 	* Leads : returns the value of the element read
 	*******************************************************************************
 	*/
-	const string AnalyzeSectionElement(const string& sLine,  const string& sDelimiter="=")
+	const string PARAnalyzeSectionElement(const string& sLine,  const string& sDelimiter="=")
 	{
 		// first we get the value of the delimiter
 		size_t pos = sLine.find(sDelimiter);
 		// if we found it, then we retuns the string between the character after 
 		// the position of the delimiter until the end of the line
 		if (pos)
-			return sLine.substr(pos + 1, sLine.size());
+		{
+			string res = sLine.substr(pos + 1, sLine.size());
+			
+			if (!res.empty())
+				return res;
+			else
+			{
+				res = "there is no value of this line's section : '" + sLine + "'";
+				throw CException(no_value_to_read, res, "Parser.h", 147);
+			}
+
+
+		}
 		else // unless we throw an exception
 			throw CException(delimiter_not_found, "Error on finding the delimiter to parse the line of the file", "Parser.h", 139);
 
@@ -142,7 +162,7 @@ public:
 
 	/**
 	*******************************************************************************
-	* getLineContains
+	* PARGetLineContains
 	* *****************************************************************************
 	* Entries : sName : string representing the value to search for
 	* Needs : a file needed to be read first by the PARReadFile's method
@@ -150,7 +170,7 @@ public:
 	* Leads : returns a string that contains the line containing the value of sName
 	*******************************************************************************
 	*/
-	const string getLineContains(const string& name)
+	const string PARGetLineContains(const string& name)
 	{
 		size_t pos;
 		// to find the line that contained "name", we need to verify if :
@@ -185,7 +205,7 @@ public:
 		{
 			cout << line << endl;
 		}
-	} 
+	}
 };
 
 #endif // PARSER_H

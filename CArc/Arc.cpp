@@ -18,13 +18,13 @@ const string CArc::ARCGetVertexDep() const
 	return sARCDep;
 }
 
-void CArc::ModifyVertexDep(const string& sNewValue)
+void CArc::ARCGROModifyVertexDep(const string& sNewValue)
 {
 	// set a new value to the dep value of the arc
 	sARCDep = sNewValue;
 }
 
-void CArc::ModifyVertexArr(const string& sNewValue)
+void CArc::ARCGROModifyVertexArr(const string& sNewValue)
 {
 	// set a new value to the arr value of the arc
 

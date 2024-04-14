@@ -1,12 +1,14 @@
-Oriented=no
-NBSommets=3
-NBArcs=2
+NBSommets=4
+NBArcs=4
 Sommets=[
 Numero=ab
 Numero=bc
 Numero=sd
+Numero= 
 ]
 Arcs=[
+Debut=ab, Fin= 
+Debut=bc, Fin= 
 Debut=bc, Fin=sd
 Debut=sd, Fin=ab
 ]

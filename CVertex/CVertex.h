@@ -45,7 +45,7 @@ public:
 	* Entries : string svalue
 	* Needs : None
 	* Returns : void
-	* Leads : modify sVERName by svalue
+	* Leads : modify the value of the vertex by svalue
 	********************************************************************************
 	*/
 	void VERModifyName(const string& svalue);
@@ -89,7 +89,7 @@ public:
 
 	/**
 	*******************************************************************************
-	* VERModifyArcIn
+	* VERGROModifyArcIn
 	* *****************************************************************************
 	* Entries : the string key to change, and the string new value to put at the key's "value"
 	* Needs : None
@@ -97,12 +97,12 @@ public:
 	* Leads : change the value of the map sVERArcIn at the key to the new Value given into the parameter
 	*******************************************************************************
 	*/
-	void VERModifyArcIn(const string& key, bool value);
+	void VERGROModifyArcIn(const string& key, bool value);
 
 
 	/**
 	*******************************************************************************
-	* VERModifyArcOut
+	* VERGROModifyArcOut
 	* *****************************************************************************
 	* Entries : the string key to change, and the string new value to put at the key's "value"
 	* Needs : None
@@ -110,7 +110,7 @@ public:
 	* Leads : change the value of the map sVERArcOut at the key to the new Value given into the parameter
 	*******************************************************************************
 	*/
-	void VERModifyArcOut(const string& key, bool value);
+	void VERGROModifyArcOut(const string& key, bool value);
 
 	/**
 	*******************************************************************************
@@ -139,7 +139,7 @@ public:
 
 	/**
 	*******************************************************************************
-	* printAdjacentNeightboors
+	* VERPrintAdjacentNeightboors
 	* *****************************************************************************
 	* Entries : None
 	* Needs : None
@@ -148,11 +148,11 @@ public:
 		that will contain all the adjacents vertecies's values of the vertex
 	*******************************************************************************
 	*/
-	const string printAdjacentNeightboors();
+	const string VERPrintAdjacentNeightboors();
 
 	/**
 	*******************************************************************************
-	* removeArcFromArcIn
+	* VERRemoveArcFromArcIn
 	* *****************************************************************************
 	* Entries : s : string represents the value of the arc in IN direction we want to remove
 		from the vertex sVERArcIn's unordered_map
@@ -162,12 +162,12 @@ public:
 		be remove from the sVERArcIn's unordered_map
 	*******************************************************************************
 	*/
-	void removeArcFromArcIn(const string& s);
+	void VERRemoveArcFromArcIn(const string& s);
 
 
 	/**
 	*******************************************************************************
-	* removeArcFromArcOut
+	* VERRemoveArcFromArcOut
 	* *****************************************************************************
 	* Entries : s :  string represents the value of the arc in OUT direction we want to remove
 		from the vertex sVERArcOut's unordered_map
@@ -177,11 +177,11 @@ public:
 		be remove from the sVERArcOut's unordered_map
 	*******************************************************************************
 	*/
-	void removeArcFromArcOut(const string& s);
+	void VERRemoveArcFromArcOut(const string& s);
 
 	/**
 	*******************************************************************************
-	* getAllAdjacencesVerteciesValues
+	* VERGetAllAdjacencesVerteciesValues
 	* *****************************************************************************
 	* Entries : None
 	* Needs : None
@@ -190,11 +190,11 @@ public:
 		a set that contains all the values of those adjacents vertecies
 	*******************************************************************************
 	*/
-	const set<string> getAllAdjacencesVerteciesValues();
+	const set<string> VERGetAllAdjacencesVerteciesValues();
 
 	/**
 	*******************************************************************************
-	* changeKeysVerArcIn
+	* VERChangeKeysVerArcIn
 	* *****************************************************************************
 	* Entries : oldVal : string represents the old value on the arr value of the arc in 
 		the IN direction that we need to change
@@ -204,11 +204,11 @@ public:
 	* Leads : the arr value of the arc which was oldVal will be change to newVal
 	*******************************************************************************
 	*/
-	void changeKeysVerArcIn(const string& oldVal, const string& newVal);
+	void VERChangeKeysVerArcIn(const string& oldVal, const string& newVal);
 
 	/**
 	*******************************************************************************
-	* changeKeysVerArcOut
+	* VERChangeKeysVerArcOut
 	* *****************************************************************************
 	* Entries : oldVal : string represents the old value on the dep value of the arc in 
 		the OUT direction that we need to change
@@ -218,11 +218,11 @@ public:
 	* Leads : the dep value of the arc which was oldVal will be change to newVal
 	*******************************************************************************
 	*/
-	void changeKeysVerArcOut(const string& oldVal, const string& newVal);
+	void VERChangeKeysVerArcOut(const string& oldVal, const string& newVal);
 
 	/**
 	*******************************************************************************
-	* getAllListOutVertecies
+	* VERGetAllListOutVertecies
 	* *****************************************************************************
 	* Entries : None
 	* Needs : None
@@ -230,7 +230,7 @@ public:
 	* Leads :returns a string thatcontains all vertecies which we can reach from the vertex in the OUT direction
 	*******************************************************************************
 	*/
-	const string getAllListOutVertecies();
+	const string VERGetAllListOutVertecies();
 
 };
 #endif

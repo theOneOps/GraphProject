@@ -12,13 +12,13 @@ class CPrintGraph
 public:
 
 	template<typename SommetType, typename ArcType>
-	static void PrintGraph(CGraphOrient<SommetType, ArcType>& graphA)
+	static void PRIPrintGraph(CGraphOrient<SommetType, ArcType>& graphA)
 	{
 		graphA.GROPrintGraph();
 	}
 	
 	template<typename SommetType, typename ArcType>
-	static void PrintGraph(CGraphNOrient<SommetType, ArcType>& graphA)
+	static void PRIPrintGraph(CGraphNOrient<SommetType, ArcType>& graphA)
 	{
 		graphA.GROPrintGraph();
 	}

@@ -11,23 +11,23 @@ CException::CException() :uiExval{ 1 }, filename{}, line{}, Exmessage{} {}
 
 CException::CException(int id, string message, string file, const int line): uiExval(id), Exmessage(move(message)), filename(move(file)), line(line) {}
 
-void CException::CEXModifyMessage(const string& msg) 
+void CException::EXCModifyMessage(const string& msg) 
 {
     // we change the error's message of the exception
     Exmessage = msg;
 }
 
-void CException::CEXModifyValue(int uiP) {
+void CException::EXCModifyValue(int uiP) {
     uiExval = uiP;
 }
 
-void CException::CEXReadMessage() const {
+void CException::EXCReadMessage() const {
     cerr << "Exception caught: " << Exmessage << endl
         << "In file: " << filename << endl
         << "On line: " << line << endl;
 }
 
-int CException::CEXReadValue()const {
+int CException::EXCReadValue()const {
     return uiExval;
 }
 

@@ -8,6 +8,10 @@
 #include "../CGraph/CGraphOrient.h"
 #include "../PrintGraph/CPrintGraph.h"
 
+#include <cctype>
+
+#define size_not_conformed 25
+#define size_not_defined 26
 /**********************************************************
 *  Class : CGraphParser management
 * *********************************************************
@@ -27,7 +31,7 @@ public:
 
 	/**
 	*******************************************************************************
-	* PARGRAAddVertex
+	* GPRAddVertex
 	* *****************************************************************************
 	* Entries : graph : CGraphOrient<SommetType, ArcType> representing the graph to fill with vertecies
 	*			sSizeVertex : string representing the value of the name of the element size we want to read (eg: "Nbsommet" for "Nbsommet=2")
@@ -38,31 +42,55 @@ public:
 	* Leads : add some vertecies to the graph with values read from the file
 	*******************************************************************************
 	*/
-	void PARGRAAddVertex(CGraphOrient<SommetType, ArcType>*& graph, const string& sSizeVertex, const string& sSectionName, const string& sDelimiterEnd, const string& sDelimiterValue="=")
+	void GPRAddVertex(CGraphOrient<SommetType, ArcType>*& graph, const string& sSizeVertex, const string& sSectionName, const string& sDelimiterEnd, const string& sDelimiterValue="=")
 	{
-		int size;
-		if (!sDelimiterValue.empty())
-			size = stoi(AnalyzeSectionElement(getLineContains(sSizeVertex), sDelimiterValue));
-		else
-			throw CException(the_number_of_vertex_not_found, "Error on finding the number of the vertex to create", "Parser.h", 44);
-
 		// we get accessed to each line of the section (which means each element that contains the value of the vertex to create)
 		vector<string> allVerteciesSection = PARAnalyzeSection(sSectionName, sDelimiterEnd);
+
+		int size;
+		if (!sDelimiterValue.empty())
+		{
+			string res = PARAnalyzeSectionElement(PARGetLineContains(sSizeVertex), sDelimiterValue);
+			if (!res.empty())
+			{
+				for (char c : res)
+				{
+					if (!isdigit(c))
+					{
+						string error_message = "the size of the " + sSizeVertex + " is not fully numeric";
+						throw CException(size_not_defined, error_message, "CGraphParser.h", 57);
+					}
+						
+				}
+				size = stoi(res);
+			}
+			else
+			{
+				res = "there is no size defined for the " + sSizeVertex;
+				throw CException(size_not_defined, res, "CGraphParser.h", 53);
+			}
+		}
+		else
+			throw CException(the_number_of_vertex_not_found, "Error on finding the number of the vertex to create", "CgraphParser.h", 50);
+
+
+		if (size > allVerteciesSection.size())
+			throw CException(size_not_conformed, "the number of vertecies you want to create is greater than the number of vertecies that is actually defined in your file.txt", "CGrpahParser.h",  67);
 
 		string vertexValue = "";
 		// then we iterate over those lines and we parse them to find the value of the vertex to create
 		for (int i = 0; i < size; i++)
 		{
-			vertexValue = AnalyzeSectionElement(allVerteciesSection[i], sDelimiterValue);
+			vertexValue = PARAnalyzeSectionElement(allVerteciesSection[i], sDelimiterValue);
 			// this line created the vertex with the value "vertexValue" in the graph
 			graph->GROAddVertex(vertexValue);
-			//cout << "creation du vertex " << AnalyzeSectionElement(allVerteciesSection[i], sVertexName, "=") << endl;
+			//cout << "creation du vertex " << PARAnalyzeSectionElement(allVerteciesSection[i], sVertexName, "=") << endl;
 		}
 	}
 
 	/**
 	*******************************************************************************
-	* PARGRAAddArc
+	* GPRAddArc
 	* *****************************************************************************
 	* Entries :  graph : CGraphOrient<SommetType, ArcType> representing the graph to create arcs for
 	*			sSizeArcs : string representing the value of the name of the element size we want to read (eg: "Nbarc" for "Nbarc=2")
@@ -73,25 +101,47 @@ public:
 	* Leads : add some arcs to the graph with values dep and arr read from the file
 	*******************************************************************************
 	*/
-	void PARGRAAddArc(CGraphOrient<SommetType, ArcType>*& graph, const string& sSizeArcs, const string& sSectionName, const string& sDelimiterEnd, const string& sDelimiterValue = "=")
+	void GPRAddArc(CGraphOrient<SommetType, ArcType>*& graph, const string& sSizeArcs, const string& sSectionName, const string& sDelimiterEnd, const string& sDelimiterValue = "=")
 	{
 
 		// we get accessed to lines that describes the arcs to create
 		vector<string> allArcsSection = PARAnalyzeSection(sSectionName, sDelimiterEnd);
 		// first, we read the number of arcs to create
 		int size;
+
 		if (!sDelimiterValue.empty())
-			size = stoi(AnalyzeSectionElement(getLineContains(sSizeArcs), sDelimiterValue));
-		else
-			size = stoi(AnalyzeSectionElement(getLineContains(sSizeArcs), sDelimiterValue));
+		{
+			string res = PARAnalyzeSectionElement(PARGetLineContains(sSizeArcs), sDelimiterValue);
+			if (!res.empty())
+			{
+				for (char c : res)
+				{
+					if (!isdigit(c))
+					{
+						string error_message = "the size of the " + sSizeArcs + " is not fully numeric";
+						throw CException(size_not_defined, error_message, "CGraphParser.h", 57);
+					}
+
+				}
+				size = stoi(res);
+			}
+			else
+			{
+				res = "there is no size defined for the " + sSizeArcs;
+				throw new CException(size_not_defined, res, "CGraphParser.h", 106);
+			}
+		}
+
+		if (size > allArcsSection.size())
+			throw CException(size_not_conformed, "the number of arcs you want to create is greater than the number of arcs that is actually defined in your file.txt", "CGrpahParser.h", 93);
 
 		// then with a for loop, we parse each line to have the dep value and arr value of each arc
 		for (int i = 0; i < size; i++)
 		{
 			
 			size_t pos = allArcsSection[i].find(",");
-			string sDebArc = AnalyzeSectionElement(allArcsSection[i].substr(0, pos));
-			string sArrArc = AnalyzeSectionElement(allArcsSection[i].substr(pos, allArcsSection[i].size()));
+			string sDebArc = PARAnalyzeSectionElement(allArcsSection[i].substr(0, pos));
+			string sArrArc = PARAnalyzeSectionElement(allArcsSection[i].substr(pos, allArcsSection[i].size()));
 
 			//cout << "arc (" << sDebArc << ", " << sArrArc << ")" << endl;
 			// then we create the  arc with the specified values
@@ -101,32 +151,7 @@ public:
 
 	/**
 	*******************************************************************************
-	* PARGRACreateGraph
-	* *****************************************************************************
-	* Entries : None
-	* Needs : None
-	* Returns : CGraphOrient<SommetType, ArcType>*
-	* Leads : return an oriented or non oriented graph based on the file parsed
-	*******************************************************************************
-	*/
-	CGraphOrient<SommetType, ArcType>* PARGRACreateGraph()
-	{
-		// 
-		CGraphOrient<SommetType, ArcType>* graph;
-		if (AnalyzeSectionElement(getLineContains("Oriented")) == "yes")
-		{
-			// if the oriented is set to yes into the file, we create an oriented graph
-			graph = new CGraphOrient<SommetType, ArcType>();
-		}
-		else // unless,  we create an non oriented graph
-			graph = new CGraphNOrient<SommetType, ArcType>();
-
-		return graph;
-	}
-
-	/**
-	*******************************************************************************
-	* PARGRAMain
+	* GPRMain
 	* *****************************************************************************
 	* Entries : tree : sfileName : string representing the file to read/parse
 	* Needs : None
@@ -134,39 +159,43 @@ public:
 	* Leads : read a file .txt, create the specified graph, print it, invert it and print it again
 	*******************************************************************************
 	*/
-	void PARGRAMain(const string& sfileName)
+	void GPRMain(const string& sfileName)
 	{
-		// first, we read the file
-		PARReadFile(sfileName);
 
 		// we create the specified graph
-		CGraphOrient<SommetType, ArcType>* graph = PARGRACreateGraph();
+		CGraphOrient<SommetType, ArcType>* graph = new CGraphOrient<SommetType, ArcType>();
 
-		// we add all vertecies sepcified by the file
-		PARGRAAddVertex(graph, "NBSommets", "Sommets=[", "]");
+		try
+		{
+			// first, we read the file
+			PARReadFile(sfileName);
 
-		// we add all arcs specified by the file
-		PARGRAAddArc(graph,"NBArcs", "Arcs=[", "]");
 
-		// we print the graph
-		CPrintGraph::PrintGraph(*graph);
+			// we add all vertecies sepcified by the file
+			GPRAddVertex(graph, "NBSommets", "Sommets=[", "]");
 
-		// we invert the graph
-		graph->GROInverserAllArcs();
+			// we add all arcs specified by the file
+			GPRAddArc(graph, "NBArcs", "Arcs=[", "]");
 
-		cout << "inversion of all arcs of the graph" << endl;
+			// we print the graph
+			CPrintGraph::PRIPrintGraph(*graph);
 
-		// we print the inverted graph
-		CPrintGraph::PrintGraph(*graph);
+			// we invert the graph
+			graph->GROInverserAllArcs();
 
-		// we deallocate the memory of the graph
-		delete graph;
+			cout << "inversion of all arcs of the graph" << endl;
+
+			// we print the inverted graph
+			CPrintGraph::PRIPrintGraph(*graph);
+
+			delete graph;
+		}
+		catch (CException e)
+		{
+			delete graph;
+			e.EXCReadMessage();
+		}
 	}
-
-	//void PARGRAModifyVertex(const string& sOldValue, const string& sNewValue);
-	//void PARGRARemoveVertex(const string& sValue);
-	//void PARGRARemoveArc(const string& sDepValue, const string& sArrValue);
-
 };
 
 #endif // CGRAPH_PARSER_H
