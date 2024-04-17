@@ -6,6 +6,7 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <algorithm>
 
 #define file_not_open 20
 #define section_name_not_found 21
@@ -83,20 +84,26 @@ public:
 	* Leads : Returns a vector containing each line of the section (each line between the sSectionName and the sDelimiterEnd)
 	*******************************************************************************
 	*/
-	const vector<string> PARAnalyzeSection(const string& sSectionName,  const string& sDelimiterEnd)
+	const vector<string> PARAnalyzeSection(const string& sSectionName, const string& sDelimiterAffectation, const string& sDelimiterBegin, const string& sDelimiterEnd)
 	{
 		vector<string> elements;
+
 		size_t pos = string::npos;
+		string currentLineStr = "";
+
 		int idx = 0;
 
-		// with a for loop, we iterate over the PARAllLines's container to find the position of the sSectionName's value
 		for (vector<string>::iterator it = PARAllLines.begin(); it != PARAllLines.end(); it++)
 		{
-			pos = it->find(sSectionName);
+			currentLineStr = PARTrimString(PARUppercaseOf(*it));
+			//cout << "the current line is " << currentLineStr << endl;
+			pos = currentLineStr.find(PARTrimString(PARUppercaseOf(sSectionName)));
 			if (pos != string::npos)
 			{
-				//cout << "pos different de zero " << "pos trouve en position " << idx << " " << *it << endl;
-				break;
+				if ((currentLineStr.find(sDelimiterAffectation) != string::npos) && (currentLineStr.find(sDelimiterBegin) != string::npos))
+				{
+					break;
+				}
 			}
 			idx++;
 		}
@@ -117,11 +124,12 @@ public:
 		else // if there is no sSectionName in any line read before, then we throw an exception
 		{
 			string errorMessage = "Error on finding the sectionName '" + sSectionName + "'";
-			throw CException(section_name_not_found, errorMessage, "Parser.h", 75);
+			throw CException(section_name_not_found, errorMessage, "Parser.h", 106);
 		}
-		
+
+
 		return elements;
-}
+	}
 	
 	/**
 	*******************************************************************************
@@ -135,29 +143,39 @@ public:
 	* Leads : returns the value of the element read
 	*******************************************************************************
 	*/
-	const string PARAnalyzeSectionElement(const string& sLine,  const string& sDelimiter="=")
+	const string PARAnalyzeSectionElement(const string& sLine, const string& nameElement, const string& sDelimiter = "=")
 	{
-		// first we get the value of the delimiter
-		size_t pos = sLine.find(sDelimiter);
-		// if we found it, then we retuns the string between the character after 
-		// the position of the delimiter until the end of the line
-		if (pos)
+		size_t pos = string::npos;
+
+		string currentLineStr = PARTrimString(PARUppercaseOf(sLine));
+
+		pos = currentLineStr.find(PARTrimString(PARUppercaseOf(nameElement)));
+
+		//cout << pos << endl;
+
+
+		if (pos != string::npos)
 		{
-			string res = sLine.substr(pos + 1, sLine.size());
-			
-			if (!res.empty())
-				return res;
-			else
+			pos = currentLineStr.find(sDelimiter);
+
+			//cout << "pos delimiter " << pos + 1 << endl;
+
+			if (pos != string::npos)
 			{
-				res = "there is no value of this line's section : '" + sLine + "'";
-				throw CException(no_value_to_read, res, "Parser.h", 147);
+				if (PARTrimString(sLine).size() == pos)
+				{
+					throw CException(delimiter_not_found, "No value found to parse the line of the file", "Parser.h", 162);
+				}
+				else
+				{
+					//cout << sLine << endl;
+					return PARTrimString(PARTrimString(sLine).substr(pos + 1, PARTrimString(sLine).size()));
+
+				}
 			}
-
-
 		}
 		else // unless we throw an exception
-			throw CException(delimiter_not_found, "Error on finding the delimiter to parse the line of the file", "Parser.h", 139);
-
+			throw CException(delimiter_not_found, "Error on finding the delimiter to parse the line of the file", "Parser.h", 156);
 	}
 
 	/**
@@ -173,16 +191,19 @@ public:
 	const string PARGetLineContains(const string& name)
 	{
 		size_t pos;
+		string currentLineStr;
 		// to find the line that contained "name", we need to verify if :
 		for (vector<string>::iterator it = PARAllLines.begin(); it != PARAllLines.end(); it++)
 		{
 			// there is a line that conatains "name"
-			pos = it->find(name);
+
+			currentLineStr = PARTrimString(PARUppercaseOf(*it));
+
+			pos = currentLineStr.find(PARTrimString(PARUppercaseOf(name)));
 			// if yes, then we return that line
 			if (pos != string::npos)
 			{
 				return *it;
-				break;
 			}
 		}
 		// unless, we return an empty string
@@ -205,6 +226,72 @@ public:
 		{
 			cout << line << endl;
 		}
+	}
+
+
+
+	/**
+	*******************************************************************************
+	* PARTrimString
+	* *****************************************************************************
+	* Entries : sValue: const string : the string to trim in order to not have space at the beginning and the end
+	* Needs : None
+	* Returns : const string
+	* Leads : the string trimed
+	*******************************************************************************
+	*/
+	const string PARTrimString(const string& sValue)
+	{
+		if (!sValue.empty())
+		{
+			// we take the max of those fst values
+			size_t fst_char_not_space = sValue.find_first_not_of(" ");
+			size_t fst_char_not_tab = sValue.find_first_not_of(" \t");
+
+			// we take the min of those last values
+			size_t lst_char_not_space = sValue.find_last_not_of(" ");
+			size_t lst_char_not_tab = sValue.find_last_not_of("\t ");
+
+
+			size_t start_pos_char = max(fst_char_not_space, fst_char_not_tab);
+
+
+			return sValue.substr(start_pos_char, min(lst_char_not_space, lst_char_not_tab) - start_pos_char + 1);
+		}
+
+		return "";
+	}
+
+	/**
+	*******************************************************************************
+	* PARUppercaseOf
+	* *****************************************************************************
+	* Entries : tree : BSTree* = the tree we want to compare with
+	* Needs : None
+	* Returns : void
+	* Leads : Return description
+	*******************************************************************************
+	*/
+	const string PARUppercaseOf(const string& str)
+	{
+		string res = str;
+		transform(res.begin(), res.end(), res.begin(), [](unsigned char c) { return toupper(c); });
+		return res;
+	}
+
+	/**
+	*******************************************************************************
+	* FunctionName
+	* *****************************************************************************
+	* Entries : tree : BSTree* = the tree we want to compare with
+	* Needs : None
+	* Returns : void
+	* Leads : Return description
+	*******************************************************************************
+	*/
+	bool PARContainsSpaceOrTab(const string& sValue)
+	{
+		return (sValue.find(" ") != string::npos) || (sValue.find("\t") != string::npos);
 	}
 };
 

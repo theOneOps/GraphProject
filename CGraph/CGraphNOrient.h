@@ -389,26 +389,5 @@ public :
 			throw CException(vertex_not_existed, sErrorMessage, "CGraphNOriented.cpp", 161);
 		}
 	}
-
-	/**
-	*******************************************************************************
-	* GROPrintGraph
-	* *****************************************************************************
-	* Entries : None
-	* Needs : None
-	* Returns : void
-	* Leads : Print the graph into the console
-	*******************************************************************************
-	*/
-	virtual void GROPrintGraph()
-	{
-		unordered_map<string, SommetType*> VerteciesMap = CGraphOrient< SommetType,  ArcType>::GROGetVertexMap();
-		typename unordered_map<string, SommetType*>::iterator it = VerteciesMap.begin();
-
-		for (; it != VerteciesMap.end(); it++)
-		{
-			cout << it->first << " : " << it->second->VERPrintAdjacentNeightboors() << endl;
-		}
-	}
 };
 #endif // CGRAPH_NORIENT_H

@@ -42,15 +42,16 @@ public:
 	* Leads : add some vertecies to the graph with values read from the file
 	*******************************************************************************
 	*/
-	void GPRAddVertex(CGraphOrient<SommetType, ArcType>*& graph, const string& sSizeVertex, const string& sSectionName, const string& sDelimiterEnd, const string& sDelimiterValue="=")
+	void GPRAddVertex(CGraphOrient<SommetType, ArcType>*& graph, const string& sSizeVertex, const string& sSectionName,const string& VertexVariableName="numero", const string& sDelimiterBegin = "[", const string& sDelimiterEnd = "]", const string& sDelimiterAffectation = "=")
 	{
 		// we get accessed to each line of the section (which means each element that contains the value of the vertex to create)
-		vector<string> allVerteciesSection = PARAnalyzeSection(sSectionName, sDelimiterEnd);
+		vector<string> allVerteciesSection = PARAnalyzeSection(sSectionName, sDelimiterAffectation, sDelimiterBegin, sDelimiterEnd);
 
 		int size;
-		if (!sDelimiterValue.empty())
+		if (!sDelimiterAffectation.empty())
 		{
-			string res = PARAnalyzeSectionElement(PARGetLineContains(sSizeVertex), sDelimiterValue);
+			//cout << PARGetLineContains(sSizeVertex) << endl;
+			string res = PARAnalyzeSectionElement(PARGetLineContains(sSizeVertex), sSizeVertex, sDelimiterAffectation);
 			if (!res.empty())
 			{
 				for (char c : res)
@@ -74,6 +75,8 @@ public:
 			throw CException(the_number_of_vertex_not_found, "Error on finding the number of the vertex to create", "CgraphParser.h", 50);
 
 
+
+
 		if (size > allVerteciesSection.size())
 			throw CException(size_not_conformed, "the number of vertecies you want to create is greater than the number of vertecies that is actually defined in your file.txt", "CGrpahParser.h",  67);
 
@@ -81,7 +84,9 @@ public:
 		// then we iterate over those lines and we parse them to find the value of the vertex to create
 		for (int i = 0; i < size; i++)
 		{
-			vertexValue = PARAnalyzeSectionElement(allVerteciesSection[i], sDelimiterValue);
+			vertexValue = PARAnalyzeSectionElement(allVerteciesSection[i], VertexVariableName, sDelimiterAffectation);
+			if (PARContainsSpaceOrTab(vertexValue))
+				throw CException(size_not_conformed, "the vertex should not be a composed value", "CGrpahParser.h", 67);
 			// this line created the vertex with the value "vertexValue" in the graph
 			graph->GROAddVertex(vertexValue);
 			//cout << "creation du vertex " << PARAnalyzeSectionElement(allVerteciesSection[i], sVertexName, "=") << endl;
@@ -101,17 +106,18 @@ public:
 	* Leads : add some arcs to the graph with values dep and arr read from the file
 	*******************************************************************************
 	*/
-	void GPRAddArc(CGraphOrient<SommetType, ArcType>*& graph, const string& sSizeArcs, const string& sSectionName, const string& sDelimiterEnd, const string& sDelimiterValue = "=")
+	void GPRAddArc(CGraphOrient<SommetType, ArcType>*& graph, const string& sSizeArcs, const string& sSectionName, const vector<string>& ArcsVariableName,
+		const string& sDelimiterBegin = "[", const string& sDelimiterEnd="]", const string& sDelimiterAffectation = "=", const string& sDelimiterBetweenArcsValuesNames = ",")
 	{
 
 		// we get accessed to lines that describes the arcs to create
-		vector<string> allArcsSection = PARAnalyzeSection(sSectionName, sDelimiterEnd);
+		vector<string> allArcsSection = PARAnalyzeSection(sSectionName, sDelimiterAffectation, sDelimiterBegin, sDelimiterEnd);
 		// first, we read the number of arcs to create
 		int size;
 
-		if (!sDelimiterValue.empty())
+		if (!sDelimiterAffectation.empty())
 		{
-			string res = PARAnalyzeSectionElement(PARGetLineContains(sSizeArcs), sDelimiterValue);
+			string res = PARAnalyzeSectionElement(PARGetLineContains(sSizeArcs), sSizeArcs, sDelimiterAffectation);
 			if (!res.empty())
 			{
 				for (char c : res)
@@ -119,7 +125,7 @@ public:
 					if (!isdigit(c))
 					{
 						string error_message = "the size of the " + sSizeArcs + " is not fully numeric";
-						throw CException(size_not_defined, error_message, "CGraphParser.h", 57);
+						throw CException(size_not_defined, error_message, "CGraphParser.h", 119);
 					}
 
 				}
@@ -128,7 +134,7 @@ public:
 			else
 			{
 				res = "there is no size defined for the " + sSizeArcs;
-				throw new CException(size_not_defined, res, "CGraphParser.h", 106);
+				throw CException(size_not_defined, res, "CGraphParser.h", 115);
 			}
 		}
 
@@ -137,11 +143,15 @@ public:
 
 		// then with a for loop, we parse each line to have the dep value and arr value of each arc
 		for (int i = 0; i < size; i++)
-		{
-			
-			size_t pos = allArcsSection[i].find(",");
-			string sDebArc = PARAnalyzeSectionElement(allArcsSection[i].substr(0, pos));
-			string sArrArc = PARAnalyzeSectionElement(allArcsSection[i].substr(pos, allArcsSection[i].size()));
+		{	
+			size_t pos = allArcsSection[i].find(sDelimiterBetweenArcsValuesNames);
+			string sDebArc = PARAnalyzeSectionElement(allArcsSection[i].substr(0, pos), ArcsVariableName[0]);
+			string sArrArc = PARAnalyzeSectionElement(allArcsSection[i].substr(pos, allArcsSection[i].size()), ArcsVariableName[1]);
+
+			//cout << "debut arc -> " << sDebArc << "| fin arc ->" << sArrArc << endl;
+
+			if (PARContainsSpaceOrTab(sDebArc) || PARContainsSpaceOrTab(sArrArc))
+				throw CException(size_not_defined, "one of the values of your arcs contain spaces or tabs, correct them !", "CGraphParser.h", 115);
 
 			//cout << "arc (" << sDebArc << ", " << sArrArc << ")" << endl;
 			// then we create the  arc with the specified values
@@ -172,10 +182,15 @@ public:
 
 
 			// we add all vertecies sepcified by the file
-			GPRAddVertex(graph, "NBSommets", "Sommets=[", "]");
+			GPRAddVertex(graph, "NBSommets", "Sommets");
+
+			vector<string> vect;
+
+			vect.push_back("debut");
+			vect.push_back("fin");
 
 			// we add all arcs specified by the file
-			GPRAddArc(graph, "NBArcs", "Arcs=[", "]");
+			GPRAddArc(graph, "NBArcs", "Arcs", vect);
 
 			// we print the graph
 			CPrintGraph::PRIPrintGraph(*graph);

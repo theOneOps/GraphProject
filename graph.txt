@@ -1,14 +1,14 @@
-NBSommets=4
-NBArcs=4
-Sommets=[
-Numero=ab
-Numero=bc
-Numero=sd
-Numero= 
+NBSommets = 	4
+NBArcs = 	4
+Sommets = [
+NuMeRo = ab	
+Numero = bc
+Numero = sd
+Numero = ze  
 ]
-Arcs=[
-Debut=ab, Fin= 
-Debut=bc, Fin= 
-Debut=bc, Fin=sd
-Debut=sd, Fin=ab
+Arcs = [
+DEBUt = ab, Fin = ze
+Debut = bc , Fin = ze
+Debut = bc, Fin = bc	
+Debut = sd, Fin = ab
 ]
