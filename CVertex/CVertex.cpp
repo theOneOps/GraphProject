@@ -4,7 +4,6 @@
 #include <set>
 
 
-CVertex::CVertex(){}
 
 CVertex::CVertex(string value) :sVERName(value) {}
 
@@ -29,30 +28,30 @@ const unordered_map<string, bool>& CVertex::VERGetArcOut() const
 	return sVERArcOut;
 }
 
-void CVertex::VERGROModifyArcIn(const string& key, bool value)
+void CVertex::VERGROModifyArcIn(const string& sKey, bool value)
 {
-	// this changes the value at the 'key' value of the sVERArcIn to the bool 'value' of the methods'parameters
-	sVERArcIn[key] = value;
+	// this changes the value at the 'sKey' value of the sVERArcIn to the bool 'value' of the methods'parameters
+	sVERArcIn[sKey] = value;
 }
 
-void CVertex::VERGROModifyArcOut(const string& key, bool value)
+void CVertex::VERGROModifyArcOut(const string& sKey, bool value)
 {
-	// this changes the value at the 'key' value of the sVERArcOut to the bool 'value' of the methods'parameters
-	sVERArcOut[key] = value;
+	// this changes the value at the 'sKey' value of the sVERArcOut to the bool 'value' of the methods'parameters
+	sVERArcOut[sKey] = value;
 }
 
-void CVertex::VERAddInTheMapIn(const string& key)
+void CVertex::VERAddInTheMapIn(const string& sKey)
 {
 	// by assigining true to the sVERArcIn at the key's value
 	// means there is an arc in the IN direction from the vertex at value = "key" to this (CVertex)
-	sVERArcIn[key] = true;
+	sVERArcIn[sKey] = true;
 }
 
-void CVertex::VERAddInTheMapOut(const string& s)
+void CVertex::VERAddInTheMapOut(const string& sKey)
 {
 	// by assigining true to the sVERArcOut at the key's value
 	// means there is an arc in the OUT direction from the vertex at value = "key" to this (CVertex)
-	sVERArcOut[s] = true;
+	sVERArcOut[sKey] = true;
 }
 
 const string CVertex::VERPrintAdjacentNeightboors()
@@ -60,7 +59,7 @@ const string CVertex::VERPrintAdjacentNeightboors()
 	string res = "";
 	set<string> see;
 
-	for (auto it = sVERArcIn.begin(); it != sVERArcIn.end(); it++)
+	for (unordered_map<string, bool>::iterator it = sVERArcIn.begin(); it != sVERArcIn.end(); it++)
 	{
 		if (it->second)
 		{
@@ -69,7 +68,7 @@ const string CVertex::VERPrintAdjacentNeightboors()
 		}
 	}
 
-	for (auto it = sVERArcOut.begin(); it != sVERArcOut.end(); it++)
+	for (unordered_map<string, bool>::iterator it = sVERArcOut.begin(); it != sVERArcOut.end(); it++)
 	{
 		if (it->second)
 		{
@@ -84,16 +83,16 @@ const string CVertex::VERPrintAdjacentNeightboors()
 	return res;
 }
 
-const string CVertex::VERGetAllListOutVertecies()
+const string CVertex::VERGetAllListOutVertices()
 {
 	string res = "";
 	set<string> see;
 
-	// to have accessed to all vertecies we can reach from this vertex which will represents the deb of the arcs...
-	// we use the sVERArcOut unordered_map because its keys are the values of the vertecies we seek for
+	// to have accessed to all Vertices we can reach from this vertex which will represents the deb of the arcs...
+	// we use the sVERArcOut unordered_map because its keys are the values of the Vertices we seek for
 	// 
 	// so with a for loop, we ieterate through the sVERArcOut unordered_map
-	for (auto it = sVERArcOut.begin(); it != sVERArcOut.end(); it++)
+	for (unordered_map<string, bool>::iterator it = sVERArcOut.begin(); it != sVERArcOut.end(); it++)
 	{
 		// we need to check if the value at the key's value is true or not, because if it 's not,
 		// then that means their is no arc reachable anymore from this vertex
@@ -111,30 +110,30 @@ const string CVertex::VERGetAllListOutVertecies()
 
 }
 
-void CVertex::VERRemoveArcFromArcIn(const string& s)
+void CVertex::VERRemoveArcFromArcIn(const string& sKey)
 {
 	// by assigining false to the sVERArcIn at the key's value
 	// means we are removing an arc in the IN direction from the vertex at value = "key" to this (CVertex)
-	if (sVERArcIn.find(s) != sVERArcIn.end())
-		sVERArcIn[s] = false;
+	if (sVERArcIn.find(sKey) != sVERArcIn.end())
+		sVERArcIn[sKey] = false;
 }
 
-void CVertex::VERRemoveArcFromArcOut(const string& s)
+void CVertex::VERRemoveArcFromArcOut(const string& sKey)
 {
 	// by assigining false to the sVERArcOut at the key's value
 	// means we are removing an arc in the OUT direction from the vertex at value = "key" to this (CVertex)
-	if (sVERArcOut.find(s) != sVERArcOut.end())
-		sVERArcOut[s] = false;
+	if (sVERArcOut.find(sKey) != sVERArcOut.end())
+		sVERArcOut[sKey] = false;
 }
 
-const set<string> CVertex::VERGetAllAdjacencesVerteciesValues()
+const set<string> CVertex::VERGetAllAdjacencesVerticesValues()
 {
-	// to get all adjacents vertecies of a vertex, we need to collect all 
-	// values of the vertecies connected to the vertex in the IN and the OUT direction
+	// to get all adjacents Vertices of a vertex, we need to collect all 
+	// values of the Vertices connected to the vertex in the IN and the OUT direction
 	set<string> see;
 
 
-	for (auto it = sVERArcIn.begin(); it != sVERArcIn.end(); it++)
+	for (unordered_map<string, bool>::iterator it = sVERArcIn.begin(); it != sVERArcIn.end(); it++)
 	{
 		// of coursre, we should check if there is an arc between our vertex and the current vertex
 		// by looking at the pair->second (if true, there is an arc unless there isn't)
@@ -144,7 +143,7 @@ const set<string> CVertex::VERGetAllAdjacencesVerteciesValues()
 		}
 	}
 
-	for (auto it = sVERArcOut.begin(); it != sVERArcOut.end(); it++)
+	for (unordered_map<string, bool>::iterator it = sVERArcOut.begin(); it != sVERArcOut.end(); it++)
 	{
 		// of coursre, we should check if there is an arc between our vertex and the current vertex
 		// by looking at the pair->second (if true, there is an arc unless there isn't)
@@ -156,32 +155,32 @@ const set<string> CVertex::VERGetAllAdjacencesVerteciesValues()
 	return see;
 }
 
-void CVertex::VERChangeKeysVerArcIn(const string& oldVal, const string& newVal)
+void CVertex::VERChangeKeysVerArcIn(const string& sOldVal, const string& sNewVal)
 {
 	// to change the value of the key that contains the involved arc (here in the IN direction of the vertex)
 	//
 	// 
 	// we should first store the value of the old record...
-	bool bOldValue = sVERArcIn[oldVal];
+	bool bOldValue = sVERArcIn[sOldVal];
 
 	// then, we should remove the old record of the arc 
-	sVERArcIn.erase(oldVal);
+	sVERArcIn.erase(sOldVal);
 
 	// then we store that stored value into the "newVal" of the key that contains the involved arc
-	VERGROModifyArcIn(newVal, bOldValue);
+	VERGROModifyArcIn(sNewVal, bOldValue);
 }
 
-void CVertex::VERChangeKeysVerArcOut(const string& oldVal, const string& newVal)
+void CVertex::VERChangeKeysVerArcOut(const string& sOldVal, const string& sNewVal)
 {
 	// to change the value of the key that contains the involved arc (here in the OUT direction of the vertex)
 	//
 	// 
 	// we should first store the value of the old record...
-	bool bOldValue = sVERArcOut[oldVal];
+	bool bOldValue = sVERArcOut[sOldVal];
 
 	// then, we should remove the old record of the arc 
-	sVERArcOut.erase(oldVal);
+	sVERArcOut.erase(sOldVal);
 
 	// then we store that stored value into the "newVal" of the key that contains the involved arc
-	VERGROModifyArcOut(newVal, bOldValue);
+	VERGROModifyArcOut(sNewVal, bOldValue);
 }

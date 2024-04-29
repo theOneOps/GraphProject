@@ -23,9 +23,9 @@ class CArc
 {
 private:
 	//ATTRIBUTS
-	// the dep value of the arc
+	// the departure's value of the arc
 	string sARCDep;
-	// the arr value of the arc
+	// the arrival's value of the arc
 	string sARCArr;
 public:
 	// CONSTRUCTORS
@@ -40,17 +40,17 @@ public:
 	* Leads : Create an arc by default (done by the compiler)
 	 *******************************************************************************
 	*/
-	CArc();
+	CArc()=default;
 
 	/**
 	*******************************************************************************
 	* CArc
 	* *****************************************************************************
-	* Entries : string sDep : the value of the arc's departure,
-	*  string sArr : the value of the arc's arrival
+	* Entries : string sDep : the departure's value of the arc,
+	*  string sArr : the arrival's value of the arc
 	* Needs : None
 	* Returns : None
-	* Leads : Create an CArc with sARCdep equals to sDep and sARCarr equals to sArr
+	* Leads : Create an CArc with sARCdep equals to sDep and sARCarr equals to sArr of the arc
 	 *******************************************************************************
 	*/
 	CArc(string sDep, string sArr);
@@ -62,7 +62,7 @@ public:
 	* Entries : None
 	* Needs : None
 	* Returns : string
-	* Leads : Get the departure's value of the vertex
+	* Leads : Get the departure's value of the arc
 	 *******************************************************************************
 	*/
 	const string ARCGetVertexDep() const;
@@ -74,7 +74,7 @@ public:
 	* Entries : None
 	* Needs : None
 	* Returns : string
-	* Leads :  Get the arrival's value of the vertex
+	* Leads :  Get the arrival's value of the arc
 	 *******************************************************************************
 	*/
 	const string ARCGetVertexArr() const;
@@ -86,7 +86,7 @@ public:
 	* Entries : string snewValue
 	* Needs : None
 	* Returns : void
-	* Leads : change the Dep value of the vertex
+	* Leads : change the Dep value of the arc with the snewValue
 	 *******************************************************************************
 	*/
 	void ARCGROModifyVertexDep(const string& sNewValue);
@@ -98,7 +98,7 @@ public:
 	* Entries : string sNewValue
 	* Needs : None
 	* Returns : void
-	* Leads : change the Arr value of the vertex
+	* Leads : change the Arr value of the arc with the snewValue
 	 *******************************************************************************
 	*/
 	void ARCGROModifyVertexArr(const string& sNewValue);

@@ -1,14 +1,14 @@
 NBSommets = 	4
-NBArcs = 	4
+NBArcs = 	3
 Sommets = [
 NuMeRo = ab	
 Numero = bc
-Numero = sd
+NumerO = sd
 Numero = ze  
 ]
-Arcs = [
-DEBUt = ab, Fin = ze
-Debut = bc , Fin = ze
+ARcs = [
+DEBUt = ab, Fin =		ze
+Debut = bc , FIn = ze
 Debut = bc, Fin = bc	
-Debut = sd, Fin = ab
+Debut = sd, Fin =ab
 ]

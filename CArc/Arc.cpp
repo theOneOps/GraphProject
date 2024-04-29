@@ -1,10 +1,6 @@
 #include "Arc.h"
 
 
-CArc::CArc()
-{
-
-}
 
 CArc::CArc(string sDep, string sArr) :sARCArr(sArr), sARCDep(sDep){}
 

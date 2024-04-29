@@ -24,31 +24,31 @@ private:
 	//ATRIBUTS
 	// value of the vertex
 	string sVERName;
-	// map containing all vertex values ending to the vertex
+	// map containing the values of Vertices whose arrival's vertex is the current vertex
 	unordered_map<string, bool> sVERArcIn;
-	// map containing all vertex values starting from the vertex
+	//  map containing the values of Vertices whose departure's vertex is the current vertex
 	unordered_map<string, bool> sVERArcOut;
 public:
 
 	//Constructors 
 
-	CVertex();
+	CVertex() = default;
 
-	// constructor taking the value of the vertex
+	// Constructor taking the value of the vertex
 	CVertex(string value);
 
 	//METHODS
 	/**
 	*******************************************************************************
-	* VERModify
+	* VERModifyName
 	* *****************************************************************************
-	* Entries : string svalue
+	* Entries : string sValue
 	* Needs : None
 	* Returns : void
-	* Leads : modify the value of the vertex by svalue
+	* Leads : modify the value of the vertex by sValue
 	********************************************************************************
 	*/
-	void VERModifyName(const string& svalue);
+	void VERModifyName(const string& sValue);
 
 	/**
 	*******************************************************************************
@@ -91,50 +91,50 @@ public:
 	*******************************************************************************
 	* VERGROModifyArcIn
 	* *****************************************************************************
-	* Entries : the string key to change, and the string new value to put at the key's "value"
+	* Entries : the string sKey to change, and the bool new value to put at the sKey's "value"
 	* Needs : None
 	* Returns : void
-	* Leads : change the value of the map sVERArcIn at the key to the new Value given into the parameter
+	* Leads : change the value of the map sVERArcIn at the 'key' to the new 'value' bool given into the parameter
 	*******************************************************************************
 	*/
-	void VERGROModifyArcIn(const string& key, bool value);
+	void VERGROModifyArcIn(const string& sKey, bool value);
 
 
 	/**
 	*******************************************************************************
 	* VERGROModifyArcOut
 	* *****************************************************************************
-	* Entries : the string key to change, and the string new value to put at the key's "value"
+	* Entries : the string sKey to change, and the bool new value to put at the sKey's "bValue"
 	* Needs : None
 	* Returns : void
-	* Leads : change the value of the map sVERArcOut at the key to the new Value given into the parameter
+	* Leads : change the value of the map sVERArcOut at the sKey to the new 'bValue' given into the parameter
 	*******************************************************************************
 	*/
-	void VERGROModifyArcOut(const string& key, bool value);
+	void VERGROModifyArcOut(const string& sKey, bool bValue);
 
 	/**
 	*******************************************************************************
 	* VERAddInTheMapIn
 	* *****************************************************************************
-	* Entries : the value of the key to add in the sVERArcIn
+	* Entries : the value of the sKey to add in the sVERArcIn
 	* Needs : None
 	* Returns : None
-	* Leads : a new value with another key equals to s will be added to the map sVERArcIn
+	* Leads : a new value with another sKey equals to sKey will be added to the map sVERArcIn
 	*******************************************************************************
 	*/
-	void VERAddInTheMapIn(const string& s);
+	void VERAddInTheMapIn(const string& sKey);
 
 	/**
 	*******************************************************************************
 	* VERAddInTheMapOut
 	* *****************************************************************************
-	* Entries : the value of the key to add in the sVERArcOut
+	* Entries : the value of the sKey to add in the sVERArcOut
 	* Needs : None
 	* Returns : None
-	* Leads : a new value with another key equals to s will be added to the map sVERArcOut
+	* Leads : a new value with another sKey equals to sKey will be added to the map sVERArcOut
 	*******************************************************************************
 	*/
-	void VERAddInTheMapOut(const string& s);
+	void VERAddInTheMapOut(const string& sKey);
 
 
 	/**
@@ -145,7 +145,7 @@ public:
 	* Needs : None
 	* Returns : const string 
 	* Leads :   print None if the vertex got no ajdacents neighboors, unless it returns a string
-		that will contain all the adjacents vertecies's values of the vertex
+		that will contain all the adjacents Vertices's values of the vertex
 	*******************************************************************************
 	*/
 	const string VERPrintAdjacentNeightboors();
@@ -154,83 +154,83 @@ public:
 	*******************************************************************************
 	* VERRemoveArcFromArcIn
 	* *****************************************************************************
-	* Entries : s : string represents the value of the arc in IN direction we want to remove
+	* Entries : sKey : string represents the value of the arc in IN direction we want to remove
 		from the vertex sVERArcIn's unordered_map
 	* Needs : None
 	* Returns : void
-	* Leads : the IN arc of the vertex which vertex arr's value is s will 
+	* Leads : the IN arc of the vertex which vertex arr's value is 'sKey' will 
 		be remove from the sVERArcIn's unordered_map
 	*******************************************************************************
 	*/
-	void VERRemoveArcFromArcIn(const string& s);
+	void VERRemoveArcFromArcIn(const string& sKey);
 
 
 	/**
 	*******************************************************************************
 	* VERRemoveArcFromArcOut
 	* *****************************************************************************
-	* Entries : s :  string represents the value of the arc in OUT direction we want to remove
+	* Entries : sKey :  string represents the value of the arc in OUT direction we want to remove
 		from the vertex sVERArcOut's unordered_map
 	* Needs : None
 	* Returns : void
-	* Leads : the OUT arc of the vertex which vertex arr's value is s will 
+	* Leads : the OUT arc of the vertex which vertex arr's value is sKey will 
 		be remove from the sVERArcOut's unordered_map
 	*******************************************************************************
 	*/
-	void VERRemoveArcFromArcOut(const string& s);
+	void VERRemoveArcFromArcOut(const string& sKey);
 
 	/**
 	*******************************************************************************
-	* VERGetAllAdjacencesVerteciesValues
+	* VERGetAllAdjacencesVerticesValues
 	* *****************************************************************************
 	* Entries : None
 	* Needs : None
 	* Returns : const set<string>
-	* Leads : the set returned will be empty if the vertex has no adjacents vertecies unless it returns
-		a set that contains all the values of those adjacents vertecies
+	* Leads : the set returned will be empty if the vertex has no adjacents Vertices unless it returns
+		a set that contains all the values of those adjacents Vertices
 	*******************************************************************************
 	*/
-	const set<string> VERGetAllAdjacencesVerteciesValues();
+	const set<string> VERGetAllAdjacencesVerticesValues();
 
 	/**
 	*******************************************************************************
 	* VERChangeKeysVerArcIn
 	* *****************************************************************************
-	* Entries : oldVal : string represents the old value on the arr value of the arc in 
+	* Entries : sOldVal : string represents the old value on the arr value of the arc in 
 		the IN direction that we need to change
-	*	newVal : string represents the new value to set on the arr value of the arc's IN 
+	*	sNewVal : string represents the new value to set on the arr value of the arc's IN 
 	* Needs : None
 	* Returns : void
-	* Leads : the arr value of the arc which was oldVal will be change to newVal
+	* Leads : the arr value of the arc which was sOldVal will be change to sNewVal
 	*******************************************************************************
 	*/
-	void VERChangeKeysVerArcIn(const string& oldVal, const string& newVal);
+	void VERChangeKeysVerArcIn(const string& sOldVal, const string& sNewVal);
 
 	/**
 	*******************************************************************************
 	* VERChangeKeysVerArcOut
 	* *****************************************************************************
-	* Entries : oldVal : string represents the old value on the dep value of the arc in 
+	* Entries : sOldVal : string represents the old value on the dep value of the arc in 
 		the OUT direction that we need to change
-	*	newVal : string represents the new value to set on the dep value of the arc's OUT 
+	*	sNewVal : string represents the new value to set on the dep value of the arc's OUT
 	* Needs : None
 	* Returns : void
-	* Leads : the dep value of the arc which was oldVal will be change to newVal
+	* Leads : the dep value of the arc which was sOldVal will be change to sNewVal
 	*******************************************************************************
 	*/
-	void VERChangeKeysVerArcOut(const string& oldVal, const string& newVal);
+	void VERChangeKeysVerArcOut(const string& sOldVal, const string& sNewVal);
 
 	/**
 	*******************************************************************************
-	* VERGetAllListOutVertecies
+	* VERGetAllListOutVertices
 	* *****************************************************************************
 	* Entries : None
 	* Needs : None
 	* Returns : const string
-	* Leads :returns a string thatcontains all vertecies which we can reach from the vertex in the OUT direction
+	* Leads :returns a string that contains all Vertices which we can reach from the vertex in the OUT direction
 	*******************************************************************************
 	*/
-	const string VERGetAllListOutVertecies();
+	const string VERGetAllListOutVertices();
 
 };
 #endif

@@ -10,8 +10,12 @@
 
 #include <cctype>
 
-#define size_not_conformed 25
-#define size_not_defined 26
+#define the_number_of_vertex_not_found 26
+#define composed_value 27
+#define value_not_numeric 28
+#define size_not_conformed 29
+#define size_not_defined 30
+
 /**********************************************************
 *  Class : CGraphParser management
 * *********************************************************
@@ -33,63 +37,75 @@ public:
 	*******************************************************************************
 	* GPRAddVertex
 	* *****************************************************************************
-	* Entries : graph : CGraphOrient<SommetType, ArcType> representing the graph to fill with vertecies
+	* Entries : graph : CGraphOrient<SommetType, ArcType> representing the graph to fill with Vertices
 	*			sSizeVertex : string representing the value of the name of the element size we want to read (eg: "Nbsommet" for "Nbsommet=2")
-	*			sSectionName : string representing the name of the section to read plus the first delimiter of the section (eg:"Sommets=[" for "Sommets=[2, 3]")
-				sDelimiterEnd : string representing the last delimiter of the section (eg: "]" for "Sommets=[2, 3]")
+	*			sSectionName : string representing the name of the section to read plus the first delimiter of the section (eg:"Sommets" for "Sommets=[ numero = 2,  numero = 3]")
+				sDelimiterEnd : string representing the last delimiter of the section (eg: "]" for "Sommets=[ numero = 2,  numero = 3]")
+				VertexVariableName : string representing the value of the attribut that contains the value we're looking for (eg: "]" for "Sommets=[ numero = 2,  numero = 3]")
+				sDelimiterBegin : string representing the delimiter at the beginning of an section (eg:"[" for "Sommets=[ numero = 2,  numero = 3]")
+				sDelimiterEnd : string representing the delimiter at the ending of an section (eg:"]" for "Sommets=[ numero = 2,  numero = 3]")
+				sDelimiterAffectation : string representing the affectation sign used for the section (eg:"=" for "Sommets=[ numero = 2,  numero = 3]")
+
 	* Needs : None
 	* Returns : void
-	* Leads : add some vertecies to the graph with values read from the file
+	* Leads : add some Vertices to the graph with values read from the file
 	*******************************************************************************
 	*/
 	void GPRAddVertex(CGraphOrient<SommetType, ArcType>*& graph, const string& sSizeVertex, const string& sSectionName,const string& VertexVariableName="numero", const string& sDelimiterBegin = "[", const string& sDelimiterEnd = "]", const string& sDelimiterAffectation = "=")
 	{
 		// we get accessed to each line of the section (which means each element that contains the value of the vertex to create)
-		vector<string> allVerteciesSection = PARAnalyzeSection(sSectionName, sDelimiterAffectation, sDelimiterBegin, sDelimiterEnd);
+		vector<string> allVerticesSection = PARAnalyzeSection(sSectionName, sDelimiterAffectation, sDelimiterBegin, sDelimiterEnd);
 
 		int size;
 		if (!sDelimiterAffectation.empty())
 		{
-			//cout << PARGetLineContains(sSizeVertex) << endl;
 			string res = PARAnalyzeSectionElement(PARGetLineContains(sSizeVertex), sSizeVertex, sDelimiterAffectation);
 			if (!res.empty())
 			{
+				// by a for loop, we check if all characters of the res's value are digits, 
 				for (char c : res)
 				{
+					
 					if (!isdigit(c))
 					{
+						// if not, we throw an exception
 						string error_message = "the size of the " + sSizeVertex + " is not fully numeric";
-						throw CException(size_not_defined, error_message, "CGraphParser.h", 57);
+						throw CException(value_not_numeric, error_message, "CGraphParser.h", 57);
 					}
 						
 				}
+				// if yes, we convert it to integer
 				size = stoi(res);
 			}
 			else
 			{
 				res = "there is no size defined for the " + sSizeVertex;
-				throw CException(size_not_defined, res, "CGraphParser.h", 53);
+				throw CException(size_not_defined, res, "CGraphParser.h", 57);
 			}
 		}
 		else
-			throw CException(the_number_of_vertex_not_found, "Error on finding the number of the vertex to create", "CgraphParser.h", 50);
+			throw CException(the_number_of_vertex_not_found, "Error on finding the number of the vertex to create", "CGraphParser.h", 53);
 
 
 
 
-		if (size > allVerteciesSection.size())
-			throw CException(size_not_conformed, "the number of vertecies you want to create is greater than the number of vertecies that is actually defined in your file.txt", "CGrpahParser.h",  67);
+		if (size > allVerticesSection.size())
+			throw CException(size_not_conformed, "the number of Vertices you want to create is greater than the number of Vertices that is actually defined in your file.txt", "CGrpahParser.h",  67);
 
 		string vertexValue = "";
 		// then we iterate over those lines and we parse them to find the value of the vertex to create
 		for (int i = 0; i < size; i++)
 		{
-			vertexValue = PARAnalyzeSectionElement(allVerteciesSection[i], VertexVariableName, sDelimiterAffectation);
+			vertexValue = PARAnalyzeSectionElement(allVerticesSection[i], VertexVariableName, sDelimiterAffectation);
+
+			// we first check if the value is not a composed value
 			if (PARContainsSpaceOrTab(vertexValue))
-				throw CException(size_not_conformed, "the vertex should not be a composed value", "CGrpahParser.h", 67);
-			// this line created the vertex with the value "vertexValue" in the graph
+			{
+				// it yes, we throw an exception
+				throw CException(composed_value, "the vertex should not be a composed value", "CGrpahParser.h", 97);
+			}
+			// if not, this line created the vertex with the value "vertexValue" in the graph
 			graph->GROAddVertex(vertexValue);
-			//cout << "creation du vertex " << PARAnalyzeSectionElement(allVerteciesSection[i], sVertexName, "=") << endl;
 		}
 	}
 
@@ -99,8 +115,12 @@ public:
 	* *****************************************************************************
 	* Entries :  graph : CGraphOrient<SommetType, ArcType> representing the graph to create arcs for
 	*			sSizeArcs : string representing the value of the name of the element size we want to read (eg: "Nbarc" for "Nbarc=2")
-	*			sSectionName : string representing the name of the section to read plus the first delimiter of the section (eg:"Arcs=[" for "Arcs=[2, 3]")
-				sDelimiterEnd : string representing the last delimiter of the section (eg: "]" for "Arcs=[2, 3]")
+	*			sSectionName : string representing the name of the section to read plus the first delimiter of the section (eg:"Arcs" for "Arcs=[2, 3]")
+				ArcsVariableName: vector of strings representing the value of the attributs that contains the value we're looking for (eg: 'vector<>("Debut","Fin")' for "Arcs=[ Debut = 2, Fin = 3]")
+				sDelimiterBegin : string representing the delimiter at the beginning of an section (eg:"[" for "Sommets=[ numero = 2,  numero = 3]")
+				sDelimiterEnd : string representing the delimiter at the ending of an section (eg:"]" for "Sommets=[ numero = 2,  numero = 3]")
+				sDelimiterAffectation : string representing the affectation sign used for the section (eg:"=" for "Sommets=[ numero = 2,  numero = 3]")
+				sDelimiterBetweenArcsValuesNames : string representing the sign separating two values or more the section (eg:"," for "Sommets=[ numero = 2,  numero = 3]")
 	* Needs : None
 	* Returns : void
 	* Leads : add some arcs to the graph with values dep and arr read from the file
@@ -122,24 +142,27 @@ public:
 			{
 				for (char c : res)
 				{
+					// by a for loop, we check if all characters of the res's value are digits, 
 					if (!isdigit(c))
 					{
+						// if not, we throw an exception
 						string error_message = "the size of the " + sSizeArcs + " is not fully numeric";
-						throw CException(size_not_defined, error_message, "CGraphParser.h", 119);
+						throw CException(value_not_numeric, error_message, "CGraphParser.h", 138);
 					}
 
 				}
+				// if yes, we convert it to integer
 				size = stoi(res);
 			}
 			else
 			{
 				res = "there is no size defined for the " + sSizeArcs;
-				throw CException(size_not_defined, res, "CGraphParser.h", 115);
+				throw CException(size_not_defined, res, "CGraphParser.h", 133);
 			}
 		}
 
 		if (size > allArcsSection.size())
-			throw CException(size_not_conformed, "the number of arcs you want to create is greater than the number of arcs that is actually defined in your file.txt", "CGrpahParser.h", 93);
+			throw CException(size_not_conformed, "the number of arcs you want to create is greater than the number of arcs that is actually defined in your file.txt", "CGrpahParser.h", 156);
 
 		// then with a for loop, we parse each line to have the dep value and arr value of each arc
 		for (int i = 0; i < size; i++)
@@ -148,10 +171,9 @@ public:
 			string sDebArc = PARAnalyzeSectionElement(allArcsSection[i].substr(0, pos), ArcsVariableName[0]);
 			string sArrArc = PARAnalyzeSectionElement(allArcsSection[i].substr(pos, allArcsSection[i].size()), ArcsVariableName[1]);
 
-			//cout << "debut arc -> " << sDebArc << "| fin arc ->" << sArrArc << endl;
 
 			if (PARContainsSpaceOrTab(sDebArc) || PARContainsSpaceOrTab(sArrArc))
-				throw CException(size_not_defined, "one of the values of your arcs contain spaces or tabs, correct them !", "CGraphParser.h", 115);
+				throw CException(composed_value, "one (or more) of the values of your arcs contain spaces or tabs, correct them !", "CGraphParser.h", 167);
 
 			//cout << "arc (" << sDebArc << ", " << sArrArc << ")" << endl;
 			// then we create the  arc with the specified values
@@ -181,7 +203,7 @@ public:
 			PARReadFile(sfileName);
 
 
-			// we add all vertecies sepcified by the file
+			// we add all Vertices sepcified by the file
 			GPRAddVertex(graph, "NBSommets", "Sommets");
 
 			vector<string> vect;

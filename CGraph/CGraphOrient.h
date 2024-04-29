@@ -41,7 +41,7 @@ class CGraphOrient
 {
 private:
 
-    // we just check if the type put in the class type are what we are expected to have
+    // we just check if the type put in the class's type are what we are expected to have
     static_assert(is_base_of<CVertex, SommetType>::value, "SommetType needs to be a CVertex class or a derivate of CVertex's class");
     static_assert(is_base_of<CArc, ArcType>::value, "ArcType needs to be a CArc class or a derivate of CArc's class");
 
@@ -72,6 +72,33 @@ public:
 
     CGraphOrient() = default;
 
+
+    /**
+    *******************************************************************************
+    * CGraphOrient(CGraphOrient<SommetType, ArcType>& graph)
+    * *****************************************************************************
+    * Entries : CGraphOrient<SommetType, ArcType>& graph
+    * Needs : None
+    * Returns : CGraphOrient<SommetType, ArcType>& graph
+    * Leads : the return graph will have the same structure as the graph given as parameter,
+    * But the return graph won't point to the same memory as the graph given as parameter
+    *******************************************************************************
+    */
+    CGraphOrient(CGraphOrient<SommetType, ArcType>& graph)
+    {
+        // To create a new Oriented graph, we should first add all Vertices of the graph given as parameter 
+        for (const pair<string, SommetType*>& pair : graph.GROGetMVertex())
+        {
+            GROAddVertex(pair.first);
+        }
+
+        // and we do the same for all of the arcs of the graph given as parameter
+        for (const pair<pair<string, string>, ArcType*>& pair : graph.GROGetMArcs())
+        {
+            GROAddArc(pair.first.first, pair.first.second);
+        }
+    }
+
     /**
     *******************************************************************************
     *  ~CGraphOrient()
@@ -79,7 +106,7 @@ public:
     * Entries : None
     * Needs : None
     * Returns : void
-    * Leads : Destroy the graph by desallocating the memory for all the vertecies and all the arcs between those vertecies
+    * Leads : Destroy the graph by desallocating the memory for all the Vertices and all the arcs between those Vertices
     *******************************************************************************
     */
     ~CGraphOrient()
@@ -87,7 +114,7 @@ public:
         /*
         * To delete a graph, we need to delete : 
         */
-        // all the vertecies of the graph
+        // all the Vertices of the graph
         for (pair<string, SommetType*> pair : mGROVertex)
         {
             delete pair.second;
@@ -107,7 +134,7 @@ public:
     * Needs : None
     * Returns : void
     * Leads : Add a vertex into the Graph if the vertex isn't in
-        the graph before unless throw an exception
+        the graph before, unless throw an exception
     *******************************************************************************
     */
     void GROAddVertex(const string& key)
@@ -117,7 +144,7 @@ public:
         if (!GROExistenceOfVertex(key))
         {
             // so if it's available, we call GROAddKeyVertexInMap's method to create the vertex with the "key" value and 
-            // added it to the unordered_map that contains all the vertecies of the graph
+            // added it to the unordered_map that contains all the Vertices of the graph
             GROAddKeyVertexInMap(key);
             cout << "vertex added successfully" << endl;
         }
@@ -125,7 +152,7 @@ public:
         {
             // if the key is not avalaible to use, an exception is thrown
             string sErrorMessage = "a vertex with the value " + key + " already exists";
-            throw CException(vertex_already_existed, sErrorMessage, "CGraphOriented.cpp", 87);
+            throw CException(vertex_already_existed, sErrorMessage, "CGraphOriented.h", 144);
         }
     }
 
@@ -141,32 +168,32 @@ public:
         before unless throw an exception
     *******************************************************************************
     */
-    virtual void GRORemoveVertex(const string& key)
+    virtual void GRORemoveVertex(const string& skey)
     {
         // to remove a vertex, we need to check if the vertex to remove ireally existed in the graph
-        if (GROExistenceOfVertex(key))
+        if (GROExistenceOfVertex(skey))
         {
             // if that's so, we get the vertex by accessing it by its value from the unordered_map
-            // mGROArcs( that contains all the vertecies of the graph )
-            SommetType* Vertex = GROGetVertexFromKey(key);
+            // mGROArcs( that contains all the Vertices of the graph )
+            SommetType* Vertex = GROGetVertexFromKey(skey);
 
             // then we get all, the value of the veeertecies adjacents to the vertex we want to remove
-            set<string> adjacentVertecies = Vertex->VERGetAllAdjacencesVerteciesValues();
+            set<string> adjacentVertices = Vertex->VERGetAllAdjacencesVerticesValues();
 
-            // then, by a loop we remove all the arcs that linked our vertex with its adjacents vertecies
-            for (string v : adjacentVertecies)
+            // then, by a loop we remove all the arcs that linked our vertex with its adjacents Vertices
+            for (string v : adjacentVertices)
             {
                 
                 try
                 {
-                    // if their is an arc which value dep is key and the value of one of the vertecies
+                    // if their is an arc which value dep is key and the value of one of the Vertices
                     // then we remove it
-                    GRORemoveArc(key, v);
+                    GRORemoveArc(skey, v);
                 }
                 catch (CException e)
                 {
                     //if not, then it's the invert arc one, that we should remove
-                    GRORemoveArc(v, key);
+                    GRORemoveArc(v, skey);
                 }
             }
 
@@ -175,14 +202,14 @@ public:
 
             // and finally, we remove the record that represents the vertex from the unordered_map
             // mGROArcs
-            mGROVertex.erase(key);
+            mGROVertex.erase(skey);
 
         }
         else
         {
             // if the vertex we want to remove doesn't exist in the graph, then we throw an exception
-            string sErrorMessage = "a vertex with the value " + key + " doesn't exist";
-            throw CException(vertex_not_existed, sErrorMessage, "CGraphOriented.cpp", 48);
+            string sErrorMessage = "a vertex with the value " + skey + " doesn't exist";
+            throw CException(vertex_not_existed, sErrorMessage, "CGraphOriented.h", 174);
         }
     }
 
@@ -195,16 +222,16 @@ public:
     * Needs : None
     * Returns : void
     * Leads : throw an exception if :
-    * if one of the vertex is not in the graph, it throw an exception
-    * if there is already an arc between those vertecies
+    * if one of the vertex is not in the graph, it throws an exception
+    * if there is already an arc between those Vertices
     *
-    * Unless it add a arc between those vertecies
+    * Unless it adds an arc between those Vertices
     *******************************************************************************
     */
     virtual void GROAddArc(const string& sVertexDep, const string& sVertexArr)
     {
-        // to add an arc between from a start value  "sVertexDep" to and end value "sVertexDArr",
-        // we should first check if the involved vertecies of values 
+        // to add an arc from a start value  "sVertexDep" to and end value "sVertexDArr",
+        // we should first check if the involved Vertices of values 
         // "sVertexDep and sVertexArr" really existed
 
         if (GROExistenceOfVertex(sVertexDep))
@@ -215,7 +242,7 @@ public:
             {
                 SommetType* VertexArr = GROGetVertexFromKey(sVertexArr);
 
-                // then we check if there is already an arc between those vertecies or not 
+                // then we check if there is already an arc between those Vertices or not 
                 // the existence of an arc IN 
                 if (!GROExistenceOfArcNOriented(sVertexDep, sVertexArr))
                 {
@@ -223,7 +250,7 @@ public:
                     // the existence of an arc OUT
                     if (!GROExistenceOfArcNOriented(sVertexArr, sVertexDep))
                     {
-                        // if there is not arc, then we get accessed to to the involved vertecies 
+                        // if there is not arc, then we get accessed to the involved Vertices 
                         // (the one for sVertexArr, and the one for sVertexDep)
 
                         VertexArr->VERAddInTheMapIn(sVertexDep);
@@ -238,22 +265,22 @@ public:
                     }
                     else
                     {
-                        // if there is already an arc IN the in way, we throw an exception
+                        // if there is already an arc 'IN' in the way, we throw an exception
                         string sErrorMessage = "an arc with a vertexDep " + sVertexDep + " and vertexArr " + sVertexArr + " is already in the graph";
-                        throw CException(arc_already_existed, sErrorMessage, "CGraphOriented.cpp", 68);
+                        throw CException(arc_already_existed, sErrorMessage, "CGraphOriented.h", 251);
                     }
                 }
                 else
-                {   // if there is already an arc OUT the in way, we throw an exception
+                {   // if there is already an arc 'OUT' in the in way, we throw an exception
                     string sErrorMessage = "an arc with a vertexDep " + sVertexDep + " and vertexArr " + sVertexArr + " is already in the graph";
-                    throw CException(arc_already_existed, sErrorMessage, "CGraphOriented.cpp", 66);
+                    throw CException(arc_already_existed, sErrorMessage, "CGraphOriented.h", 247);
 
                 }
             }
             else
             {   // if the end vertex doesn't exist, we throw an exception
                 string sErrorMessage = "a vertex with the value " + sVertexArr + " doesn't exist";
-                throw CException(vertex_not_existed, sErrorMessage, "CGraphOriented.cpp", 70);
+                throw CException(vertex_not_existed, sErrorMessage, "CGraphOriented.h", 241);
 
             }
         }
@@ -261,7 +288,7 @@ public:
         {   // if the start vertex doesn't exist, we throw an exception
 
             string sErrorMessage = "a vertex with the value " + sVertexDep + " doesn't exist";
-            throw CException(vertex_not_existed, sErrorMessage, "CGraphOriented.cpp", 68);
+            throw CException(vertex_not_existed, sErrorMessage, "CGraphOriented.h", 237);
         }
     }
 
@@ -273,17 +300,17 @@ public:
     * sVertexArr: string represented the end value of the arc
     * Needs : None
     * Returns : void
-    * Leads : throw an exception if :
-    * if one of the vertex is not in the graph, it throw an exception
-    * if there is no arc between those vertecies
+    * Leads : throw an exception :
+    * if one of the vertex is not in the graph, it throws an exception
+    * if there is no arc between those Vertices
     *
-    * Unless it removes the arc between those vertecies
+    * Unless it removes the arc between those Vertices
     *******************************************************************************
     */
     virtual void GRORemoveArc(const string& sVertexDep, const string& sVertexArr)
     {
-        // to remove an arc between from a start value  "sVertexDep" to and end value "sVertexDArr",
-        // we should first check if the involved vertecies of values 
+        // to remove an arc from a start value  "sVertexDep" to and end value "sVertexDArr",
+        // we should first check if the involved Vertices of values 
         // "sVertexDep and sVertexArr" really existed
         if (GROExistenceOfVertex(sVertexDep))
         {
@@ -292,7 +319,7 @@ public:
             {
                 SommetType* VArr = GROGetVertexFromKey(sVertexArr);
 
-                // then we check there is really an arc between those vertecies
+                // then we check there is really an arc between those Vertices
                 if (GROExistenceOfArcNOriented(sVertexDep, sVertexArr))
                 {
                     pair<string, string> key{ sVertexDep, sVertexArr };
@@ -319,23 +346,23 @@ public:
                 }
                 else
                 {
-                    // if there is no arc between those vertecies, we throw an exception
+                    // if there is no arc between those Vertices, we throw an exception
                     string sErrorMessage = "an arc with a vertexDep " + sVertexDep + " and vertexArr " + sVertexArr + " is not in the graph";
-                    throw CException(arc_already_existed, sErrorMessage, "CGraphOriented.cpp", 178);
+                    throw CException(arc_already_existed, sErrorMessage, "CGraphOriented.h", 323);
                 }
             }
             else
             {
                 // if the end vertex doesn't exist in the graph, we remove the graph
                 string sErrorMessage = "a vertex with the value " + sVertexArr + " doesn't exist";
-                throw CException(vertex_not_existed, sErrorMessage, "CGraphOriented.cpp", 117);
+                throw CException(vertex_not_existed, sErrorMessage, "CGraphOriented.h", 318);
             }
         }
         else
         {
             // if the start vertex doesn't exist in the graph, we remove the graph
             string sErrorMessage = "a vertex with the value " + sVertexDep + " doesn't exist";
-            throw CException(vertex_not_existed, sErrorMessage, "CGraphOriented.cpp", 115);
+            throw CException(vertex_not_existed, sErrorMessage, "CGraphOriented.h", 315);
 
         }
     }
@@ -349,15 +376,15 @@ public:
     * Needs : None
     * Returns : void
     * Leads : throw an exception:
-    * if a vertex of value equals to oldValue doesn't exsit in the graph
-    * if the new value to put in replace on the oldValue already exist
+    * if a vertex of value equals to sVertexOldValue doesn't exsit in the graph
+    * if the new value to put in replace on the sVertexOldValue already exist
     *
-    * Unless change the vertex by assigining newValue to his old value, and apply the change to the entire graph
+    * Unless change the vertex by assigining sVertexNewValue to his old value, and apply the change to the entire graph
     *******************************************************************************
     */
     virtual void GROModifyVertex(const string& sVertexOldValue, const string& sVertexNewValue)
     {
-        // to modify the involved vertex, we shoould first test if it exists
+        // to modify the involved vertex, we should first test if it exists
         if (GROExistenceOfVertex(sVertexOldValue))
         {
             // then we should check if a vertex with a new value, is in the graph or not
@@ -366,14 +393,15 @@ public:
                 // if not then we first get the vertex we want to modify the value of
                 SommetType* VertexOldValue = GROGetVertexFromKey(sVertexOldValue);
 
-                // then we get the adjacents vertecies that are linked to our vertex
-                set<string> adjacentVertecies = VertexOldValue->VERGetAllAdjacencesVerteciesValues();
+                // then we get the adjacents Vertices that are linked to our vertex
+                set<string> adjacentVertices = VertexOldValue->VERGetAllAdjacencesVerticesValues();
 
                 // next with a for loop, we go through all arcs that linked our vertex to each of its adjacents vertex 
-                for (string sAdjVertex : adjacentVertecies)
+                for (string sAdjVertex : adjacentVertices)
                 {
 
-                    cout << "vertex -> " + sAdjVertex << endl;
+                    //cout << "vertex -> " + sAdjVertex << endl;
+
                     // if the current arc is in IN direction 
                     // we just change the value at start of the arc ith the new value of the arc
                     SommetType* VAdjVertex = GROGetVertexFromKey(sAdjVertex);
@@ -392,8 +420,6 @@ public:
                             arc->ARCGROModifyVertexDep(sVertexNewValue);
 
                             arc->ARCGROModifyVertexArr(sVertexNewValue);
-
-                            // valeur d'avant de l'enregistrment de l'arc dans le mGROArcs, il faut l'enlever et y mettre le nouveau key pair
 
                             pair<string, string> oldKey{ sVertexOldValue, sAdjVertex };
                             pair<string, string> newKey{ sVertexNewValue, sVertexNewValue };
@@ -469,14 +495,14 @@ public:
             {
                 // if the new value is already in use by another vertex, we throw an exception
                 string sErrorMessage = "a vertex with the value " + sVertexNewValue + " already exists in the graph";
-                throw CException(vertex_already_existed, sErrorMessage, "CGraphOriented.cpp", 161);
+                throw CException(vertex_already_existed, sErrorMessage, "CGraphOriented.h", 391);
             }
         }
         else
         {
             // if there is no vertex with the old value we want to change, we throw an exception
             string sErrorMessage = "a vertex with the value " + sVertexOldValue + " doesn't exist";
-            throw CException(vertex_not_existed, sErrorMessage, "CGraphOriented.cpp", 159);
+            throw CException(vertex_not_existed, sErrorMessage, "CGraphOriented.h", 388);
         }
     }
 
@@ -484,21 +510,21 @@ public:
     *******************************************************************************
     * GROInverserArc
     * *****************************************************************************
-    * Entries : sVertexOldValue : string  represented the old value of the vertex,
+    * Entries : sVertexOldValue : string represented the old value of the vertex,
     *           sVertexNewValue : string represented the new value to replace that old Value of the vertex
     *
     * Needs : None
     * Returns : void
     * Leads : throw an exception if :
-    * the vertecies of the arc don't exist in the graph
+    * the Vertices of the arc don't exist in the graph
     *
     * Unless we reverse the arc by changing the link between
-    *    the vertecies of the arcs and by reversing the arc as well
+    *    the Vertices of the arc and by reversing the arc as well
     *******************************************************************************
     */
     virtual void GROInverserArc(const string& sVertexDep, const string& sVertexArr)
     {
-        // To invert an arc, we need to first check if the involved vertecies in the creation of the arc really exist
+        // To invert an arc, we need to first check if the involved Vertices in the creation of the arc really exist
         if (GROExistenceOfVertex(sVertexDep))
         {
             if (GROExistenceOfVertex(sVertexArr))
@@ -506,14 +532,14 @@ public:
                 // if that's so, check if there is an arc between them to invert
                 if (GROExistenceOfArcNOriented(sVertexDep, sVertexArr))
                 {
-                    // it yes, then we check if our vertecies are equal or not, if they are equal then inverting the arc won't change anything
+                    // it yes, then we check if our Vertices are equal or not, if they are equal then inverting the arc won't change anything
                     if (sVertexDep != sVertexArr)
                     {
-                        // if they are not equals, we first get accessed to those vertecies
+                        // if they are not equals, we first get accessed to those Vertices
                         SommetType* vertexDep = GROGetVertexFromKey(sVertexDep);
                         SommetType* vertexArr = GROGetVertexFromKey(sVertexArr);
 
-                        // we change the In and Out of the vertecies
+                        // we change the In and Out of the Vertices
                         vertexDep->VERGROModifyArcOut(sVertexArr, false);
                         vertexDep->VERAddInTheMapIn(sVertexArr);
 
@@ -544,7 +570,7 @@ public:
                 {
                     // if there is no arc to invert, we throw an exception
                     string sErrorMessage = "an arc with a vertex Dep " + sVertexDep + " an vertex Arr " + sVertexArr + " doesn't exist";
-                    throw CException(arc_not_existed, sErrorMessage, "CGraphOriented.cpp", 141);
+                    throw CException(arc_not_existed, sErrorMessage, "CGraphOriented.h", 533);
 
                 }
             }
@@ -552,14 +578,14 @@ public:
             {
                 // if the end vertex doesn't exist, we throw an exception
                 string sErrorMessage = "a vertex with the value " + sVertexArr + " doesn't exist";
-                throw CException(vertex_not_existed, sErrorMessage, "CGraphOriented.cpp", 287);
+                throw CException(vertex_not_existed, sErrorMessage, "CGraphOriented.h", 530);
             }
         }
         else
         {
             // if the start vertex doesn't exist, we throw an exception
             string sErrorMessage = "a vertex with the value " + sVertexDep + " doesn't exist";
-            throw CException(vertex_not_existed, sErrorMessage, "CGraphOriented.cpp", 285);
+            throw CException(vertex_not_existed, sErrorMessage, "CGraphOriented.h", 528);
 
         }
     }
@@ -569,10 +595,10 @@ public:
     * GROInverserAllArcs
     * *****************************************************************************
     * Entries : None
-    * Needs : the arcs to invert should exist as well as the vertecies that link the arc
+    * Needs : the arcs to invert should exist as well as the Vertices that link the arc
     * Returns : void
     * Leads : This function uses the GROInverseArc to invert an arc between
-    * two vertecies and it does that with all the arcs of the graph
+    * two Vertices and it does that with all the arcs of the graph
     *******************************************************************************
     */
     virtual void GROInverserAllArcs()
@@ -582,7 +608,7 @@ public:
         vector<pair<string, string>> arcsToInvert;
 
         // first, we get access to all the arcs of the graph and we put them in the arcInvert vector
-        for (const auto& arcEntry : mGROArcs) {
+        for (const pair<pair<string, string>, ArcType*>& arcEntry : mGROArcs) {
             arcsToInvert.push_back({ arcEntry.first.first, arcEntry.first.second });
         }
 
@@ -622,66 +648,16 @@ public:
     * Entries : None
     * Needs : None
     * Returns : const unordered_map<string, CVertex*>&
-    * Leads : Return the map that contains all the vertecies of the graph in readonly mode
+    * Leads : Return the map that contains all the Vertices of the graph in readonly mode
     * hence the const at the end of the function
     *******************************************************************************
     */
     const unordered_map<string, SommetType*>& GROGetVertexMap() const
     {
-        // just return a const reference to the unordered_map that contains all vertecies of the graph
+        // just return a const reference to the unordered_map that contains all Vertices of the graph
         // to be used only in readonly way
         return mGROVertex;
     }
-
-
-    /**
-    *******************************************************************************
-    * GROPrintAllVertecies
-    * *****************************************************************************
-    * Entries : None
-    * Needs : None
-    * Returns : void
-    * Leads : Print all the vertecies of the graph into the console
-    *******************************************************************************
-    */
-    void GROPrintAllVertecies()
-    {
-        // to print all vertecies of the graph, we just have to iterate on the unordered_map mGROVertex 
-        // that contains all vertecies of the graph
-        typename unordered_map<string, SommetType*>::iterator it = mGROVertex.begin();
-
-        for (; it != mGROVertex.end(); it++)
-        {
-            // and we just print the key of the current record vertex (the key is the value of the vertex)
-            cout << it->first << endl;
-        }
-    }
-
-    /**
-    *******************************************************************************
-    * GROPrintAllArcs
-    * *****************************************************************************
-    * Entries : None
-    * Needs : None
-    * Returns : void
-    * Leads : Print all the arcs of the graph into the console
-    * in fact, it print the related vertecies between
-    * an arc and the direction in between them
-    *******************************************************************************
-    */
-    void GROPrintAllArcs()
-    {
-        // to print all the arcs of the graph, we just need to go trough all arcs of the graph
-        // and since the key of each record of an arc, is pair value of the start value and end value of the arc :
-       
-        for (pair<pair<string, string>, ArcType*> pair : mGROArcs)
-        {
-            // all we have to do is : printing the key
-            cout << pair.first.first + " " << pair.first.second << endl;
-        }
-    }
-
-
 
 protected:
 
@@ -689,13 +665,13 @@ protected:
     *******************************************************************************
     * GROExistenceOfVertex
     * *****************************************************************************
-    * Entries : key : string
+    * Entries : skey : string
     * Needs : None
     * Returns : bool
-    * Leads : Check if the vertex with the value key exist in the graph
+    * Leads : Check if the vertex with the value skey exist in the graph
     *******************************************************************************
     */
-    bool GROExistenceOfVertex(const string& key)
+    bool GROExistenceOfVertex(const string& skey)
     {
         bool res = false;
 
@@ -703,7 +679,7 @@ protected:
         //the number of vertex with value equals to the key string
        
         // if the answer is upper than 0 then there is effectively an vertex of value key
-        if (GROGetMVertex().count(key) > 0)
+        if (GROGetMVertex().count(skey) > 0)
             res = true;
 
         return res;
@@ -717,7 +693,7 @@ protected:
     * sVertexArr: string represented the end value of the arc
     * Needs : None
     * Returns : void
-    * Leads : Verify if there is an arc with a start equals to  sVertexDep and
+    * Leads : Verify if there is an arc with a start equals to sVertexDep and
     * the end value equals to sVertexArr
     *******************************************************************************
     */
@@ -737,21 +713,21 @@ protected:
     *******************************************************************************
     * GROAddKeyVertexInMap
     * *****************************************************************************
-    * Entries : key: string represented the value of the vertex to create and to add to the graph
+    * Entries : skey: string represented the value of the vertex to create and to add to the graph
     * Needs : None
     * Returns : void
-    * Leads : add a vertex with value equals to key by at the same time, creating the due vertex
+    * Leads : add a vertex with value equals to skey by at the same time, creating the due vertex
     * This function is used in the GROAddVertex of course...
     *******************************************************************************
     */
-    void GROAddKeyVertexInMap(const string& key)
+    void GROAddKeyVertexInMap(const string& skey)
     {
         // to add a vertex of value key to the mGROVertex unordered_map,
         // we first allocate memory for that vertex with the value key
-        SommetType* newVertex = new SommetType(key);
+        SommetType* newVertex = new SommetType(skey);
 
         // then we put the vertex we just create into the mGROVertex at the key value
-        mGROVertex[key] = newVertex;
+        mGROVertex[skey] = newVertex;
     }
 
     /**
@@ -820,16 +796,16 @@ protected:
     *******************************************************************************
     * getVertexFromKey
     * *****************************************************************************
-    * Entries : key : string represented
+    * Entries : skey : string represented
     * Needs : None
     * Returns :  CVertex*
-    * Leads : return the vertex with the value equals to key
+    * Leads : return the vertex with the value equals to skey
     *******************************************************************************
     */
-    SommetType* GROGetVertexFromKey(const string& key)
+    SommetType* GROGetVertexFromKey(const string& skey)
     {
         // this method just returns the vertex at the key value from the mGROVertex unordered_map 
-        return mGROVertex[key];
+        return mGROVertex[skey];
     }
 
     /**
@@ -892,8 +868,8 @@ protected:
         // and end value is sVertexArr from the mGROArcs unordered_map by putting the new "arc" 
         pair<string, string> pairKey{ sVertexDep, sVertexArr };
 
-        if (sVertexDep == sVertexArr)
-            cout << "passage reussi " << endl;
+        //if (sVertexDep == sVertexArr)
+          //  cout << "passage reussi " << endl;
 
         mGROArcs[pairKey] = arc;
     }
@@ -927,15 +903,15 @@ protected:
     * Entries : key : string represented the value of the vertex to erase from the graph
     * Needs : None
     * Returns : void
-    * Leads : erase the vertex with the value from the map that contains all the vertecies of the graph
+    * Leads : erase the vertex with the value from the map that contains all the Vertices of the graph
     *
     * this function is used in the GROModifyVertex's function
     *******************************************************************************
     */
-    void GROEraseVertexKey(const string& key)
+    void GROEraseVertexKey(const string& skey)
     {
         // we remove the record of the vertex at the value "key" from the mGROVertex unordered_map
-        mGROVertex.erase(key);
+        mGROVertex.erase(skey);
     }
 };
 #endif 
