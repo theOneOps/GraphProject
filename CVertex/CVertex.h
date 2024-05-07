@@ -232,5 +232,19 @@ public:
 	*/
 	const string VERGetAllListOutVertices();
 
+
+	/**
+	*******************************************************************************
+	* FunctionName
+	* *****************************************************************************
+	* Entries : tree : BSTree* = the tree we want to compare with
+	* Needs : None
+	* Returns : void
+	* Leads : Return description
+	*******************************************************************************
+	*/
+	const set<string> VERGetAllAdjacentsOutVertecies();
+
+
 };
 #endif

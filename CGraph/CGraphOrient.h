@@ -228,7 +228,7 @@ public:
     * Unless it adds an arc between those Vertices
     *******************************************************************************
     */
-    virtual void GROAddArc(const string& sVertexDep, const string& sVertexArr)
+    virtual void GROAddArc(const string& sVertexDep, const string& sVertexArr, const unsigned int& arcWeight = 0)
     {
         // to add an arc from a start value  "sVertexDep" to and end value "sVertexDArr",
         // we should first check if the involved Vertices of values 
@@ -258,7 +258,7 @@ public:
 
                         // we create an arc with the correponding start value and end value of the arc
                         // and then we add the arc created to the unorderd_map mGROArcs
-                        GROAddPairKeysMArcs(sVertexDep, sVertexArr);
+                        GROAddPairKeysMArcs(sVertexDep, sVertexArr, arcWeight);
 
                         string res = "arc (" + sVertexDep + " " + sVertexArr + ") created successfully";
                         cout << res << endl;
@@ -659,6 +659,36 @@ public:
         return mGROVertex;
     }
 
+    /**
+    *******************************************************************************
+    * GROExistenceOfArcNOriented
+    * *****************************************************************************
+    * Entries :  sVertexDep: string represented the start value of the arc,
+    * sVertexArr: string represented the end value of the arc
+    * Needs : None
+    * Returns : void
+    * Leads : Verify if there is an arc with a start equals to sVertexDep and
+    * the end value equals to sVertexArr
+    *******************************************************************************
+    */
+    bool GROExistenceOfArcNOriented(const string& sVertexDep, const string& sVertexArr)
+    {
+        bool res = false;
+
+        // to check if there is an arc with start value equals to sVertexDep and end value equals to sVertexArr,
+        // we count the number of vertex with value equals to the key string
+        if (GROGetMArcs().count(make_pair(sVertexDep, sVertexArr)) > 0)
+            res = true;
+
+        return res;
+    }
+
+    unsigned int GROGetWeightOFArc(string sVertexDep, string sVertexArr)
+    {
+        //pair<string, string> key { sDep, sArr };
+        return mGROArcs[make_pair(sVertexDep, sVertexArr)]->ARCGetWeight();
+    }
+
 protected:
 
     /**
@@ -680,30 +710,6 @@ protected:
        
         // if the answer is upper than 0 then there is effectively an vertex of value key
         if (GROGetMVertex().count(skey) > 0)
-            res = true;
-
-        return res;
-    }
-
-    /**
-    *******************************************************************************
-    * GROExistenceOfArcNOriented
-    * *****************************************************************************
-    * Entries :  sVertexDep: string represented the start value of the arc,
-    * sVertexArr: string represented the end value of the arc
-    * Needs : None
-    * Returns : void
-    * Leads : Verify if there is an arc with a start equals to sVertexDep and
-    * the end value equals to sVertexArr
-    *******************************************************************************
-    */
-    bool GROExistenceOfArcNOriented(const string& sVertexDep, const string& sVertexArr)
-    {
-        bool res = false;
-
-        // to check if there is an arc with start value equals to sVertexDep and end value equals to sVertexArr,
-        // we count the number of vertex with value equals to the key string
-        if (GROGetMArcs().count(make_pair(sVertexDep, sVertexArr)) > 0)
             res = true;
 
         return res;
@@ -778,14 +784,14 @@ protected:
     * This function is used to add a new arc in the GROAddArc's function
     *******************************************************************************
     */
-    void GROAddPairKeysMArcs(const string& sVertexDep, const string& sVertexArr)
+    void GROAddPairKeysMArcs(const string& sVertexDep, const string& sVertexArr, const unsigned int& arcWeight=0)
     {
         // to add an arc of start value equals to sVertexDep, and end value equals to sVertexArr,
        // we first get the key
         pair<string, string> pairkeyDepArr{ sVertexDep, sVertexArr };
 
         // then we allocate memory for the arc
-        ArcType* newArc = new ArcType(sVertexDep, sVertexArr);
+        ArcType* newArc = new ArcType(sVertexDep, sVertexArr, arcWeight);
 
         // finally we insert the arc into the mGROArcs unordered_map at key that repsents the pairkeyDepArr's variable
 

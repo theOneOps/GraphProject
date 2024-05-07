@@ -153,6 +153,7 @@
     <ClInclude Include="CVertex\CVertex.h" />
     <ClInclude Include="Parser\CGraphParser.h" />
     <ClInclude Include="Parser\Parser.h" />
+    <ClInclude Include="Utils\ShortestPathDjistra.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />

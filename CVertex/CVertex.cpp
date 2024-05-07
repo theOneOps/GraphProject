@@ -184,3 +184,23 @@ void CVertex::VERChangeKeysVerArcOut(const string& sOldVal, const string& sNewVa
 	// then we store that stored value into the "newVal" of the key that contains the involved arc
 	VERGROModifyArcOut(sNewVal, bOldValue);
 }
+
+
+// add
+const set<string> CVertex::VERGetAllAdjacentsOutVertecies()
+{
+	// to get all adjacents Vertices of a vertex, we need to collect all 
+	// values of the Vertices connected to the vertex in the IN and the OUT direction
+	set<string> see;
+
+	for (unordered_map<string, bool>::iterator it = sVERArcOut.begin(); it != sVERArcOut.end(); it++)
+	{
+		// of coursre, we should check if there is an arc between our vertex and the current vertex
+		// by looking at the pair->second (if true, there is an arc unless there isn't)
+		if (it->second)
+		{
+			see.insert(it->first);
+		}
+	}
+	return see;
+}

@@ -27,6 +27,8 @@ private:
 	string sARCDep;
 	// the arrival's value of the arc
 	string sARCArr;
+	// the weight of the arc
+	unsigned int uiWeight;
 public:
 	// CONSTRUCTORS
 
@@ -53,7 +55,7 @@ public:
 	* Leads : Create an CArc with sARCdep equals to sDep and sARCarr equals to sArr of the arc
 	 *******************************************************************************
 	*/
-	CArc(string sDep, string sArr);
+	CArc(string sDep, string sArr, unsigned int uiWeight);
 
 	/**
 	*******************************************************************************
@@ -102,6 +104,19 @@ public:
 	 *******************************************************************************
 	*/
 	void ARCGROModifyVertexArr(const string& sNewValue);
+
+	/**
+	*******************************************************************************
+	* ARCGetWeight
+	* *****************************************************************************
+	* Entries : None
+	* Needs : None
+	* Returns : void
+	* Leads : Return the weight of the arc
+	*******************************************************************************
+	*/
+	const unsigned int ARCGetWeight() const;
+
 };
 
 #endif;
