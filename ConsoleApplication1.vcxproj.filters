@@ -56,6 +56,12 @@
     <ClInclude Include="Utils\ShortestPathDjistra.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CArc\ArcPondere.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Parser\CGraphPondereParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />

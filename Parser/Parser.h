@@ -183,6 +183,8 @@ public:
 		}
 		else // if we didn't find some delimiter, that's meaned the user has made some errors and need to correct that, so we throw an exception
 			throw CException(delimiter_not_found, "Error on finding the delimiter to parse the line of the file", "Parser.h", 161);
+
+		return "";
 	}
 
 	/**

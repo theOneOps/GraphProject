@@ -1,14 +1,26 @@
-NBSommets = 	4
-NBArcs = 	3
+NBSommets = 	8
+NBArcs = 	11
 Sommets = [
-NuMeRo = ab	
-Numero = bc
-NumerO = sd
-Numero = ze  
+NuMeRo = 1	
+Numero = 2
+NumerO = 3
+Numero = 4  
+Numero = 5
+NumerO = 6
+Numero = 7
+Numero = 8
 ]
 ARcs = [
-DEBUt = ab, Fin =		ze
-Debut = bc , FIn = ze
-Debut = bc, Fin = bc	
-Debut = sd, Fin =ab
+DEBUt = 1, Fin = 2 ,  Poids   = 2 
+DEBUt = 1, Fin = 4 , Poids = 3 
+DEBUt = 1, Fin = 3 , Poids    = 2
+DEBUt = 2, Fin = 5 , Poids = 4
+DEBUt = 3, Fin = 6 , poids = 2
+DEBUt = 3, Fin = 7 , PoIds = 1
+DEBUt = 5, Fin = 6 , Poids = 1
+DEBUt = 5, Fin = 8 , Poids   = 2
+DEBUt = 6, Fin = 8 , POids = 1
+DEBUt = 4, Fin = 7 , Poids = 1
+DEBUt = 7, Fin = 8 , PoidS =   3
 ]
+Source = 1

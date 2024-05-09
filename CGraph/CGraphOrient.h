@@ -228,7 +228,7 @@ public:
     * Unless it adds an arc between those Vertices
     *******************************************************************************
     */
-    virtual void GROAddArc(const string& sVertexDep, const string& sVertexArr, const unsigned int& arcWeight = 0)
+    virtual void GROAddArc(const string& sVertexDep, const string& sVertexArr)
     {
         // to add an arc from a start value  "sVertexDep" to and end value "sVertexDArr",
         // we should first check if the involved Vertices of values 
@@ -258,7 +258,7 @@ public:
 
                         // we create an arc with the correponding start value and end value of the arc
                         // and then we add the arc created to the unorderd_map mGROArcs
-                        GROAddPairKeysMArcs(sVertexDep, sVertexArr, arcWeight);
+                        GROAddPairKeysMArcs(sVertexDep, sVertexArr);
 
                         string res = "arc (" + sVertexDep + " " + sVertexArr + ") created successfully";
                         cout << res << endl;
@@ -689,6 +689,25 @@ public:
         return mGROArcs[make_pair(sVertexDep, sVertexArr)]->ARCGetWeight();
     }
 
+    /**
+*******************************************************************************
+* GROGetArcFromKeys
+* *****************************************************************************
+* Entries : sVertexDep: string represented the start value of the arc,
+* sVertexArr: string represented the end value of the arc
+* Needs : None
+* Returns : CArc*
+* Leads :  Return the arc with start value is sVertexDep and end value is sVertexArr
+*******************************************************************************
+*/
+    ArcType*& GROGetArcFromKeys(const string& sVertexDep, const string& sVertexArr)
+    {
+        // this method just returns the arc which start value is sVertexDep 
+        // and end valus is sVertexArr
+        pair<string, string> pairKey{ sVertexDep, sVertexArr };
+        return mGROArcs[pairKey];
+    }
+
 protected:
 
     /**
@@ -784,14 +803,14 @@ protected:
     * This function is used to add a new arc in the GROAddArc's function
     *******************************************************************************
     */
-    void GROAddPairKeysMArcs(const string& sVertexDep, const string& sVertexArr, const unsigned int& arcWeight=0)
+    void GROAddPairKeysMArcs(const string& sVertexDep, const string& sVertexArr)
     {
         // to add an arc of start value equals to sVertexDep, and end value equals to sVertexArr,
        // we first get the key
         pair<string, string> pairkeyDepArr{ sVertexDep, sVertexArr };
 
         // then we allocate memory for the arc
-        ArcType* newArc = new ArcType(sVertexDep, sVertexArr, arcWeight);
+        ArcType* newArc = new ArcType(sVertexDep, sVertexArr);
 
         // finally we insert the arc into the mGROArcs unordered_map at key that repsents the pairkeyDepArr's variable
 
@@ -814,24 +833,7 @@ protected:
         return mGROVertex[skey];
     }
 
-    /**
-    *******************************************************************************
-    * GROGetArcFromKeys
-    * *****************************************************************************
-    * Entries : sVertexDep: string represented the start value of the arc,
-    * sVertexArr: string represented the end value of the arc
-    * Needs : None
-    * Returns : CArc*
-    * Leads :  Return the arc with start value is sVertexDep and end value is sVertexArr
-    *******************************************************************************
-    */
-    ArcType*& GROGetArcFromKeys(const string& sVertexDep, const string& sVertexArr)
-    {
-        // this method just returns the arc which start value is sVertexDep 
-        // and end valus is sVertexArr
-        pair<string, string> pairKey{ sVertexDep, sVertexArr };
-        return mGROArcs[pairKey];
-    }
+
 
     /**
     *******************************************************************************

@@ -8,9 +8,12 @@
 
 using namespace std;
 
+
 class CShortestPathDjistra
 {
 private:
+
+
 
 	// fonction pour vérifier s'il y a encore des noeuds non visités
 	static bool areThereUnvisitedNodes(unordered_map<string, bool>& mNodeVisited)
@@ -61,7 +64,8 @@ private:
 	static const string SPDFindMinWeight(unordered_map<string, unsigned int> distanceFromStartOfAllNodes, const vector<string>& vNodeNotVisited)
 	{
 		string sNameNodeMin;
-		int iValNodeMin = -1;
+		unsigned int iValNodeMin = numeric_limits<int>::min();
+
 
 		for (const string sCurrentVertex : vNodeNotVisited)
 		{
@@ -76,19 +80,13 @@ private:
 		return sNameNodeMin;
 	}
 
-	static void SPDPrintPredecessors(const string& sVerDep, const string& sVerArr, const string& finalMinVertex, unordered_map<string, string>& pred)
+	static void SPDPrintPredecessors(const string& sVerDep, const string& finalMinVertex, unordered_map<string, string>& pred)
 	{
 		cout << "affichage des predecesseurs " << endl;
+		unordered_map<string, string>::iterator predIt = pred.begin();
 
-		if (sVerArr == finalMinVertex)
-		{
-			unordered_map<string, string>::iterator predIt = pred.begin();
-
-			for (; predIt != pred.end(); predIt++)
-				cout << predIt->first << " : " << predIt->second << endl;
-		}
-		else
-			cout << "there is no priorityNodes from " << sVerDep << " to " << sVerArr << endl;
+		for (; predIt != pred.end(); predIt++)
+			cout << predIt->first << " : " << predIt->second << endl;
 	}
 
 	static void SPDPrintMinDistanceFromVertexDepOfAllNodes(unordered_map<string, unsigned int> distanceFromStartOfAllNodes)
@@ -162,7 +160,7 @@ private:
 
 public:
 	template<typename SommetType, typename ArcType>
-	static void SPDGetShortestPathDjistra(CGraphOrient<SommetType, ArcType>& graph, const string& sVerDep, const string& sVerArr)
+	static void SPDGetShortestPathDjistra(CGraphOrient<SommetType, ArcType>& graph, const string& sVerDep)
 	{
 		string sNameOfVertexWithMinWeight; // string qui contiendra à chque itération le noeud avec la plus petite distance parmi les noeuds non visités
 		unsigned int MinNodeWeight = 0; // la distance du noeud minimale depuis le sommet de départ
@@ -179,9 +177,16 @@ public:
 		unordered_map<string, bool> mNodeVisited = InitialValue.second;
 		vector<string> vNodeNotVisited = InitialValue.first.second; // vector contenant les noeuds non visités
 
-		pred[sVerDep] = "none";
 
-		while (!areThereUnvisitedNodes(mNodeVisited) && !(sVerArr == sNameOfVertexWithMinWeight))
+		unordered_map<string, SommetType*> VerticesMap = graph.GROGetVertexMap();
+		typename unordered_map<string, SommetType*>::iterator it = VerticesMap.begin();
+
+		for (; it != VerticesMap.end(); it++)
+		{
+			pred[it->first] = "none";
+		}
+
+		while (!areThereUnvisitedNodes(mNodeVisited))
 		{
 			unordered_map<string, SommetType*> VerticesMap = graph.GROGetVertexMap();
 
@@ -217,7 +222,7 @@ public:
 		SPDPrintMinDistanceFromVertexDepOfAllNodes(distanceFromStartOfAllNodes);
 
 		// Print the predecessors of nodes that formed a route to the SverDep
-		SPDPrintPredecessors(sVerDep, sVerArr, sNameOfVertexWithMinWeight, pred);
+		SPDPrintPredecessors(sVerDep , sNameOfVertexWithMinWeight, pred);
 	}
 };
 

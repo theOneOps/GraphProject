@@ -146,9 +146,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CArc\Arc.h" />
+    <ClInclude Include="CArc\ArcPondere.h" />
     <ClInclude Include="CException\CException.h" />
     <ClInclude Include="CGraph\CGraphNOrient.h" />
     <ClInclude Include="CGraph\CGraphOrient.h" />
+    <ClInclude Include="Parser\CGraphPondereParser.h" />
     <ClInclude Include="PrintGraph\CPrintGraph.h" />
     <ClInclude Include="CVertex\CVertex.h" />
     <ClInclude Include="Parser\CGraphParser.h" />
