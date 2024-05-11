@@ -126,14 +126,14 @@ public:
 	* Leads : add some arcs to the graph with values dep and arr read from the file
 	*******************************************************************************
 	*/
-	void GPRAddArc(CGraphOrient<SommetType, ArcType>*& graph, const string& sSizeArcs, const string& sSectionName, const vector<string>& ArcsVariableName,
+	virtual void GPRAddArc(CGraphOrient<SommetType, ArcType>*& graph, const string& sSizeArcs, const string& sSectionName, const vector<string>& ArcsVariableName,
 		const string& sDelimiterBegin = "[", const string& sDelimiterEnd="]", const string& sDelimiterAffectation = "=", const string& sDelimiterBetweenArcsValuesNames = ",")
 	{
 
 		// we get accessed to lines that describes the arcs to create
 		vector<string> allArcsSection = PARAnalyzeSection(sSectionName, sDelimiterAffectation, sDelimiterBegin, sDelimiterEnd);
 		// first, we read the number of arcs to create
-		int size;
+		unsigned int size = 0;
 
 		if (!sDelimiterAffectation.empty())
 		{
@@ -165,7 +165,7 @@ public:
 			throw CException(size_not_conformed, "the number of arcs you want to create is greater than the number of arcs that is actually defined in your file.txt", "CGrpahParser.h", 156);
 
 		// then with a for loop, we parse each line to have the dep value and arr value of each arc
-		for (int i = 0; i < size; i++)
+		for (unsigned int i = 0; i < size; i++)
 		{	
 			size_t pos = allArcsSection[i].find(sDelimiterBetweenArcsValuesNames);
 			string sDebArc = PARAnalyzeSectionElement(allArcsSection[i].substr(0, pos), ArcsVariableName[0]);
@@ -191,7 +191,7 @@ public:
 	* Leads : read a file .txt, create the specified graph, print it, invert it and print it again
 	*******************************************************************************
 	*/
-	void GPRMain(const string& sfileName)
+	virtual void GPRMain(const string& sfileName)
 	{
 
 		// we create the specified graph

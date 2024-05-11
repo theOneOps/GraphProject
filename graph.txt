@@ -21,6 +21,6 @@ DEBUt = 5, Fin = 6 , Poids = 1
 DEBUt = 5, Fin = 8 , Poids   = 2
 DEBUt = 6, Fin = 8 , POids = 1
 DEBUt = 4, Fin = 7 , Poids = 1
-DEBUt = 7, Fin = 8 , PoidS =   3
+DEBUt = 7, Fin = 8 , PoidS =  0
 ]
 Source = 1

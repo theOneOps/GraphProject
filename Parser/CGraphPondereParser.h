@@ -20,94 +20,41 @@
 * *********************************************************
 */
 template<typename SommetType, typename ArcType>
-class CGraphPondereParser : public Parser
+class CGraphPondereParser : public CGraphParser<SommetType, ArcType>
 {
-public:
+private :
+
+public : 
+
+	// we just check if the type put in the class's type are what we are expected to have
+	static_assert(is_base_of<CVertex, SommetType>::value, "SommetType needs to be a CVertex class or a derivate of CVertex's class");
+	static_assert(is_base_of<CArcPondere, ArcType>::value, "ArcType needs to be a CArcPondere class or a derivate of CArcPondere's class");
+
+	//using CGraphParser<SommetType, ArcType>::CGraphParser; // Inherit constructor if needed
 
 
-	/**
+		/**
 	*******************************************************************************
-	* GPRAddVertex
+	* GPRAddArc
 	* *****************************************************************************
-	* Entries : graph : CGraphOrient<SommetType, ArcType> representing the graph to fill with Vertices
-	*			sSizeVertex : string representing the value of the name of the element size we want to read (eg: "Nbsommet" for "Nbsommet=2")
-	*			sSectionName : string representing the name of the section to read plus the first delimiter of the section (eg:"Sommets" for "Sommets=[ numero = 2,  numero = 3]")
-				sDelimiterEnd : string representing the last delimiter of the section (eg: "]" for "Sommets=[ numero = 2,  numero = 3]")
-				VertexVariableName : string representing the value of the attribut that contains the value we're looking for (eg: "]" for "Sommets=[ numero = 2,  numero = 3]")
+	* Entries :  graph : CGraphOrient<SommetType, ArcType> representing the graph to create arcs for
+	*			sSizeArcs : string representing the value of the name of the element size we want to read (eg: "Nbarc" for "Nbarc=2")
+	*			sSectionName : string representing the name of the section to read plus the first delimiter of the section (eg:"Arcs" for "Arcs=[2, 3]")
+				ArcsVariableName: vector of strings representing the value of the attributs that contains the value we're looking for (eg: 'vector<>("Debut","Fin")' for "Arcs=[ Debut = 2, Fin = 3]")
 				sDelimiterBegin : string representing the delimiter at the beginning of an section (eg:"[" for "Sommets=[ numero = 2,  numero = 3]")
 				sDelimiterEnd : string representing the delimiter at the ending of an section (eg:"]" for "Sommets=[ numero = 2,  numero = 3]")
 				sDelimiterAffectation : string representing the affectation sign used for the section (eg:"=" for "Sommets=[ numero = 2,  numero = 3]")
-
+				sDelimiterBetweenArcsValuesNames : string representing the sign separating two values or more the section (eg:"," for "Sommets=[ numero = 2,  numero = 3]")
 	* Needs : None
 	* Returns : void
-	* Leads : add some Vertices to the graph with values read from the file
+	* Leads : add some arcs to the graph with values dep and arr read from the file
 	*******************************************************************************
 	*/
-	void GPRAddVertex(CGraphOrient<SommetType, ArcType>*& graph, const string& sSizeVertex, const string& sSectionName, const string& VertexVariableName = "numero", const string& sDelimiterBegin = "[", const string& sDelimiterEnd = "]", const string& sDelimiterAffectation = "=")
-	{
-		// we get accessed to each line of the section (which means each element that contains the value of the vertex to create)
-		vector<string> allVerticesSection = PARAnalyzeSection(sSectionName, sDelimiterAffectation, sDelimiterBegin, sDelimiterEnd);
-
-		int size;
-		if (!sDelimiterAffectation.empty())
-		{
-			string res = PARAnalyzeSectionElement(PARGetLineContains(sSizeVertex), sSizeVertex, sDelimiterAffectation);
-			if (!res.empty())
-			{
-				// by a for loop, we check if all characters of the res's value are digits, 
-				for (char c : res)
-				{
-
-					if (!isdigit(c))
-					{
-						// if not, we throw an exception
-						string error_message = "the size of the " + sSizeVertex + " is not fully numeric";
-						throw CException(value_not_numeric, error_message, "CGraphPondereParser.h", 57);
-					}
-
-				}
-				// if yes, we convert it to integer
-				size = stoi(res);
-			}
-			else
-			{
-				res = "there is no size defined for the " + sSizeVertex;
-				throw CException(size_not_defined, res, "CGraphPondereParser.h", 57);
-			}
-		}
-		else
-			throw CException(the_number_of_vertex_not_found, "Error on finding the number of the vertex to create", "CGraphPondereParser.h", 53);
-
-
-
-
-		if (size > allVerticesSection.size())
-			throw CException(size_not_conformed, "the number of Vertices you want to create is greater than the number of Vertices that is actually defined in your file.txt", "CGraphPondereParser.h", 67);
-
-		string vertexValue = "";
-		// then we iterate over those lines and we parse them to find the value of the vertex to create
-		for (int i = 0; i < size; i++)
-		{
-			vertexValue = PARAnalyzeSectionElement(allVerticesSection[i], VertexVariableName, sDelimiterAffectation);
-
-			// we first check if the value is not a composed value
-			if (PARContainsSpaceOrTab(vertexValue))
-			{
-				// it yes, we throw an exception
-				throw CException(composed_value, "the vertex should not be a composed value", "CGraphPondereParser.h", 97);
-			}
-			// if not, this line created the vertex with the value "vertexValue" in the graph
-			graph->GROAddVertex(vertexValue);
-		}
-	}
-
-
-
 	void GPRAddArc(CGraphOrient<SommetType, ArcType>*& graph, const string& sSizeArcs, const string& sSectionName, const vector<string>& ArcsVariableName,
 		const string& sDelimiterBegin = "[", const string& sDelimiterEnd = "]", const string& sDelimiterAffectation = "=", const string& sDelimiterBetweenArcsValuesNames = ",")
 	{
 		// we get accessed to lines that describes the arcs to create
-		vector<string> allArcsSection = PARAnalyzeSection(sSectionName, sDelimiterAffectation, sDelimiterBegin, sDelimiterEnd);
+		vector<string> allArcsSection = CGraphParser<SommetType, ArcType>::PARAnalyzeSection(sSectionName, sDelimiterAffectation, sDelimiterBegin, sDelimiterEnd);
 		// first, we read the number of arcs to create
 		unsigned int size = 0;
 
@@ -120,7 +67,7 @@ public:
 
 		if (!sDelimiterAffectation.empty())
 		{
-			string res = PARAnalyzeSectionElement(PARGetLineContains(sSizeArcs), sSizeArcs, sDelimiterAffectation);
+			string res = CGraphParser<SommetType, ArcType>::PARAnalyzeSectionElement(CGraphParser<SommetType, ArcType>::PARGetLineContains(sSizeArcs), sSizeArcs, sDelimiterAffectation);
 			if (!res.empty())
 			{
 				for (char c : res)
@@ -130,7 +77,7 @@ public:
 					{
 						// if not, we throw an exception
 						string error_message = "the size of the " + sSizeArcs + " is not fully numeric";
-						throw CException(value_not_numeric, error_message, "CGraphPondereParser.h", 138);
+						throw CException(value_not_numeric, error_message, "CGraphPondereParser.h", 76);
 					}
 
 				}
@@ -140,46 +87,80 @@ public:
 			else
 			{
 				res = "there is no size defined for the " + sSizeArcs;
-				throw CException(size_not_defined, res, "CGraphPondereParser.h", 133);
+				throw CException(size_not_defined, res, "CGraphPondereParser.h", 71);
 			}
 		}
 
 		if (size > allArcsSection.size())
-			throw CException(size_not_conformed, "the number of arcs you want to create is greater than the number of arcs that is actually defined in your file.txt", "CGraphPondereParser.h", 156);
+			throw CException(size_not_conformed, "the number of arcs you want to create is greater than the number of arcs that is actually defined in your file.txt", "CGraphPondereParser.h", 94);
 
 		// then with a for loop, we parse each line to have the dep value and arr value of each arc
 		for (unsigned int i = 0; i < size; i++)
 		{
 			pos = allArcsSection[i].find(sDelimiterBetweenArcsValuesNames);
-			sDebArc = PARAnalyzeSectionElement(allArcsSection[i].substr(0, pos), ArcsVariableName[0]);
+			sDebArc = CGraphParser<SommetType, ArcType>::PARAnalyzeSectionElement(allArcsSection[i].substr(0, pos), ArcsVariableName[0]);
 			current_pos = allArcsSection[i].find(sDelimiterBetweenArcsValuesNames, pos);
-			sArrArc = PARAnalyzeSectionElement(allArcsSection[i].substr(pos, current_pos), ArcsVariableName[1]);
+			sArrArc = CGraphParser<SommetType, ArcType>::PARAnalyzeSectionElement(allArcsSection[i].substr(pos, current_pos), ArcsVariableName[1]);
 			finalPos = allArcsSection[i].find_last_of(sDelimiterBetweenArcsValuesNames);
-			sArrWeight = PARAnalyzeSectionElement(allArcsSection[i].substr(finalPos, allArcsSection[i].size()), ArcsVariableName[2]);
+			sArrWeight = CGraphParser<SommetType, ArcType>::PARAnalyzeSectionElement(allArcsSection[i].substr(finalPos, allArcsSection[i].size()), ArcsVariableName[2]);
 
-			if (PARContainsSpaceOrTab(sDebArc) || PARContainsSpaceOrTab(sArrArc))
-				throw CException(composed_value, "one (or more) of the values of your arcs contain spaces or tabs, correct them !", "CGraphPondereParser.h", 167);
+			if (CGraphParser<SommetType, ArcType>::PARContainsSpaceOrTab(sDebArc) || CGraphParser<SommetType, ArcType>::PARContainsSpaceOrTab(sArrArc))
+				throw CException(composed_value, "one (or more) of the values of your arcs contain spaces or tabs, correct them !", "CGraphPondereParser.h", 107);
 
 			graph->GROAddArc(sDebArc, sArrArc);
 
-			cout << "le poids pour l'arc de dep " << sDebArc << " et de arr " << sArrArc << " est " << "[" << sArrWeight << "]" << endl;
 
-			// We set the weight to the arc
-			graph->GROGetArcFromKeys(sDebArc, sArrArc)->ARCSetWeight(stoi(sArrWeight));
+			// we first check if the weight is not empty
+			if (!sArrWeight.empty())
+			{
+				for (char c : sArrWeight)
+				{
+					// by a for loop, we check if all characters of the res's value are digits, 
+					if (!isdigit(c))
+					{
+						// if not, we throw an exception
+						string error_message = "the weight of the arc (" + sDebArc + " " + sArrArc
+							+ ") is not fully a digit value";
+						throw CException(value_not_numeric, error_message, "CGraphPondereParser.h", 119);
+					}
+				}
+			}
+			else
+			{
+				string errorMessage = "the weight of the arc (" + sDebArc + " " + sArrArc
+					+ ") is not defined";
+				throw CException(size_not_defined, errorMessage, "CGraphPondereParser.h", 114);
+			}
+
+			// We set the weight to the arc if it is a positive weight
+			if (stoi(sArrWeight) >= 0)
+				graph->GROGetArcFromKeys(sDebArc, sArrArc)->ARCSetWeight(stoi(sArrWeight));
+			else
+			{
+				string errorMessage = "the weight of the arc (" + sDebArc + " "  +  sArrArc
+					+ ") is not fully a positive number";
+				throw CException(32, errorMessage, "CGraphPondereParser.h", 136);
+			}
+
 		}
 	}
 
+
+	void GPRMain(const string& sfileName) {}
+
+
 	/**
 	*******************************************************************************
-	* GPRMain
+	* GPPMain
 	* *****************************************************************************
 	* Entries : tree : sfileName : string representing the file to read/parse
+	*			source : string representing the source to apply for the dijkstra's algorithm
 	* Needs : None
 	* Returns : void
 	* Leads : read a file .txt, create the specified graph, print it, invert it and print it again
 	*******************************************************************************
 	*/
-	void GPRMain(const string& sfileName, const string& source)
+	pred_distance_djistra GPPMain(const string& sfileName, const string& source)
 	{
 
 		// we create the specified graph
@@ -188,10 +169,10 @@ public:
 		try
 		{
 			// first, we read the file
-			PARReadFile(sfileName);
+			CGraphParser<SommetType, ArcType>::PARReadFile(sfileName);
 
 			// we add all Vertices sepcified by the file
-			GPRAddVertex(graph, "NBSommets", "Sommets");
+			CGraphParser<SommetType, ArcType>::GPRAddVertex(graph, "NBSommets", "Sommets");
 
 			vector<string> vect;
 
@@ -205,16 +186,22 @@ public:
 			// we print the graph
 			CPrintGraph::PRIPrintGraph(*graph);
 
-			//CShortestPathDjistra<SommetType, ArcType>::SDRGetShortestPathDjistra(*graph, source);
-
-			CShortestPathDjistra::SPDGetShortestPathDjistra(*graph, source);
-
-			delete graph;
+			if (graph->GROGetVertexMap().find(source) != graph->GROGetVertexMap().end())
+			{
+				pred_distance_djistra pred_distance_values = CShortestPathDjistra::SPDGetShortestPathDjistra(*graph, source);
+				delete graph;
+				return pred_distance_values;
+			}
+			else
+			{
+				string errorMessage = "the source " + source +  " given in parameter is not part of the graph's vertecies";
+				throw CException(31, errorMessage, "CGraphPondereParser.h", 173);
+			}
 		}
-		catch (CException e)
+		catch (CException&)
 		{
 			delete graph;
-			e.EXCReadMessage();
+			throw;
 		}
 	}
 

@@ -57,10 +57,10 @@ public:
 	*******************************************************************************
 	* ARCSetWeight
 	* *****************************************************************************
-	* Entries : None
+	* Entries : const unsigned int weight
 	* Needs : None
 	* Returns : void
-	* Leads : Return the weight of the arc
+	* Leads : Changes the uiWeight of the arc
 	*******************************************************************************
 	*/
 	void ARCSetWeight(const unsigned int weight)

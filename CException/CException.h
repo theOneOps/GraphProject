@@ -19,7 +19,17 @@ using namespace std;
           Jeremie YANG
 * DATE: 19/03/2024
 * *********************************************************
-* EXTERNES InCLUSIONS
+* EXTERNES INCLUSIONS
+* 
+* 
+* // the value (id) of the exception
+    int uiExval;
+    //the message value of the exception
+    string Exmessage;
+    // the file's where the message's coming from
+    string filename;
+    // the line where the exception's coming from
+    int line;
 */
 class CException
 {
